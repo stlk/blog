@@ -1,10 +1,14 @@
-title:        Hyde
-tagline:      "Hyde, a Jekyll theme"
-url:          http://andhyde.com
+title:        "Zápisník Josefa Rouska"
+subtitle:     "poznámky o webu, elektrotechnice, Praze a dalších blbostech"
+url:          http://blog.rousek.name
 author:
-  name:       ""
-  email:      ""
-markdown:     rdiscount
+  name:       "Josef Rousek"
+  email:      "josef.rousek@gmail.com"
+markdown:     kramdown
 permalink:    pretty
 pygments:     true
 paginate:     5
+
+analytics:
+  google: 
+    id:       "UA-485461-7"

@@ -8,7 +8,7 @@
 
     <title>
       {% if page.title %}{{ page.title }} &middot; {% endif %}
-      {{ site.tagline }}
+      {{ site.title }}
     </title>
 
     <!-- CSS -->
@@ -26,20 +26,15 @@
 
     <header class="masthead">
       <div class="masthead-inner">
-        <h1>Hyde</h1>
-        <p class="lead">An elegant open source and mobile first theme for <a href="http://jekyllrb.com" target="_blank">Jekyll</a>. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.</p>
+        <h1><a href="/">{{ site.title }}</a></h1>
+        <p class="lead">{{ site.subtitle }}</p>
 
         <div class="colophon">
           <ul class="colophon-links">
-            <li>
-              <a href="https://github.com/mdo/hyde/archive/v1.0.0.zip">Download</a>
-            </li>
-            <li>
-              <a href="https://github.com/mdo/hyde">GitHub project</a>
-            </li>
-            <li>Currently v1.0</li>
+            <li><a href="http://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
           </ul>
-          <p>&copy; 2013. {{ site.author.name }} All rights reserved.</p>
         </div>
 
       </div>
@@ -48,6 +43,14 @@
     <div class="content container">
       {{ content }}
     </div>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+    ga('create', '{{ site.analytics.google.id }}', '{{ site.url }}');
+    ga('send', 'pageview');
+  </script>
   </body>
 </html>

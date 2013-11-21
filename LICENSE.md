@@ -1,4 +1,8 @@
-# Released under MIT License
+# Content released under CC-BY-NC 3.0 License
+
+Copyright (c) 2013 Josef Rousek.
+
+# Source code released under MIT License
 
 Copyright (c) 2013 Mark Otto.
 
