@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Netduino binary clock with PCF8574
+
+excerpt: "Recently I found yet another binary clock and I realised that it might be nice way to try I<sup>2</sup>C expander **PCF8574**."
 ---
 
 Recently I found yet another binary clock and I realised that it might be nice way to try I<sup>2</sup>C expander **PCF8574**. [PCF8574][1] is cheap and easy to use 8bit I<sup>2</sup>C expander. Schematic below shows the minute part of circuit. Hour part is exactly the same except you can leave out one LED.

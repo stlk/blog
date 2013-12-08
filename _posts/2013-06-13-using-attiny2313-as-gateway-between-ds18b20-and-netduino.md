@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Using ATTiny2313 as gateway between DS18B20 and Netduino
+
+excerpt: "For some time I was happy user of Stanislav \"CW2\" Šimíček's modified firmware which brought OneWire capability to Netduino, but new version(4.2) of .NET MicroFramework came and I realized there are other possibilities."
 ---
 
 For some time I was happy user of [Stanislav "CW2" Šimíček's][1] modified firmware which brought OneWire capability to Netduino, but new version(4.2) of .NET MicroFramework came and I realized there are other possibilities. More specifically I realized that this is good opportunity to make something useful with C on Atmel chips.

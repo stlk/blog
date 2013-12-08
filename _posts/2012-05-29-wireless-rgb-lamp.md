@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Wireless RGB lamp
+
+excerpt: "For a long time I wanted to have a wirelessly controlled RGB light in my kitchen. This idea got more specific shape when I saw hacked IKEA dioder light where original PIC microcontroller was removed and ATTiny took its place."
 ---
 
 For a long time I wanted to have a wirelessly controlled RGB light in my kitchen. This idea got more specific shape when I saw hacked IKEA dioder light where original PIC microcontroller was removed and ATTiny took its place. This wasn't the one I ended up using, but I think it's worth mentioning. I have decided to use [5,1W RGB LED][1] along with ATMega328P with Arduino bootloader and XBee for the wireless connectivity.<a href="http://www.flickr.com/photos/stalker_cz/7181211930/" title="Link to Flickr"><img src="http://farm6.staticflickr.com/5348/7181211930_369958da68_n.jpg" class="right" /></a>

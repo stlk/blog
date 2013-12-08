@@ -1,9 +1,11 @@
 ---
 layout: post
 title: Injecting dependecies into Web API Action Filters
+
+excerpt: "When I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject."
 ---
 
-While I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject. This is solved by [Ninject.Web.WebApi][1], but I had some stability issues with this library. When I started to dig a little deeper I found that in fact I'm using only one class from this library. Which is [DefaultFilterProvider][2] this class steps into play before filter methods are executed and injects dependencies into it.
+When I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject. This is solved by [Ninject.Web.WebApi][1], but I had some stability issues with this library. When I started to dig a little deeper I found that in fact I'm using only one class from this library. Which is [DefaultFilterProvider][2] this class steps into play before filter methods are executed and injects dependencies into it.
 
     public IEnumerable<FilterInfo> GetFilters(HttpConfiguration configuration,
                                             HttpActionDescriptor actionDescriptor)

@@ -1,9 +1,11 @@
 ---
 layout: post
 title: Wireless RGB lamp - The controller
+
+excerpt: "In this part I will show you how to control RGB lamp using Netduino. The basics such as wiring XBee to Netduino and XBee setup are described in my previous article, so I will highlight only most interesting bits."
 ---
 
-In this part I will show you how to control [RGB lamp][1] using Netduino. The most important part such as [wiring XBee to Netduino and XBee setup][2] is described in my previous article, so I will highlight only most interesting bits.
+In this part I will show you how to control [RGB lamp][1] using Netduino. The basics such as [wiring XBee to Netduino and XBee setup][2] are described in my previous article, so I will highlight only most interesting bits.
 
 Method `RequestReceived` handles incoming HTTP requests and decides which command send to XBee.
 
