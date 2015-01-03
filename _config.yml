@@ -6,7 +6,7 @@ author:
   email:      "josef.rousek@gmail.com"
 markdown:     kramdown
 permalink:    pretty
-pygments:     true
+highlighter:  pygments
 paginate:     5
 
 analytics:
