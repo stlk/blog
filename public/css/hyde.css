@@ -258,6 +258,18 @@ a:hover {
   color: #000;
 }
 
+.post__image {
+  max-width: 350px;
+  display: inline;
+}
+
+.post__image-right {
+  float: right;
+}
+
+.post__image-center {
+  text-align: center;
+}
 
 /* Error pages (404)
 -------------------------------------------------- */
