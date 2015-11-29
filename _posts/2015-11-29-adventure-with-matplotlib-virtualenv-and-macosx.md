@@ -5,7 +5,7 @@ title: Adventure with matplotlib, virtualenv and MacOS
 
 Recently I've developed passion for machine learning. Which includes many hours of fun with various modeling and plotting libraries.
 
-Yesterday I was playing around with [Non-Negative Matrix Factorization (NMF)](http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.NMF.html) and [Multidimensional scaling](http://scikit-learn.org/stable/modules/generated/sklearn.manifold.MDS.html) in jupyter notebook. But when I tried to render a chart it just didn't work.
+Yesterday I was playing around with [Multidimensional scaling](http://scikit-learn.org/stable/modules/generated/sklearn.manifold.MDS.html) in jupyter notebook. But when I tried to render a chart it just didn't work.
 Engine got stuck and I had to restart it. At first I though that the rendering is too complicated, but even simple example didn't work.
 
 Problem was as I later discovered caused by a [bug](https://github.com/pypa/virtualenv/issues/54) in virtualenv. I managed to get it working using workaround described on [matplotlib's FAQ](http://matplotlib.org/devdocs/faq/virtualenv_faq.html#osx).
@@ -60,4 +60,4 @@ plt.grid(True)
 plt.show()
 {% endhighlight %}
 
-I hope this article will save you some hours of your life I spent with this. You can see the result on my [github](https://github.com/stlk/datatalks/blob/master/instagram/nmf_mds.ipynb).
+I hope this article will save you some hours of your life I spent with this. You can see the result on my [github](https://github.com/stlk/datatalks/blob/master/instagram/mds.ipynb).
