@@ -60,4 +60,4 @@ plt.grid(True)
 plt.show()
 {% endhighlight %}
 
-I hope this article will save you some hours I spent with this. You can see the result on my [github](https://github.com/stlk/datatalks/blob/master/instagram/nmf_mds.ipynb).
+I hope this article will save you some hours of your life I spent with this. You can see the result on my [github](https://github.com/stlk/datatalks/blob/master/instagram/nmf_mds.ipynb).
