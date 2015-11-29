@@ -7,8 +7,7 @@ author:
 markdown:     kramdown
 permalink:    pretty
 highlighter:  pygments
-paginate:     5
 
 analytics:
-  google: 
+  google:
     id:       "UA-485461-7"
