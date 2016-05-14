@@ -271,6 +271,14 @@ a:hover {
   text-align: center;
 }
 
+.post__image-no-bottom-margin {
+  margin: 0;
+}
+
+.post__image-no-bottom-margin img {
+  margin: 0;
+}
+
 /* Error pages (404)
 -------------------------------------------------- */
 
