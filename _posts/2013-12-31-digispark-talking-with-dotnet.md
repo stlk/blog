@@ -45,7 +45,7 @@ if (DigiUSB.available() > 0) {
 }
 {% endhighlight %}
 
-##Source code
+## Source code
 Full source code is available on [GitHub.com][1].
 
 

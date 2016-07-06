@@ -21,13 +21,13 @@ I'm using minimal implementation of OneWire protocol originally written by [Wald
 
 My ATTiny is running on 16MHz, this is set on beginning of both *makefile* and *main.c*. Another noteworthy thing is programmer options described on line [270 of makefile][3]. I'm using Arduino as programmer which is disguised as stk500v1, it is connected to port COM4 and programming speed is 19200bps.
 
-###Netduino side
+### Netduino side
 
 Here is my overly complicated way of handling UART communication on .NETMF where temperature is converted to readable format on line 64.
 
 <script src="https://gist.github.com/stlk/5791735.js"></script>
 
-###Source code
+### Source code
 
 Full source code is available on [GitHub.com][4]. Source code is licenced under [CC BY 3.0][5].
 

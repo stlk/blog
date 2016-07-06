@@ -15,7 +15,7 @@ XBee I'm using is XBee Series 2 with API firmware, because it allows me to easil
 
 Firmware is pretty straightforward. It listens for commands, stores settings on EEPROM and fades the led. Commands are received in form of ZigBee Receive packet where first byte specifies command id and following bytes are different for each command. Commands are described in table below.
 
-###Commands
+### Commands
 
 <table>
 <thead>
@@ -54,11 +54,11 @@ Firmware is pretty straightforward. It listens for commands, stores settings on 
 </tbody>
 </table>
 
-###Schematic
+### Schematic
 
 <iframe width='600' height='350' frameborder='0' src='http://c.circuitbee.com/build/r/schematic-embed.html?id=0000000249'></iframe>
 
-###Part list
+### Part list
 
 <table>
 <thead>
@@ -108,7 +108,7 @@ Firmware is pretty straightforward. It listens for commands, stores settings on 
 </tbody>
 </table>
 
-###Source code
+### Source code
 
 Source code is available on [Github][6].
 

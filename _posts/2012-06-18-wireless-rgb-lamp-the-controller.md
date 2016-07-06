@@ -47,9 +47,9 @@ Command *colorx* takes 3 arguments. So URL will look like this (your XBee's IP)/
 Last command sends just one byte which requests current settings. When it's received method `XBeeFrameReceived` gets called. You can put breakpoint into the empty `case` statement or print incoming data. Format is described in table below.
 
     _xBee.SendData(0x0013A200407A26AA, 0xFFFE, new byte[] { 24 }, null);
-    
 
-###Commands
+
+### Commands
 
 <table>
 <thead>
@@ -88,11 +88,11 @@ Last command sends just one byte which requests current settings. When it's rece
 </tbody>
 </table>
 
-###Action shot
+### Action shot
 <p></p>
 <iframe src="http://player.vimeo.com/video/44331592" width="500" height="281" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
-###Source code
+### Source code
 
 Full source code is available on [GitHub.com][3].
 
