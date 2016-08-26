@@ -263,6 +263,11 @@ a:hover {
   display: inline;
 }
 
+.post__image-full-width {
+  max-width: 100%;
+  display: inline;
+}
+
 .post__image-right {
   float: right;
 }
