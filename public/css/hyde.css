@@ -221,6 +221,10 @@ a:hover {
 /* Posts
 -------------------------------------------------- */
 
+.container {
+  margin: 0.5rem;
+}
+
 /* Wrapper for all posts on homepage */
 .posts {
   margin-left:  20px;
