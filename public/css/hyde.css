@@ -77,9 +77,6 @@ p {
 ul, ol {
   margin-bottom: 15px;
 }
-li {
-  color: #888580;
-}
 
 hr {
   position: relative;
@@ -153,13 +150,6 @@ blockquote {
 blockquote p {
   margin-bottom: 0;
   color: #7a7a7a;
-  text-indent: -0.4em;
-}
-blockquote p:before {
-  content: '\201C';
-}
-blockquote p:after {
-  content: '\201D';
 }
 
 img {
