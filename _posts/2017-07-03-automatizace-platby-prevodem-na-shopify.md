@@ -3,7 +3,7 @@ layout: post
 title: Automatizace platby převodem na Shopify pomocí Fakturoidu
 ---
 
-Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě Shopify. Vymysleli jsme řešení, jak pomocí proformy využít schopnosti [Fakturoid.cz](https://www.fakturoid.cz). Fakturoid při zaplacení proformy vytvoří fakturu a následně informuje o jejím vytvoření.
+Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě [Shopify](https://www.shopify.com/?ref=developer-7be6616fd8bde970). Vymysleli jsme řešení, jak pomocí proformy využít schopnosti [Fakturoid.cz](https://www.fakturoid.cz). Fakturoid při zaplacení proformy vytvoří fakturu a následně informuje o jejím vytvoření.
 
 #### Ukážeme si jak automaticky:
 
