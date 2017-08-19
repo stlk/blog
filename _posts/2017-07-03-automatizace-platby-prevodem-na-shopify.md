@@ -17,13 +17,13 @@ Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě 
 
 Do vašeho obchodu si nainstalujte aplikaci <a href="https://apps.shopify.com/fakturoid-invoices?utm_source=blog&utm_medium=article&utm_campaign=proforma_guide" target="_blank">Send invoices to Fakturoid.cz</a>. V sekci *Apps* se objeví aplikace *Send invoices to Fakturoid.cz*.
 
-Nejprve je nutné vyplnit přihlašovací údaje pro Fakturoid v sekci *Fakturoid credentials*. [<a href="https://vimeo.com/224252284" target="_blank">videonávod</a>] A následně klinutím na *Enable proforma invoices* v sekci *Proforma invoices* zapnout vytváření proforma faktur při vytvoření objednávky.
+Nejprve je nutné vyplnit přihlašovací údaje pro Fakturoid v sekci *Fakturoid credentials*. [<a href="https://youtu.be/ZjNwiaImy2Q" target="_blank">videonávod</a>] A následně klinutím na *Enable proforma invoices* v sekci *Proforma invoices* zapnout vytváření proforma faktur při vytvoření objednávky.
 
 <a href="/public/enable-proforma-invoices.png" target="_blank">
   <img src="/public/enable-proforma-invoices.png" alt="" class="post__image post__image-full-width">
 </a>
 
-Po zapnutí je ještě nutné nastavit *webhook* ve Fakturoidu. [<a href="https://vimeo.com/224252723" target="_blank">videonávod</a>] Webhook je způsob, jakým Fakturoid informuje aplikaci o zaplacené faktuře.
+Po zapnutí je ještě nutné nastavit *webhook* ve Fakturoidu. [<a href="https://youtu.be/mS6mlEcdEdU" target="_blank">videonávod</a>] Webhook je způsob, jakým Fakturoid informuje aplikaci o zaplacené faktuře.
 
 ### Platební údaje v souhrnu objednávky
 
