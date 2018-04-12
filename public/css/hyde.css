@@ -253,8 +253,10 @@ a:hover {
 }
 
 .post__image {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   max-width: 350px;
-  display: inline;
+  display: inline-block;
 }
 
 .post__image-full-width {
