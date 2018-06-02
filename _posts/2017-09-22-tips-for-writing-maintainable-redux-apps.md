@@ -65,8 +65,3 @@ export default ({ currentTime, duration }) => {
   );
 };
 {% endhighlight %}
-
-
-### Want more?
-
-Subscribe to my four week series of react basics on [https://www.getdrip.com/forms/83041389/submissions/new](https://www.getdrip.com/forms/83041389/submissions/new).
