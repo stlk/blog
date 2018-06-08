@@ -54,7 +54,7 @@ Having "random" value in initial state makes snapshot-based testing a bit harder
 
 Write dumb components and use HOC when needed. When components are almost like templates, there's almost no reason to test them. In this example `formatTime` is tested on its own, so I got away with not testing this component.
 
-{% highlight js %}
+{% highlight jsx %}
 export default ({ currentTime, duration }) => {
   return (
     <div className="seekInfo">

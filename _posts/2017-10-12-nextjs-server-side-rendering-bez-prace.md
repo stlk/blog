@@ -34,7 +34,7 @@ setTimeout(function() {
 
 Dynamické importy umožňují importovat i komponenty. To nám umožní vyrenderovat na serveru jen důležitý obsah a obsah, který není zásadní pro vyhledávače můžeme stáhnout později. Jsou to například formuláře nebo infografika.
 
-{% highlight js %}
+{% highlight jsx %}
 import dynamic from 'next/dynamic'
 
 const DynamicForm = dynamic(import('../components/Form'))
