@@ -18,7 +18,7 @@ Ustálené řešení jak nabídnout výběr z velkého množství výdejních m�
 Ukázku checkout procesu s výběrem výdejního místa můžete vidět na následujícím videu.
 
 <p class="post__image-center">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/ZX39HoaZcrM?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/w4am7vFEKSs?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </p>
 
 Chcete také nabízet doručení na výdejní místa Zásilkovna.cz na svém e-shopu? Nebo chcete přesně vědět jako to funguje? Neváhejte mě kontaktovat.
