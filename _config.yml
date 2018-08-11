@@ -6,7 +6,3 @@ author:
   email:      "josef.rousek@gmail.com"
 markdown:     kramdown
 permalink:    pretty
-
-analytics:
-  google:
-    id:       "UA-485461-7"
