@@ -3,7 +3,7 @@ layout: post
 title: Cool image loading with Gatsby.js v2 and Netlify CMS v2
 ---
 
-Time has come and even I got the opportunity to try out currently trending Gatsby.js static site generator. The most popular feature, at least from my point of view, is [Image Processing with gatsby-transformer-sharp](https://image-processing.gatsbyjs.org/). I thought “Everyone talks that I can have out of the box responsive images and other cool things!”. Yeah sure, but they didn't use it together with Netlify CMS while using beta of v2 :)
+Time has come and even I got the opportunity to try out currently trending Gatsby.js static site generator. The most popular feature, at least from my point of view, is [Image Processing with gatsby-transformer-sharp](https://image-processing.gatsbyjs.org/). I thought “Everyone talks that I can have out of the box responsive images and other cool things!”. Yeah sure, but they didn't use it together with Netlify CMS while using beta of v2 :) Now with Gatsby v2 released things are a bit easier.
 
 Getting started with something as complex as Gatsby.js is always a challenge. Looking back I would compare Gatsby to Webpack. Complexity of plugin based processing pipeline makes it a bit harder to understand than good old static site generators.
 
@@ -23,7 +23,7 @@ Uses [remark](https://github.com/remarkjs/remark) to parse the markdown files in
 This does the magic making images linked from markdown files responsive.
 
 ### gatsby-remark-relative-images
-This is where the fun begins! Gatsby assumes that images are colocated with posts. This approach doesn't work with Netlify CMS, because it stores images in a single place. There's [issue with v2](https://github.com/danielmahon/gatsby-remark-relative-images/issues/6) which led me to [make a slight change](https://github.com/stlk/gatsby-remark-relative-images) to fork which was addressing the issue.
+This is where the fun begins! Gatsby assumes that images are colocated with posts. This approach doesn't work with Netlify CMS, because it stores images in a single place. ~~There's [issue with v2](https://github.com/danielmahon/gatsby-remark-relative-images/issues/6) which led me to make a slight change to fork which was addressing the issue.~~
 
 I ended up with this configuration:
 
@@ -52,11 +52,11 @@ I ended up with this configuration:
 These are the versions that I'm using:
 
 ```json
-"gatsby-plugin-sharp": "next",
-"gatsby-remark-images": "next",
-"gatsby-transformer-remark": "next",
-"gatsby-transformer-sharp": "next",
-"gatsby-remark-relative-images": "git+https://github.com/stlk/gatsby-remark-relative-images.git",
+"gatsby-plugin-sharp": "latest",
+"gatsby-remark-images": "latest",
+"gatsby-transformer-remark": "latest",
+"gatsby-transformer-sharp": "latest",
+"gatsby-remark-relative-images": "latest",
 ```
 
 When Gatsby is configured this way I can embed image in markdown file like this `![Chemex](/img/chemex.jpg)` and get this awesome loading “blur up” behavior.
