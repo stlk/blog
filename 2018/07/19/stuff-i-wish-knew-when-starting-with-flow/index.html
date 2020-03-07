@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Stuff I wish I knew when starting with Flow &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Stuff I wish I knew when starting with Flow" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Typing in dynamic languages is hard. Especially in small projects where interaction with libraries is hiding on every corner.
+I tried to get into Flow at least two times before. Now I finally think I got far enough to experience enough of important obstacles that suffice to write about them.
+
+">
+      <meta content="Typing in dynamic languages is hard. Especially in small projects where interaction with libraries is hiding on every corner.
+I tried to get into Flow at least two times before. Now I finally think I got far enough to experience enough of important obstacles that suffice to write about them.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2018/07/19/stuff-i-wish-knew-when-starting-with-flow/" property="og:url">
+    
+    
+      <meta content="2018-07-19T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Stuff I wish I knew when starting with Flow</h1>
+  <span class="post-date">19 Jul 2018</span>
+  <p>Typing in dynamic languages is hard. Especially in small projects where interaction with libraries is hiding on every corner.
+I tried to get into Flow at least two times before. Now I finally think I got far enough to experience enough of important obstacles that suffice to write about them.</p>
+
+<h2 id="what-editor-should-i-use">What editor should I use</h2>
+
+<p>Technically, both Atom and VS Code should work with Flow. However, VS Code wasn’t working well for me. On the other hand <a href="https://github.com/flowtype/ide-flowtype">Flow for Atom IDE</a> works great.</p>
+
+<h2 id="where-to-start">Where to start</h2>
+
+<p>With Flow you can pick the file you want to start with. Flow will treat imported untyped files as type <code class="highlighter-rouge">any</code>.
+I started with a React component which accepts simple object just to get my feet wet and get familiar with the syntax. After this exploration phase it’s good to try getting business logic typed.</p>
+
+<h2 id="interacting-with-html-elements">Interacting with HTML elements</h2>
+
+<p>Finding the correct way to handle type casting of HTML elements took me surprisingly a lot of the time. But the solution turned out to be pretty simple. Flow looks for <code class="highlighter-rouge">instanceof</code> conditions and for following code it works with correct type. Useful tool for asserting HTML elements is <code class="highlighter-rouge">invariant</code>. It takes condition and error message and raises the error message when the condition isn’t met.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">formId</span><span class="p">);</span>
+<span class="nx">invariant</span><span class="p">(</span>
+  <span class="nx">form</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">form</span> <span class="k">instanceof</span> <span class="nx">HTMLFormElement</span><span class="p">,</span>
+  <span class="dl">'</span><span class="s1">Could not find a form.</span><span class="dl">'</span><span class="p">,</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="arrays---type-syntax-can-actually-differ">Arrays - type syntax can actually differ</h2>
+
+<p>When specifying a type for an array I automatically typed <code class="highlighter-rouge">[Item]</code>. This is valid syntax in Flow, but it means something which you won’t need most of the time. It means array with one item of type <code class="highlighter-rouge">Item</code>. You are most likely looking for <code class="highlighter-rouge">Item[]</code>. This took me quite some time to realize.</p>
+
+<h2 id="higher-order-components">Higher-Order Components</h2>
+
+<p>HOCs are sometimes tough to type correctly because it’s so easy to mix in <code class="highlighter-rouge">any</code> type and lose the type checking. Let’s try typing this <code class="highlighter-rouge">withLoader</code> HOC. I confess that I haven’t figured out how to write fully generic HOC.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">withLoader</span><span class="p">(</span><span class="nx">LoaderComponent</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">innerComponent</span><span class="p">(</span><span class="nx">WrappedComponent</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">props</span> <span class="o">=&gt;</span>
+      <span class="nx">props</span><span class="p">.</span><span class="nx">loading</span> <span class="o">===</span> <span class="kc">true</span> <span class="p">?</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">LoaderComponent</span> <span class="err">{</span><span class="p">...</span><span class="nt">props</span><span class="err">}</span> <span class="p">/&gt;</span>
+      <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">WrappedComponent</span> <span class="err">{</span><span class="p">...</span><span class="nt">props</span><span class="err">}</span> <span class="p">/&gt;</span>
+      <span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">innerComponent</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It’s just a condition wrapped in two functions, which shouldn’t be that hard. First call supplies loader component and second call supplies the component we are wrapping.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">WrappedComponentWithLoader</span> <span class="o">=</span> <span class="nx">withLoader</span><span class="p">(</span><span class="nx">LoaderComponent</span><span class="p">)(</span><span class="nx">WrappedComponent</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Looking at <a href="https://flow.org/en/docs/react/types/#toc-react-componenttype">Flow docs</a> I found that React uses two types to define component types. I will use <code class="highlighter-rouge">React.StatelessFunctionalComponent</code> to keep things “simple”.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">withLoader</span><span class="p">(</span><span class="nx">LoaderComponent</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">StatelessFunctionalComponent</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">innerComponent</span><span class="o">&lt;</span><span class="nx">Props</span><span class="p">:</span> <span class="p">{</span> <span class="nl">loading</span><span class="p">:</span> <span class="nx">boolean</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="nx">WrappedComponent</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">StatelessFunctionalComponent</span><span class="o">&lt;</span><span class="nx">Props</span><span class="o">&gt;</span>
+  <span class="p">):</span> <span class="nx">React</span><span class="p">.</span><span class="nx">StatelessFunctionalComponent</span><span class="o">&lt;</span><span class="nx">Props</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">props</span> <span class="o">=&gt;</span>
+      <span class="nx">props</span><span class="p">.</span><span class="nx">loading</span> <span class="o">===</span> <span class="kc">true</span> <span class="p">?</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">LoaderComponent</span> <span class="p">/&gt;</span>
+      <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nc">WrappedComponent</span> <span class="err">{</span><span class="p">...</span><span class="nt">props</span><span class="err">}</span> <span class="p">/&gt;</span>
+      <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">innerComponent</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>After adding types this HOC looks pretty intimidating. I will try to walk you through without scaring you off.</p>
+
+<p><code class="highlighter-rouge">LoaderComponent: React.StatelessFunctionalComponent&lt;any&gt;</code> means that function <code class="highlighter-rouge">withLoader</code> accepts any stateless component. Then there is my generic wrapped component. <code class="highlighter-rouge">innerComponent&lt;Props: { loading: boolean }&gt;</code> part defines that function has generic type which is required to be object with <code class="highlighter-rouge">loading</code> field of type <code class="highlighter-rouge">boolean</code>. I used this type to define <code class="highlighter-rouge">Props</code> of my wrapped component. This is the only solution I found that passes up the types defined in decorated component so the type restrictions are correctly propagated and property <code class="highlighter-rouge">loading</code> is also required. The last line that is related to flow is <code class="highlighter-rouge">): React.StatelessFunctionalComponent&lt;Props&gt; {</code> which actually defines that new component will have type discussed previously.</p>
+
+<p>You can play with this component on <a href="https://flow.org/try/#0PTAEAEDMBsHsHdQGcAuAnAlgYxQWjlgIbQBQGAtgA6xoqgBUohSoASgKaE6iRqzmgARGk45BAbhIlIAVwB2ODLDmh4GFAAsAMrEIATdmgAUO-YYDC-anPZyUALjaiUAOgDKKQinbR2SJABi8orKxJZUyrYoADyEcgCeAHwAlKAA3iSgPMEoSioYcjZo4dZR0QAKfJRIjmmgcPoFAOaOAEawsL5xoAC+iUaZWaAA6miElJTseiWRdo4cXK4eXj5+gTl5YVazMZWw1YmDyfPO7p7evv5BCrmh0DM2dhVVSInpg1kiKDJoKpQvoAAvIchkN-vskC4GnpmkDAYDQOgZOxQAB+UADUGg6KmAzFbaPOjAEFY1KOTFYrLRUbjSbTAlRdIuZng6o9UDEj5DZKSLI9QZfH75QoWBl2ST8khYZSoUC4wxAjGpYGgaIwgBuiWhzWZLmiwA1iUkUpldAAsvEHoyEUY6t4AB50Hq1RHsR2OVCYORNXrKt4ZT7sb6-VWGtIOlA9fWGiVSaVyWUAES8hEVak08uMmeSRgtVrsPLjptAAEEJoqjH6MYM1RhNVzosnPPVdDDvYDw2hkeyI4DBJoMCxB6AsGMAF7xACEgg5JKpTdT2vbne7s4bC9djr7A6HLFHhAn07XVINdcOhZIbuotFABkghBk0DoZco4iAAa">Try Flow</a> and see that Flow warns us about missing props.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

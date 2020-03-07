@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      DigiSpark talking with .NET &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="DigiSpark talking with .NET" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="With black Friday sales I decided to buy few DigiSparks to try them out and maybe spark some interest in electronics in my brother. Designer of the board did very good job, overall USB experience feels smooth and is easy to understand.
+
+">
+      <meta content="With black Friday sales I decided to buy few DigiSparks to try them out and maybe spark some interest in electronics in my brother. Designer of the board did very good job, overall USB experience feels smooth and is easy to understand.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2013/12/31/digispark-talking-with-dotnet/" property="og:url">
+    
+    
+      <meta content="2013-12-31T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>DigiSpark talking with .NET</h1>
+  <span class="post-date">31 Dec 2013</span>
+  <p>With black Friday sales I decided to buy few DigiSparks to try them out and maybe spark some interest in electronics in my brother. Designer of the board did very good job, overall USB experience feels smooth and is easy to understand.</p>
+
+<p>After some poking around I decided to try USB communication with C# on computer side. DigiSpark has DigiUSB library which is basically replacement of serial with much nicer handling of situations when disconnecting and connecting DigiSpark. I found working solution on DigiStump’s official forum so all credit for porting library to .NET goes to SmeeAgain.</p>
+
+<p>Windows app is pretty simple. It waits for key to be pressed. If it’s “O” 1 is sent otherwise 0 is sent.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">if</span> <span class="p">(</span><span class="n">Console</span><span class="p">.</span><span class="n">KeyAvailable</span><span class="p">)</span> <span class="c1">// If the key was pressed</span>
+<span class="p">{</span>
+  <span class="n">var</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span><span class="p">)(</span><span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">().</span><span class="n">Key</span> <span class="o">==</span> <span class="n">ConsoleKey</span><span class="p">.</span><span class="n">O</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// If it was O send 1 else 0</span>
+  <span class="n">digiSpark</span><span class="p">.</span><span class="n">WriteBytes</span><span class="p">(</span><span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="n">data</span> <span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Print any character that we receive.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">byte</span><span class="p">[]</span> <span class="n">value</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">digiSpark</span><span class="p">.</span><span class="n">ReadByte</span><span class="p">(</span><span class="n">out</span> <span class="n">value</span><span class="p">))</span>
+<span class="p">{</span>
+  <span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">Encoding</span><span class="p">.</span><span class="n">Default</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Application can detect when device is connected or disconnected using event <code class="highlighter-rouge">ArduinoUsbDeviceChangeNotifier</code>. There is one thing we need to be aware of. In order to receive events in console application we need to call <code class="highlighter-rouge">Application.DoEvents();</code> in each cycle. Because class <code class="highlighter-rouge">Application</code> is in namespace <code class="highlighter-rouge">System.Windows.Forms</code> we need to reference it.</p>
+
+<p>There is nothing special on DigiSpark side too. We will control onboard LED. I’ve used breathing LED just to make it look nice. Sketch listens for incoming bytes, if its “1” <code class="highlighter-rouge">breathing</code> is set to true. In both cases we send LED’s status.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">if</span> <span class="p">(</span><span class="n">DigiUSB</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">breathing</span> <span class="o">=</span> <span class="n">DigiUSB</span><span class="p">.</span><span class="n">read</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">breathing</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">analogWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">breathing</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">DigiUSB</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"1"</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">DigiUSB</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">"0"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="source-code">Source code</h2>
+<p>Full source code is available on <a href="https://github.com/stlk/DigiSparkDotNet" title="Link to GitHub.com">GitHub.com</a>.</p>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

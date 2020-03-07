@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Why I got interested in GraphQL and why should you too &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Why I got interested in GraphQL and why should you too" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="GraphQL is query language created by developers in Facebook to make their app development manageable. There are quite a few reasons why should we be interested in it even at small scale.
+
+">
+      <meta content="GraphQL is query language created by developers in Facebook to make their app development manageable. There are quite a few reasons why should we be interested in it even at small scale.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/06/14/why-i-got-interested-in-graphql-and-why-should-you-too/" property="og:url">
+    
+    
+      <meta content="2017-06-14T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Why I got interested in GraphQL and why should you too</h1>
+  <span class="post-date">14 Jun 2017</span>
+  <p>GraphQL is query language created by developers in Facebook to make their app development manageable. There are quite a few reasons why should we be interested in it even at small scale.</p>
+
+<h3 id="avoid-overfetching-and-underfetching">Avoid overfetching and underfetching</h3>
+<p>Let client decide what data it wants. I will use GitHub’s GraphQL api as an example. Lets say I want to show number of issues for repositories I recently contributed to.</p>
+
+<div class="language-graphql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="n">viewer</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">contributedRepositories</span><span class="p">(</span><span class="n">first</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">privacy</span><span class="p">:</span><span class="w"> </span><span class="n">PUBLIC</span><span class="p">,</span><span class="w"> </span><span class="n">orderBy</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">field</span><span class="p">:</span><span class="w"> </span><span class="n">UPDATED_AT</span><span class="p">,</span><span class="w"> </span><span class="n">direction</span><span class="p">:</span><span class="w"> </span><span class="n">DESC</span><span class="p">})</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">nodes</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="n">name</span><span class="w">
+        </span><span class="n">issues</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="n">totalCount</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>GraphQL looks like JSON without values and GraphQL server fills in the values in shape we requested.</p>
+
+<h3 id="formalize-writes">Formalize writes</h3>
+
+<p>Writes and all other changes to the store are called mutations. They are queries with side-effects.</p>
+
+<p>First lets retrieve ID of repository I want to star.</p>
+<div class="language-graphql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">query</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">repository</span><span class="p">(</span><span class="n">owner</span><span class="p">:</span><span class="w"> </span><span class="s2">"django"</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">"django"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">id</span><span class="w">
+    </span><span class="n">name</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Then use the ID as parameter. Plus we can specify what data offered by the mutation we want to receive.</p>
+
+<div class="language-graphql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">mutation</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">addStar</span><span class="p">(</span><span class="n">input</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="n">starrableId</span><span class="p">:</span><span class="w"> </span><span class="s2">"MDEwOlJlcG9zaXRvcnk0MTY0NDgy"</span><span class="p">})</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">starrable</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">id</span><span class="w">
+      </span><span class="n">__typename</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="avoid-implementing-data-fetching-logic">Avoid implementing data fetching logic</h3>
+
+<p>GraphQL has variety of client libraries. Most notable ones are Relay and Apollo. They will help you with linking data from server directly to React components. You can find out more in <a href="https://dev-blog.apollodata.com/reducing-our-redux-code-with-react-apollo-5091b9de9c2a">Reducing our Redux code with React Apollo</a>.</p>
+
+<h3 id="great-language-support">Great language support</h3>
+
+<p>Long gone are the times when GraphQL worked only in Javascript. There are great <a href="https://github.com/chentsulin/awesome-graphql#lib">libraries</a> in <a href="http://graphene-python.org/">Python</a>, Ruby, .NET and even Haskell.</p>
+
+<p>Want to learn more? Visit <a href="http://graphql.org/learn/">graphql.org/learn/</a> or checkout my <a href="https://react.coffee/#graphql-a-apollo">GraphQL workshop</a>.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

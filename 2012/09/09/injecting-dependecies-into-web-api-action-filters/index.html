@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Injecting dependecies into Web API Action Filters &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Injecting dependecies into Web API Action Filters" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="When I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject.">
+      <meta content="When I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject." property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2012/09/09/injecting-dependecies-into-web-api-action-filters/" property="og:url">
+    
+    
+      <meta content="2012-09-09T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Injecting dependecies into Web API Action Filters</h1>
+  <span class="post-date">09 Sep 2012</span>
+  <p>When I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject. This is solved by <a href="https://github.com/azzlack/Ninject.Web.WebApi" title="Link to GitHub project">Ninject.Web.WebApi</a>, but I had some stability issues with this library. When I started to dig a little deeper I found that in fact I’m using only one class from this library. Which is <a href="https://github.com/azzlack/Ninject.Web.WebApi/blob/master/src/Ninject.Web.WebApi/Filter/DefaultFilterProvider.cs">DefaultFilterProvider</a> this class steps into play before filter methods are executed and injects dependencies into it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public IEnumerable&lt;FilterInfo&gt; GetFilters(HttpConfiguration configuration,
+                                        HttpActionDescriptor actionDescriptor)
+{
+    var filters = this.filterProviders.SelectMany(fp =&gt; 
+            fp.GetFilters(configuration, actionDescriptor)).ToList();
+    
+    foreach (var filter in filters)
+    {
+        this.kernel.Inject(filter.Instance);
+    }
+    
+    return filters;
+}
+</code></pre></div></div>
+
+<p>And how do we tell the WEB API that we want to use this provider? First we need to register our provider to GlobalConfiguration services and then remove the default one.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var providers = GlobalConfiguration.Configuration.Services.GetFilterProviders().ToList();
+GlobalConfiguration.Configuration.Services.Add(typeof (IFilterProvider),
+                                               new DefaultFilterProvider(ninjectKernel, providers));
+            
+var defaultprovider = providers.First(i =&gt; i is ActionDescriptorFilterProvider);
+GlobalConfiguration.Configuration.Services.Remove(typeof(IFilterProvider), defaultprovider);
+</code></pre></div></div>
+
+<p>Example is available on <a href="https://github.com/stlk/WebApiDependencyInjectionWithNinject">GitHub</a>.</p>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

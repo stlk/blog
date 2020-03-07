@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Chrome 80, iframes and cookies &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Chrome 80, iframes and cookies" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to SameSite=Lax and a relatively new SameSite=None option.
+
+">
+      <meta content="Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to SameSite=Lax and a relatively new SameSite=None option.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2020/02/01/chrome-80-iframes-and-cookies/" property="og:url">
+    
+    
+      <meta content="2020-02-01T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Chrome 80, iframes and cookies</h1>
+  <span class="post-date">01 Feb 2020</span>
+  <p>Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to <a href="https://web.dev/samesite-cookies-explained/">SameSite=Lax</a> and a relatively new <code class="highlighter-rouge">SameSite=None</code> option.</p>
+
+<p>I’m building Shopify apps using Django. The app is embedded inside stores admin meaning <a href="https://help.shopify.com/en/api/guides/samesite-cookies">I can’t use Strict or Lax</a>. Django did the same thing and on <a href="https://docs.djangoproject.com/en/dev/releases/2.1/#django-contrib-sessions">August 2018</a> added <code class="highlighter-rouge">SESSION_COOKIE_SAMESITE</code> which defaults to Lax. The way I see it changing defaults on the server-side is a good step. However, this change on the browser side came just too quickly for the ecosystem to adapt. The frameworks haven’t <a href="https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-SESSION_COOKIE_SAMESITE">caught up yet</a> and even if they did they would have to consider <a href="https://www.chromium.org/updates/same-site/incompatible-clients">incompatible browsers</a>.</p>
+
+<p>I and <a href="https://github.com/tystar86">tystar</a> wrote a <a href="https://github.com/stlk/django-toolbox/blob/master/django_toolbox/cookies_middleware.py">middleware</a> for Django 2.2.x and 3.x to handle this. This middleware should be placed before any other middleware.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">"django_toolbox.cookies_middleware.SamesiteCookieMiddleware"</span><span class="p">,</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/10/13/using-create-react-app-with-django/">
+            Using Create React App 2 with Django 2
+            <small>13 Oct 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

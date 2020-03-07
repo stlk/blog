@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Wireless RGB lamp &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Wireless RGB lamp" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="For a long time I wanted to have a wirelessly controlled RGB light in my kitchen. This idea got more specific shape when I saw hacked IKEA dioder light where original PIC microcontroller was removed and ATTiny took its place.">
+      <meta content="For a long time I wanted to have a wirelessly controlled RGB light in my kitchen. This idea got more specific shape when I saw hacked IKEA dioder light where original PIC microcontroller was removed and ATTiny took its place." property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2012/05/29/wireless-rgb-lamp/" property="og:url">
+    
+    
+      <meta content="2012-05-29T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Wireless RGB lamp</h1>
+  <span class="post-date">29 May 2012</span>
+  <p>For a long time I wanted to have a wirelessly controlled RGB light in my kitchen. This idea got more specific shape when I saw hacked IKEA dioder light where original PIC microcontroller was removed and ATTiny took its place. This wasn’t the one I ended up using, but I think it’s worth mentioning. I have decided to use <a href="http://www.gme.cz/vykonove-led-nad-1w/l-lxhl-hprgb-p511-558/" title="Link to Czech shop GM electronic">5,1W RGB LED</a> along with ATMega328P with Arduino bootloader and XBee for the wireless connectivity.</p>
+
+<p class="post__image-center"><a href="http://www.flickr.com/photos/stalker_cz/7181211930/" title="Link to Flickr"><img src="http://farm6.staticflickr.com/5348/7181211930_369958da68_n.jpg" class="post__image" /></a></p>
+
+<p>Arduino is running on 3,3V so it can safely communicate with XBee which means the only special circuit needed is LED controller. Controller consists of three <a href="http://www.gme.cz/bipolarni-tranzistory-npn/bd139-16-p211-010/" title="Link to Czech shop GM electronic">BD139-16</a> transistors and three high power resistors. Base current is limited by 470 ohm resistors. Thing which scared me a bit when I was testing this circuit is that high power resistors were getting pretty hot. But values I measured were correct and yeah, it’s good idea to check datasheet. I found that high temperature is normal. There is another thing worth mentioning. Don’t forget to connect AVCC pin to VCC, because it is required when running on 3,3V with <abbr title="Brown Out Detector">BOD</abbr> enabled. You will save yourself few hours wondering why the hell it doesn’t work on 3,3V.</p>
+
+<p>XBee I’m using is XBee Series 2 with API firmware, because it allows me to easily create mesh of devices. My current setup is XBee Controller connected to <a href="http://www.flickr.com/photos/stalker_cz/6368627583/" title="Link to Flickr">Netduino Plus</a> and two end devices. <a href="http://www.flickr.com/photos/stalker_cz/7145245471/" title="Link to Flickr">Wireless LCD</a> and RGB Lamp. Netduino serves as gateway to the internet (for temperature sensors) and LAN (for <a href="http://rousek.name/blog/wireless-rgb-lamp-the-controller" title="Link to my blog post">controlling lamp</a>). Netduino runs lightweight webserver and when request is received it sends ZigBee packet to the lamp. This way I can change mode by visiting <em>http://192.168.1.95/mode/mode_id</em>. I can do the same on Wireless LCD so I don’t have to run to my PC every time I want to control the lamp. I will describe both ways in future posts.</p>
+
+<p>Firmware is pretty straightforward. It listens for commands, stores settings on EEPROM and fades the led. Commands are received in form of ZigBee Receive packet where first byte specifies command id and following bytes are different for each command. Commands are described in table below.</p>
+
+<h3 id="commands">Commands</h3>
+
+<table>
+<thead>
+<tr><th>ID</th><th>Name</th><th>Data</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>20</td>
+<td>Fade delay</td>
+<td>high byte, low byte</td>
+<td>0 - 65535 milliseconds</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Mode</td>
+<td>mode id</td>
+<td>0 - disabled, 1 - single color, 2 - fading, 3 - strobe</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Color</td>
+<td>color id</td>
+<td>0 - Red, 1 - Green, 2 - Blue, 3 - Yellow, 4 - Cyan, 5 - Orange, 6 - Magenta</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Color</td>
+<td>red byte, green byte, blue byte</td>
+<td>0 - 255 for each color</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Status</td>
+<td colspan="2"><em>returns</em> current settings in format: 25, mode, [fade delay] high, low, [color] R, G, B</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="schematic">Schematic</h3>
+
+<iframe width="600" height="350" frameborder="0" src="http://c.circuitbee.com/build/r/schematic-embed.html?id=0000000249"></iframe>
+
+<h3 id="part-list">Part list</h3>
+
+<table>
+<thead>
+<tr><th>ID</th><th>Description</th><th>Count</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>R4, R5, R6</td>
+<td>470Ω</td>
+<td>3x</td>
+</tr>
+<tr>
+<td>R2, E3</td>
+<td>4,7Ω</td>
+<td>2x</td>
+</tr>
+<tr>
+<td>R1</td>
+<td>8,2Ω</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>T1, T2, T3</td>
+<td>BD139-16</td>
+<td>3x</td>
+</tr>
+<tr>
+<td>RES1</td>
+<td>Ceramic Resonator 16MHz</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>D1, D2, D3</td>
+<td><a href="http://www.gme.cz/vykonove-led-nad-1w/l-lxhl-hprgb-p511-558/" title="Link to Czech shop GM electronic">L-LXHL-HPRGB</a></td>
+<td>1x</td>
+</tr>
+<tr>
+<td>IC1</td>
+<td>ATMega 328P</td>
+<td>1x</td>
+</tr>
+<tr>
+<td>IC2</td>
+<td>XBee Series 2</td>
+<td>1x</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="source-code">Source code</h3>
+
+<p>Source code is available on <a href="https://github.com/stlk/Arduino/blob/master/stlk_lamp/stlk_lamp.ino" title="Source code on Github">Github</a>.</p>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

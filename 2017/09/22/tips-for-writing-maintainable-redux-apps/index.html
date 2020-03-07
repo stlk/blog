@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Tips for writing maintainable redux apps &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Tips for writing maintainable redux apps" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I attended great talk by Gabe Scholz which was full of useful and concise tips for writing better and more maintainable redux apps. It struck me that I was just recently coping with these issues so I decided to share my view on these issues.
+
+">
+      <meta content="I attended great talk by Gabe Scholz which was full of useful and concise tips for writing better and more maintainable redux apps. It struck me that I was just recently coping with these issues so I decided to share my view on these issues.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/09/22/tips-for-writing-maintainable-redux-apps/" property="og:url">
+    
+    
+      <meta content="2017-09-22T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Tips for writing maintainable redux apps</h1>
+  <span class="post-date">22 Sep 2017</span>
+  <p>I attended great talk by <a href="https://github.com/garbles">Gabe Scholz</a> which was full of useful and concise tips for writing better and more maintainable redux apps. It struck me that I was just recently coping with these issues so I decided to share my view on these issues.</p>
+
+<h2 id="data-selector-functions">Data selector functions</h2>
+
+<p>Instead of having same data retrieval logic in multiple places you can extract it to function and place it alongside your reducer. This makes refactoring so much easier.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">export</span> <span class="kd">function</span> <span class="nx">isLoaded</span><span class="p">(</span><span class="nx">globalState</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">globalState</span><span class="p">.</span><span class="nx">transactions</span> <span class="o">&amp;&amp;</span> <span class="nx">globalState</span><span class="p">.</span><span class="nx">transactions</span><span class="p">.</span><span class="nx">loaded</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="normalize-conditionals-at-the-boundary">Normalize conditionals at the boundary</h2>
+
+<p>This cryptic name hides pretty simple idea. Sometimes it’s not easy to decide when you should create new action or just add parameter to existing one. The best way might be to write a new action for each user action. Don’t try to optimize the code by grouping together multiple user actions that result in similar outcomes.</p>
+
+<p>There are two benefits to this approach. Actions are easier to typecheck and it’s easier to remove functionality.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">case</span> <span class="dl">'</span><span class="s1">NEXT_STEP</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">newStepName</span> <span class="o">=</span> <span class="nx">state</span><span class="p">.</span><span class="nx">steps</span><span class="p">[</span><span class="nx">state</span><span class="p">.</span><span class="nx">currentStepName</span><span class="p">].</span><span class="nx">success</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">case</span> <span class="dl">'</span><span class="s1">NEXT_STEP_FAILURE</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">newStepName</span> <span class="o">=</span> <span class="nx">state</span><span class="p">.</span><span class="nx">steps</span><span class="p">[</span><span class="nx">state</span><span class="p">.</span><span class="nx">currentStepName</span><span class="p">].</span><span class="nx">failure</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">case</span> <span class="dl">'</span><span class="s1">NEXT_STEP_TIME_EXCEEDED</span><span class="dl">'</span><span class="p">:</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">newStepName</span> <span class="o">=</span> <span class="nx">state</span><span class="p">.</span><span class="nx">steps</span><span class="p">[</span><span class="nx">state</span><span class="p">.</span><span class="nx">currentStepName</span><span class="p">].</span><span class="nx">time_exceeded</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="try-redux-observable-instead-of-redux-saga">Try redux-observable instead of redux-saga</h2>
+
+<p>When you have difficulties learning redux-saga, you might want to try redux-observable. They are both solving same issue. If  you are more familiar with RxJS than generators, redux-observable might be better fit for you.</p>
+
+<h2 id="deterministic-reducers">Deterministic reducers</h2>
+
+<p>When working with time or generating ID’s in initial state it might be better to initialize these values in action. This makes reducers easier to test.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">steps</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="na">startTime</span><span class="p">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Having “random” value in initial state makes snapshot-based testing a bit harder. Isolate this value in action so you can use different value in tests.</p>
+
+<h2 id="avoid-logic-in-components">Avoid logic in components</h2>
+
+<p>Write dumb components and use HOC when needed. When components are almost like templates, there’s almost no reason to test them. In this example <code class="highlighter-rouge">formatTime</code> is tested on its own, so I got away with not testing this component.</p>
+
+<figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">export</span> <span class="k">default</span> <span class="p">({</span> <span class="nx">currentTime</span><span class="p">,</span> <span class="nx">duration</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className=</span><span class="s2">"seekInfo"</span><span class="p">&gt;</span>
+      <span class="si">{</span><span class="nx">formatTime</span><span class="p">(</span><span class="nx">currentTime</span><span class="p">)</span><span class="si">}</span>
+      /
+      <span class="si">{</span><span class="nx">formatTime</span><span class="p">(</span><span class="nx">duration</span><span class="p">)</span><span class="si">}</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span></code></pre></figure>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

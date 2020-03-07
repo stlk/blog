@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Going headless with Firefox - since '55 &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Going headless with Firefox - since &#39;55" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Recently I found that Firefox supports headless mode on Linux for a month now. Windows and MacOS are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.
+
+">
+      <meta content="Recently I found that Firefox supports headless mode on Linux for a month now. Windows and MacOS are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/09/08/going-headless-with-firefox-since-55/" property="og:url">
+    
+    
+      <meta content="2017-09-08T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Going headless with Firefox - since '55</h1>
+  <span class="post-date">08 Sep 2017</span>
+  <p>Recently I found that Firefox supports <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">headless mode</a> on <a href="https://developer.mozilla.org/en-US/Firefox/Releases/55">Linux</a> for a month now. <a href="https://developer.mozilla.org/en-US/Firefox/Releases/56">Windows and MacOS</a> are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.</p>
+
+<p>When running CI in windowed I had to setup virtual framebuffer in <code class="highlighter-rouge">before_install</code> of <code class="highlighter-rouge">.travis.yml</code>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DISPLAY=:99.0
+sh -e /etc/init.d/xvfb start
+sleep 3
+</code></pre></div></div>
+
+<p>Meaning that by going headless I could save at least three seconds of CI runtime!</p>
+
+<h3 id="how-to-do-it">How to do it?</h3>
+
+<p>All we need to do is to make sure that we are using at least Firefox 55 and then set <code class="highlighter-rouge">MOZ_HEADLESS=1</code> environment variable. That’s right. One environment variable!</p>
+
+<p>My entire <code class="highlighter-rouge">.travis.yml</code> from <a href="https://github.com/stlk/auto-fisera">auto-fisera</a> project.</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">language</span><span class="pi">:</span> <span class="s">python</span>
+<span class="na">addons</span><span class="pi">:</span>
+  <span class="na">firefox</span><span class="pi">:</span> <span class="s">latest</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">postgresql</span>
+<span class="na">python</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">3.6"</span>
+<span class="na">before_install</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">wget https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux64.tar.gz</span>
+  <span class="pi">-</span> <span class="s">mkdir geckodriver</span>
+  <span class="pi">-</span> <span class="s">tar -xzf geckodriver-v0.18.0-linux64.tar.gz -C geckodriver</span>
+  <span class="pi">-</span> <span class="s">export PATH=$PATH:$PWD/geckodriver</span>
+  <span class="pi">-</span> <span class="s">geckodriver --version</span>
+  <span class="pi">-</span> <span class="s">export MOZ_HEADLESS=1</span>
+<span class="c1"># command to install dependencies</span>
+<span class="na">install</span><span class="pi">:</span> <span class="s">pip install -r requirements.txt</span>
+<span class="c1"># command to run tests</span>
+<span class="na">script</span><span class="pi">:</span> <span class="s">python manage.py test</span></code></pre></figure>
+
+<p>Keep in mind that headless mode is supported in Firefox 56 on Windows and MacOS.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

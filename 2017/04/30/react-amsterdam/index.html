@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      React Amsterdam 2017 &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="React Amsterdam 2017" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Last Friday I attended my first React conference. It took place in Amsterdam. So once again I got the opportunity to visit Amsterdam because of a conference. I want to thank organizers of PragueJS meetup for giving me a ticket!
+
+">
+      <meta content="Last Friday I attended my first React conference. It took place in Amsterdam. So once again I got the opportunity to visit Amsterdam because of a conference. I want to thank organizers of PragueJS meetup for giving me a ticket!
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/04/30/react-amsterdam/" property="og:url">
+    
+    
+      <meta content="2017-04-30T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>React Amsterdam 2017</h1>
+  <span class="post-date">30 Apr 2017</span>
+  <p>Last Friday I attended my first React conference. It took place in Amsterdam. So once again I got the opportunity to visit Amsterdam because of a conference. I want to thank organizers of <a href="https://www.meetup.com/praguejs/">PragueJS</a> meetup for giving me a ticket!</p>
+
+<p>This was my biggest conference I ever attended and I must say the organization was pretty good. Location and technical production were perfect and overall I feel pretty positive about the conference.</p>
+
+<p>It started on Thursday when <a href="https://twitter.com/TomislavTenodi">Tomislav Tenodi</a> organized unofficial warmup party. I love those small events when I’m forced to talk to people. For me it’s so much easier to meet people and it gets me into networking mood for a conference.</p>
+
+<p class="post__image-center"><img src="/public/react-amsterdam.jpg" alt="" class="post__image" /></p>
+
+<h2 id="talks">Talks</h2>
+
+<h3 id="coding-mobile-with-the-pros">Coding Mobile with the Pros</h3>
+<p><a href="https://twitter.com/GantLaborde">Gant Laborde</a> started the React Native track. His company Infinite Red maintains some pretty interesting project and he came to introduce them.</p>
+
+<p><a href="https://github.com/infinitered/reactotron">Reactotron</a> - Headlined a desktop app for inspecting your React Native projects. You can inspect and change the apps state from nice and simple UI.</p>
+
+<p><a href="https://infinite.red/ignite">Ignite</a> - Great tool to simplify library usage. It links a library into your app and generates examples. Will definitely try it.</p>
+
+<h3 id="a-real-world-graphql-application-in-production">A Real-World GraphQL Application in Production</h3>
+<p><a href="https://twitter.com/stefanomasini">Stefano Masini</a> presented advanced how they build GraphQL server at scale. He presented some interesting ways to introduce caching and organize mutations. Architecture they used is called <a href="http://fideloper.com/hexagonal-architecture">Hexagonal Architecture</a>. He was also discussing GraphQL Subscriptions. They faced the problem of correctly subscribing to events. The approach they ended up using was to send all events happening on a page to a single channel.</p>
+
+<h3 id="test-like-its-2017">Test Like It’s 2017</h3>
+<p><a href="https://twitter.com/MicheleBertoli">Michele Bertoli</a> is testing obsessed front end engineer working at Facebook. He presented few tools that will help us with testing.</p>
+
+<p><a href="https://github.com/styled-components/jest-styled-components">Jest utilities for Styled Components</a> - Includes styled-components generated css in snapshots.</p>
+
+<p><a href="https://github.com/styleguidist/snapguidist">Snapguidist</a> do snapshot-based testing inside your <a href="https://github.com/styleguidist/react-styleguidist">React Styleguidist</a> styleguide.</p>
+
+<p><a href="https://github.com/storybooks/storybook/tree/master/packages/storyshots">StoryShots</a> exactly same for <a href="https://github.com/storybooks/storybook">React Storybook</a>.</p>
+
+<p><a href="https://github.com/MicheleBertoli/react-fix-it">React Fix It</a> is a great tool which generates test when exceptions occurs. Why should we manually reproduce test case when the browser has all the info to generate it.</p>
+
+<h3 id="navigating-react-native-navigation">Navigating React Native Navigation</h3>
+<p><a href="https://twitter.com/kurtiskemple">Kurtis Kemple</a> and his team invested quite some time into investigating which router would suit them the most. He decided to share their learnings with us.</p>
+
+<p><a href="https://github.com/airbnb/native-navigation">Native Navigation</a> promising approach based on building thin layer over native components.</p>
+
+<p><a href="https://github.com/react-community/react-navigation">React Navigation</a> is aiming to share navigation logic between mobile apps, web apps, and server rendering.</p>
+
+<p>I personally have used <a href="https://github.com/aksonov/react-native-router-flux">React Native Router</a> and I’m quite happy with it.</p>
+
+<h3 id="complexity-divide-and-conquer">Complexity: Divide and Conquer!</h3>
+<p><a href="https://twitter.com/mweststrate">Michel Weststrate</a> author of MobX shared his thoughts on managing complexity.</p>
+
+<p>What does <em>reactive</em> mean? Separate <em>when</em> and <em>how</em>. What does it mean? Well that you can separate your app login from view layer(React).</p>
+
+<p>I also learned one new MobX function called <a href="https://mobx.js.org/refguide/when.html">when</a>.</p>
+
+<h3 id="flow-typing-a-react-codebase">Flow Typing a React Codebase</h3>
+<p><a href="https://twitter.com/ForbesLindesay">Forbes Lindesay</a> author of <a href="https://github.com/ForbesLindesay/cabbie">Cabbie</a> a webdriver client for node.js and front end engineer at Facebook has shared his tips on <a href="https://flow.org">flow</a>.</p>
+
+<ul>
+  <li>Mark files for typechecking using <code class="highlighter-rouge">//@flow</code>.</li>
+  <li>Use <code class="highlighter-rouge">any</code> type only for experiments.</li>
+  <li><code class="highlighter-rouge">mixed</code> type is fine, it means that return value doesn’t matter.</li>
+  <li>Use <a href="https://flow.org/en/docs/types/objects/#toc-exact-object-types">Exact object types</a> it helps you catch some typos.</li>
+  <li>Use <a href="https://flow.org/en/docs/types/interfaces/#toc-covariant-read-only-properties-on-interfaces">read-only properties </a> by default.</li>
+</ul>
+
+<h3 id="party-warmup">Party warmup</h3>
+<p><a href="https://twitter.com/vincentriemer">Vincent Riemer</a> author of fully recreated web-based <a href="https://io808.com">TR-808</a> drum machine and <a href="https://twitter.com/batchass">Bruce Lane</a> have prepared audiovisual party warmup talk about sound in React.</p>
+
+<p>And at the afterparty I finally managed to meet <a href="https://twitter.com/mxstbr">Max Stoiber</a>. He was mentor of a <a href="https://railsgirlssummerofcode.org/blog/2016-10-01-goodbye-xyz">Rails Girls SoC team</a> I was coaching.</p>
+
+<p class="post__image-center"><img src="/public/react-amsterdam-party.jpg" alt="" class="post__image" /></p>
+
+<h2 id="amsterdam-and-around">Amsterdam and around</h2>
+
+<p>This time I was staying at Haarlem. City about 15 minutes by train away from Amsterdam Centraal. The day after conference I decided to take a hike through Nationaal Park Zuid-Kennemerland.</p>
+
+<p class="post__image-center"><img src="/public/react-amsterdam-park.jpg" alt="" class="post__image" /></p>
+
+<p>Then I really needed coffee so went back to Screaming Beans coffee. It’s lovely small café with tasty coffee.</p>
+
+<p class="post__image-center"><img src="/public/react-amsterdam-screaming-beans.jpg" alt="" class="post__image" /></p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Speed up your reports using materialized views &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Speed up your reports using materialized views" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="We’re collecting anonymous customer events in our Shopify app into a single table. This table grew over time to sufficiently large volume, approximately 30 million, to make our reports take too much time for large customers. The first and easiest step to a better performance I could think of is to precompute the report. Materialized views seemed like a reasonable approach. So I went ahead and asked DB specialist if it’s a good idea.
+
+">
+      <meta content="We’re collecting anonymous customer events in our Shopify app into a single table. This table grew over time to sufficiently large volume, approximately 30 million, to make our reports take too much time for large customers. The first and easiest step to a better performance I could think of is to precompute the report. Materialized views seemed like a reasonable approach. So I went ahead and asked DB specialist if it’s a good idea.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2020/03/07/speed-up-reports-using-materialized-views/" property="og:url">
+    
+    
+      <meta content="2020-03-07T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Speed up your reports using materialized views</h1>
+  <span class="post-date">07 Mar 2020</span>
+  <p>We’re collecting anonymous customer events in our Shopify app into a single table. This table grew over time to sufficiently large volume, approximately 30 million, to make our reports take too much time for large customers. The first and easiest step to a better performance I could think of is to precompute the report. Materialized views seemed like a reasonable approach. So I went ahead and asked DB specialist if it’s a good idea.</p>
+
+<p>Materialized views on PostgreSQL are a way to speed up your complex queries by saving the intermediate results. It’s a temporary table which can be refreshed with a single command.</p>
+
+<p>I’ll walk you through the process using one of the queries as an example. This is a simplified version of what the query looked like.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
+  <span class="k">count</span><span class="p">(</span><span class="k">distinct</span> <span class="n">token</span><span class="p">)</span> <span class="n">FILTER</span> <span class="p">(</span><span class="k">where</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s1">'view'</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span><span class="p">,</span>
+<span class="k">FROM</span>
+  <span class="n">bussiness_event</span>
+<span class="k">WHERE</span>
+  <span class="n">shop_id</span> <span class="o">=</span> <span class="o">%</span><span class="n">s</span>
+  <span class="k">and</span>
+  <span class="p">(</span>
+    <span class="o">%</span><span class="n">s</span> <span class="k">is</span> <span class="k">null</span> <span class="k">or</span>
+    <span class="p">(</span>
+        <span class="n">created</span> <span class="o">&gt;</span> <span class="o">%</span><span class="n">s</span><span class="p">::</span><span class="n">timestamptz</span>
+        <span class="k">and</span> <span class="n">created</span> <span class="o">&lt;</span> <span class="o">%</span><span class="n">s</span><span class="p">::</span><span class="n">timestamptz</span>
+    <span class="p">)</span>
+  <span class="p">)</span>
+</code></pre></div></div>
+
+<p>In order to reduce number of rows we had to find a time unit that works for our use case. In our case we store metrics grouped by day, meaning we store daily reports for each <code class="highlighter-rouge">shop</code>.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="n">MATERIALIZED</span> <span class="k">VIEW</span> <span class="n">analytics_summary</span> <span class="k">AS</span>
+<span class="k">SELECT</span>
+  <span class="n">event</span><span class="p">.</span><span class="n">shop_id</span><span class="p">,</span>
+  <span class="n">event</span><span class="p">.</span><span class="n">created</span><span class="p">::</span><span class="nb">date</span> <span class="k">as</span> <span class="n">event_date</span><span class="p">,</span>
+  <span class="k">count</span><span class="p">(</span><span class="k">distinct</span> <span class="n">token</span><span class="p">)</span> <span class="n">FILTER</span> <span class="p">(</span><span class="k">where</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s1">'view'</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span>
+<span class="k">FROM</span>
+  <span class="n">bussiness_event</span> <span class="n">event</span>
+<span class="k">GROUP</span> <span class="k">by</span>
+  <span class="n">event</span><span class="p">.</span><span class="n">shop_id</span><span class="p">,</span>
+  <span class="n">event</span><span class="p">.</span><span class="n">created</span><span class="p">::</span><span class="nb">date</span>
+<span class="p">;</span>
+</code></pre></div></div>
+
+<p>Then to use the view we could do this.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
+  <span class="k">sum</span><span class="p">(</span><span class="n">views</span><span class="p">)::</span><span class="nb">int</span> <span class="k">as</span> <span class="n">views</span>
+<span class="k">FROM</span>
+  <span class="n">analytics_summary</span>
+<span class="k">WHERE</span>
+  <span class="n">shop_id</span> <span class="o">=</span> <span class="o">%</span><span class="n">s</span>
+  <span class="k">and</span>
+  <span class="p">(</span>
+    <span class="o">%</span><span class="n">s</span> <span class="k">is</span> <span class="k">null</span> <span class="k">or</span>
+    <span class="p">(</span>
+        <span class="n">event_date</span> <span class="o">&gt;</span> <span class="o">%</span><span class="n">s</span><span class="p">::</span><span class="n">timestamptz</span>
+        <span class="k">and</span> <span class="n">event_date</span> <span class="o">&lt;</span> <span class="o">%</span><span class="n">s</span><span class="p">::</span><span class="n">timestamptz</span>
+    <span class="p">)</span>
+  <span class="p">)</span>
+</code></pre></div></div>
+
+<p>The query is almost instant but the data are stale. To keep the report live we’ve used <code class="highlighter-rouge">UNION ALL</code> to include data for last day.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
+  <span class="k">sum</span><span class="p">(</span><span class="n">views</span><span class="p">)::</span><span class="nb">int</span> <span class="k">as</span> <span class="n">views</span>
+<span class="k">FROM</span> <span class="p">(</span>
+    <span class="k">SELECT</span>
+      <span class="n">shop_id</span><span class="p">,</span>
+      <span class="n">created</span><span class="p">::</span><span class="nb">date</span> <span class="k">as</span> <span class="n">event_date</span><span class="p">,</span>
+      <span class="k">count</span><span class="p">(</span><span class="k">distinct</span> <span class="n">token</span><span class="p">)</span> <span class="n">FILTER</span> <span class="p">(</span><span class="k">where</span> <span class="n">event_type</span> <span class="o">=</span> <span class="s1">'view'</span><span class="p">)</span> <span class="k">as</span> <span class="n">views</span><span class="p">,</span>
+    <span class="k">FROM</span>
+      <span class="n">bussiness_event</span>
+    <span class="k">WHERE</span>
+      <span class="n">created</span> <span class="o">&gt;=</span> <span class="n">now</span><span class="p">()::</span><span class="nb">date</span> <span class="o">-</span> <span class="n">interval</span> <span class="s1">'2 days'</span>
+    <span class="k">GROUP</span> <span class="k">BY</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span>
+
+    <span class="k">UNION</span> <span class="k">ALL</span>
+
+    <span class="k">SELECT</span>
+      <span class="n">shop_id</span><span class="p">,</span>
+      <span class="n">event_date</span><span class="p">::</span><span class="nb">date</span><span class="p">,</span>
+      <span class="n">views</span>
+    <span class="k">FROM</span>
+      <span class="n">analytics_summary</span>
+    <span class="k">WHERE</span>
+      <span class="n">event_date</span> <span class="o">&lt;</span> <span class="n">now</span><span class="p">()::</span><span class="nb">date</span> <span class="o">-</span> <span class="n">interval</span> <span class="s1">'2 days'</span>
+<span class="p">)</span> <span class="n">unioned</span>
+<span class="k">WHERE</span>
+  <span class="n">shop_id</span> <span class="o">=</span> <span class="o">%</span><span class="n">s</span>
+  <span class="k">and</span>
+  <span class="p">(</span>
+    <span class="o">%</span><span class="n">s</span> <span class="k">is</span> <span class="k">null</span> <span class="k">or</span>
+    <span class="p">(</span>
+        <span class="n">event_date</span> <span class="o">&gt;</span> <span class="o">%</span><span class="n">s</span><span class="p">::</span><span class="n">timestamptz</span>
+        <span class="k">and</span> <span class="n">event_date</span> <span class="o">&lt;</span> <span class="o">%</span><span class="n">s</span><span class="p">::</span><span class="n">timestamptz</span>
+    <span class="p">)</span>
+  <span class="p">)</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">shop_id</span>
+</code></pre></div></div>
+
+<p>Are you wondering what does <code class="highlighter-rouge">GROUP BY 1,2</code> do? Well, I did because I never saw this. It’s the equivalent of <code class="highlighter-rouge">GROUP BY shop_id, created::date</code> .</p>
+
+<p>To update the view we have following query scheduled to run daily.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REFRESH</span> <span class="n">MATERIALIZED</span> <span class="k">VIEW</span> <span class="n">analytics_offers</span><span class="p">;</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/10/13/using-create-react-app-with-django/">
+            Using Create React App 2 with Django 2
+            <small>13 Oct 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

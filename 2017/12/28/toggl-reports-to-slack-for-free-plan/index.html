@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Toggl reports to Slack for free plan &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Toggl reports to Slack for free plan" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I wanted to expose a bit of insight to my team. As we work in kind of upredictable manner we could use a report on who worked a day before. We use Trello as our time tracking tool. It supports weekly email reports but the price for this feature was a bit expensive for us. So I did a quick research and found Trello report script that does exactly what I wanted. It outputs markdown to STDOUT.
+
+">
+      <meta content="I wanted to expose a bit of insight to my team. As we work in kind of upredictable manner we could use a report on who worked a day before. We use Trello as our time tracking tool. It supports weekly email reports but the price for this feature was a bit expensive for us. So I did a quick research and found Trello report script that does exactly what I wanted. It outputs markdown to STDOUT.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/12/28/toggl-reports-to-slack-for-free-plan/" property="og:url">
+    
+    
+      <meta content="2017-12-28T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Toggl reports to Slack for free plan</h1>
+  <span class="post-date">28 Dec 2017</span>
+  <p>I wanted to expose a bit of insight to my team. As we work in kind of upredictable manner we could use a report on who worked a day before. We use Trello as our time tracking tool. It supports weekly email reports but the price for this feature was a bit expensive for us. So I did a quick research and found <a href="https://github.com/jsmartin/toggl_report">Trello report script</a> that does exactly what I wanted. It outputs <a href="https://github.com/jsmartin/toggl_report/blob/master/sample.md">markdown</a> to STDOUT.</p>
+
+<p>I’ve modified the script to include time spent for each entry and updated it to Python 3.</p>
+
+<p>With the reporting part done I started to investigate how to post the report to Slack. I found three possible ways I can solve this. Lets discuss these options.</p>
+
+<p><strong>Post the output as plaintext</strong></p>
+
+<p>Slack’s markdown support is pretty limited. It doesn’t support neither headings nor lists. This approach has one notable benefit. It’s one HTTP request.</p>
+
+<p><strong>Use <a href="https://api.slack.com/docs/message-attachments">message attachments</a></strong></p>
+
+<p>This approach might sound interesting, but it’s not suitable for structured reports.</p>
+
+<p><strong><a href="https://api.slack.com/tutorials/working-with-files">Upload report</a> as markdown file</strong></p>
+
+<p>This approach is the best option, but I haven’t had the time to implement it.</p>
+
+<h3 id="deployment">Deployment</h3>
+
+<p>I’ve set up a cron job to run the script every day at 10:00.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00 09 * * * cd /home/ubuntu/toggl-report/ &amp;&amp; /home/ubuntu/toggl-report/env/bin/dotenv-run /home/ubuntu/toggl-report/env/bin/python /home/ubuntu/toggl-report/run-report.py &gt;&gt; /home/ubuntu/toggl-report/log.log 2&gt;&amp;1
+</code></pre></div></div>
+
+<p>The project is available on https://github.com/stlk/slack-toggl-report</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

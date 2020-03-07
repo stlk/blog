@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Using Create React App 2 with Django 2 &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Using Create React App 2 with Django 2" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I finally got opportunity to work on a project that used Django together with a React app. There’s a combination of packages that help with integrating CRA and Django.
+
+">
+      <meta content="I finally got opportunity to work on a project that used Django together with a React app. There’s a combination of packages that help with integrating CRA and Django.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2018/10/13/using-create-react-app-with-django/" property="og:url">
+    
+    
+      <meta content="2018-10-13T00:00:00-05:00" property="article:published_time">
+    
+    
+      <meta content="http://blog.rousek.name/public/using-create-react-app-with-django.png" property="og:image">
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Using Create React App 2 with Django 2</h1>
+  <span class="post-date">13 Oct 2018</span>
+  <p>I finally got opportunity to work on a project that used Django together with a React app. There’s a combination of packages that help with integrating CRA and Django.</p>
+
+<h3 id="webpack-bundle-tracker--django-webpack-loader">webpack-bundle-tracker + django-webpack-loader</h3>
+
+<p><code class="highlighter-rouge">django-webpack-loader</code> and <code class="highlighter-rouge">webpack-bundle-tracker</code> work together in the following way. webpack-bundle-tracker plugin emits information about webpack’s compilation process and results so django-webpack-loader can consume it. To add <code class="highlighter-rouge">webpack-bundle-tracker</code> to CRA we will need to hook up a plugin to webpack.</p>
+
+<h3 id="cra-configuration">CRA configuration</h3>
+
+<p>With your CRA app generated we start with <code class="highlighter-rouge">react-app-rewired</code> configuration. Rewired uses <code class="highlighter-rouge">config-overrides.js</code> file to hook into webpack configuration. There is one more change we have to make apart from adding <code class="highlighter-rouge">BundleTracker</code>. The new <a href="https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366">splitChunks</a> configuration is not entirely supported, so we have to use only named chunks.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">BundleTracker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack-bundle-tracker</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">webpack</span><span class="p">:</span> <span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="nx">env</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="nx">config</span><span class="p">.</span><span class="nx">plugins</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
+      <span class="k">new</span> <span class="nx">BundleTracker</span><span class="p">({</span>
+        <span class="na">path</span><span class="p">:</span> <span class="nx">__dirname</span><span class="p">,</span>
+        <span class="na">filename</span><span class="p">:</span> <span class="dl">'</span><span class="s1">./build/webpack-stats.json</span><span class="dl">'</span><span class="p">,</span>
+      <span class="p">}),</span>
+    <span class="p">);</span>
+
+    <span class="nx">config</span><span class="p">.</span><span class="nx">optimization</span><span class="p">.</span><span class="nx">splitChunks</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">vendors</span><span class="dl">'</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="nx">config</span><span class="p">;</span>
+  <span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>After running <code class="highlighter-rouge">npm start</code> we should see additional file <code class="highlighter-rouge">webpack-stats.json</code> in build folder containing all the data we need.</p>
+
+<h3 id="django-configuration">Django configuration</h3>
+
+<p>Install <code class="highlighter-rouge">django-webpack-loader</code> using <a href="https://packaging.python.org/tutorials/managing-dependencies/">pipenv</a> or pip. Then go to your <code class="highlighter-rouge">settings.py</code>. Add webpack_loader to INSTALLED_APPS. This will enable us to use template tags.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s">'webpack_loader'</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<h4 id="project-structure">Project structure</h4>
+
+<p>My project directory structure looks like this. I decided to put my CRA app to <code class="highlighter-rouge">frontend</code> folder.</p>
+
+<pre><code class="language-tree">├── Pipfile
+├── Pipfile.lock
+├── README.md
+├── my_django_app
+│   ├── __init__.py
+│   ├── context_processors.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── utils.py
+│   └── wsgi.py
+├── frontend
+│   ├── build
+│   ├── config-overrides.js
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   └── src
+└── manage.py
+</code></pre>
+
+<p>With following structure, we can configure webpack loading in following way.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STATICFILES_DIRS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># So Django knows about webpack files
+</span>    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">"frontend"</span><span class="p">,</span> <span class="s">"build"</span><span class="p">,</span> <span class="s">"static"</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">WEBPACK_LOADER</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"DEFAULT"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"CACHE"</span><span class="p">:</span> <span class="ow">not</span> <span class="n">DEBUG</span><span class="p">,</span>
+        <span class="s">"BUNDLE_DIR_NAME"</span><span class="p">:</span> <span class="s">"frontend/build/static/"</span><span class="p">,</span>  <span class="c1"># must end with slash
+</span>        <span class="s">"STATS_FILE"</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">"frontend"</span><span class="p">,</span> <span class="s">"build"</span><span class="p">,</span> <span class="s">"webpack-stats.json"</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="usage">Usage</h3>
+
+<p>In our Django template we can then use <code class="highlighter-rouge">render_bundle</code> to load our CRA app.</p>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">{%</span><span class="w"> </span><span class="nt">load</span><span class="w"> </span>render_bundle<span class="w"> </span>from<span class="w"> </span>webpack_loader<span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">render_bundle</span><span class="w"> </span><span class="s1">'vendors'</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">render_bundle</span><span class="w"> </span><span class="s1">'main'</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">render_bundle</span><span class="w"> </span><span class="s1">'runtime~main'</span><span class="w"> </span><span class="p">%}</span>
+
+</code></pre></div></div>
+
+<p>It will also display the webpack error when the build process is failing.</p>
+
+<p class="post__image-center">
+  <img src="/public/django-webpack-error.png" alt="Webpack error in Django" class="post__image post__image-full-width" />
+</p>
+
+<p>I was very happy about getting Django and CRA to work together in this way and I can only recommend it.</p>
+
+<h4 id="projects">Projects</h4>
+
+<ul>
+  <li><a href="https://github.com/owais/django-webpack-loader">django-webpack-loader</a></li>
+  <li><a href="https://github.com/owais/webpack-bundle-tracker">webpack-bundle-tracker</a></li>
+</ul>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

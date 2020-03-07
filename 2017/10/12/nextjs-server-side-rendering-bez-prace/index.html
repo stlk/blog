@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Next.js - server-side rendering bez práce &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Next.js - server-side rendering bez práce" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Next.js je minimalistický framework pro tvorbu React aplikací s důrazem na jednoduchost server-side renderingu. Ukážeme si, jak nám pomůže vytvořit aplikaci, která bude přátelská jak pro uživatele, tak i pro vyhledávače.">
+      <meta content="Next.js je minimalistický framework pro tvorbu React aplikací s důrazem na jednoduchost server-side renderingu. Ukážeme si, jak nám pomůže vytvořit aplikaci, která bude přátelská jak pro uživatele, tak i pro vyhledávače." property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/10/12/nextjs-server-side-rendering-bez-prace/" property="og:url">
+    
+    
+      <meta content="2017-10-12T00:00:00-05:00" property="article:published_time">
+    
+    
+      <meta content="http://blog.rousek.name/public/nextjs-workshop.png" property="og:image">
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Next.js - server-side rendering bez práce</h1>
+  <span class="post-date">12 Oct 2017</span>
+  <p>Skvělý framework <a href="https://github.com/zeit/next.js">Next.js</a> se dočkal už čtvrté verze. Oproti verzi 2, kterou jsem zmiňoval minule je výrazně rychlejší a má několik velmi zajímavých novinek.</p>
+
+<h2 id="co-je-nextjs">Co je Next.js</h2>
+
+<p>Next.js je minimalistický framework pro tvorbu React aplikací s důrazem na jednoduchost server‑side renderingu. Bere na starost pouze server‑side rendering, který zvládá dokonale a zbytek je opět na nás.</p>
+
+<p>Jak Next.js zapadá do současného trendu vývoje? Pro mě byl vždy problém nedosažitelnost server‑side renderingu na začínajících projektech a s tím související absence SEO. Místo toho, abych aplikaci poskládal v komponentách, musel jsem pracovat s dalším šablonovým jazykem a globálními styly v Django nebo Rails aplikaci.</p>
+
+<p>Frameworky jako Next.js a služby poskytující databázi s GraphQL API umožnili nový způsob prototypování nebo nastartování projektu. Vytvořit velmi jednoduchou aplikaci a napojit ji na <a href="https://www.graph.cool/">Graph.cool</a>. Na GraphQL se ale podíváme později.</p>
+
+<p>Základní nastavení je popsáno v původním článku <a href="http://blog.rousek.name/2017/06/19/nextjs-server-side-rendering-for-masses/">Next.js - server side rendering for masses</a>, teď se budu soustředit pouze na novinky.</p>
+
+<h3 id="dynamic-import">Dynamic Import</h3>
+
+<p><a href="https://github.com/tc39/proposal-dynamic-import">TC39 dynamic import</a> je návrh způsobu jak odsunout načtení modulu na pozdější chvíli. V následujícím příkladu Next.js automaticky oddělí knihovnu moment.js do samostatného souboru, který načte až po uplynutí <code class="highlighter-rouge">setTimeout</code>. Díky tomu můžeme zmenšit velikost hlavní aplikace.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">moment</span> <span class="o">=</span> <span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">moment</span><span class="dl">'</span><span class="p">)</span>
+<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">moment</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">moment</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// Do something with moment</span>
+  <span class="p">})</span>
+<span class="p">},</span> <span class="mi">15000</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="dynamic-react-components">Dynamic React Components</h3>
+
+<p>Dynamické importy umožňují importovat i komponenty. To nám umožní vyrenderovat na serveru jen důležitý obsah a obsah, který není zásadní pro vyhledávače můžeme stáhnout později. Jsou to například formuláře nebo infografika.</p>
+
+<figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">import</span> <span class="nx">dynamic</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">next/dynamic</span><span class="dl">'</span>
+
+<span class="kd">const</span> <span class="nx">DynamicForm</span> <span class="o">=</span> <span class="nx">dynamic</span><span class="p">(</span><span class="k">import</span><span class="p">(</span><span class="dl">'</span><span class="s1">../components/Form</span><span class="dl">'</span><span class="p">))</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="p">()</span> <span class="o">=&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nc">Header</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Content is here!<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nc">DynamicForm</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span></code></pre></figure>
+
+<h2 id="školení-nextjs">Školení Next.js</h2>
+
+<p>Pořádám <a href="https://react.coffee/#react-na-serveru">Next.js workshop</a>, kde si vyzkoušíme Next.js v praxi.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

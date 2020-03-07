@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Using ATTiny2313 as gateway between DS18B20 and Netduino &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Using ATTiny2313 as gateway between DS18B20 and Netduino" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="For some time I was happy user of Stanislav "CW2" Šimíček's modified firmware which brought OneWire capability to Netduino, but new version(4.2) of .NET MicroFramework came and I realized there are other possibilities.">
+      <meta content="For some time I was happy user of Stanislav "CW2" Šimíček's modified firmware which brought OneWire capability to Netduino, but new version(4.2) of .NET MicroFramework came and I realized there are other possibilities." property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2013/06/13/using-attiny2313-as-gateway-between-ds18b20-and-netduino/" property="og:url">
+    
+    
+      <meta content="2013-06-13T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Using ATTiny2313 as gateway between DS18B20 and Netduino</h1>
+  <span class="post-date">13 Jun 2013</span>
+  <p>For some time I was happy user of <a href="http://forums.netduino.com/index.php?/topic/230-onewire-alpha/" title="Link to Netduino.com forums">Stanislav “CW2” Šimíček’s</a> modified firmware which brought OneWire capability to Netduino, but new version(4.2) of .NET MicroFramework came and I realized there are other possibilities. More specifically I realized that this is good opportunity to make something useful with C on Atmel chips.</p>
+
+<p>I decided to build device which reads temperature and sends it back to Netduino using UART. For this task I’ve chosen ATTiny2313 which was cheapest chip with UART at the time of buying.</p>
+
+<p><a href="http://www.flickr.com/photos/stalker_cz/9033527511/" title="ATTiny2313 by JosefRousek, on Flickr"><img src="http://farm4.staticflickr.com/3738/9033527511_cb41ab499e_n.jpg" width="320" height="218" alt="ATTiny2313" class="right" /></a></p>
+
+<p>As you can see the circuit is terribly simple. I’ve used external crystal because I couldn’t make UART work with internal one. But there might be something else which was causing my problems.</p>
+
+<p>The program is a bit more interesting but its fairly simple. It waits for character “t” followed by “1” or “2” and replies with it’s identificator(t1 or t2) followed by LSB and MSB of temperature. I then convert temperature to float using following statement.</p>
+
+<p><code class="highlighter-rouge">float temp = ((short)((MSB &lt;&lt; 8) | LSB)) / 16F;</code></p>
+
+<p>I’m using minimal implementation of OneWire protocol originally written by <a href="http://walda.starhill.org/elektronika-avr-gcc-stripky.html" title="Walda's website">Walda</a> with added CRC verification. This implementation requires you to use separate pin for each sensor. But it isn’t an issue for me. Almost each line of source code is commented so I will rather focus on describing my configuration.</p>
+
+<p>My ATTiny is running on 16MHz, this is set on beginning of both <em>makefile</em> and <em>main.c</em>. Another noteworthy thing is programmer options described on line <a href="https://github.com/stlk/avr/blob/master/attiny2313_ds18b20/makefile#L270" title="Link to line 270 of makefile on GitHub.com">270 of makefile</a>. I’m using Arduino as programmer which is disguised as stk500v1, it is connected to port COM4 and programming speed is 19200bps.</p>
+
+<h3 id="netduino-side">Netduino side</h3>
+
+<p>Here is my overly complicated way of handling UART communication on .NETMF where temperature is converted to readable format on line 64.</p>
+
+<script src="https://gist.github.com/stlk/5791735.js"></script>
+
+<h3 id="source-code">Source code</h3>
+
+<p>Full source code is available on <a href="https://github.com/stlk/avr/blob/master/attiny2313_ds18b20" title="Link to GitHub.com">GitHub.com</a>. Source code is licenced under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

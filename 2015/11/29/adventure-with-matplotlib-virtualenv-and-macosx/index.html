@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Adventure with matplotlib, virtualenv and MacOS &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Adventure with matplotlib, virtualenv and MacOS" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Recently I’ve developed passion for machine learning. Which includes many hours of fun with various modeling and plotting libraries.
+
+">
+      <meta content="Recently I’ve developed passion for machine learning. Which includes many hours of fun with various modeling and plotting libraries.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2015/11/29/adventure-with-matplotlib-virtualenv-and-macosx/" property="og:url">
+    
+    
+      <meta content="2015-11-29T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Adventure with matplotlib, virtualenv and MacOS</h1>
+  <span class="post-date">29 Nov 2015</span>
+  <p>Recently I’ve developed passion for machine learning. Which includes many hours of fun with various modeling and plotting libraries.</p>
+
+<p>Yesterday I was playing around with <a href="http://scikit-learn.org/stable/modules/generated/sklearn.manifold.MDS.html">Multidimensional scaling</a> in jupyter notebook. But when I tried to render a chart it just didn’t work.
+Engine got stuck and I had to restart it. At first I though that the rendering is too complicated, but even simple example didn’t work.</p>
+
+<p>Problem was as I later discovered caused by a <a href="https://github.com/pypa/virtualenv/issues/54">bug</a> in virtualenv. I managed to get it working using workaround described on <a href="http://matplotlib.org/devdocs/faq/virtualenv_faq.html#osx">matplotlib’s FAQ</a>.</p>
+
+<p>First install python and create virtualenv.</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh">brew <span class="nb">install </span>python <span class="nt">--framework</span> <span class="c"># install python 2.7 framework build</span>
+virtualenv <span class="nb">env</span> <span class="c"># create virtualenv</span></code></pre></figure>
+
+<p>Then create bash script called <code class="highlighter-rouge">frameworkpython</code> in <code class="highlighter-rouge">bin</code> folder of your environment, in my case it’s <code class="highlighter-rouge">env/bin/frameworkpython</code> with following content.</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="c">#!/bin/bash</span>
+
+<span class="c"># what real Python executable to use</span>
+<span class="nv">PYVER</span><span class="o">=</span>2.7
+<span class="nv">PATHTOPYTHON</span><span class="o">=</span>/usr/local/bin/
+<span class="nv">PYTHON</span><span class="o">=</span><span class="k">${</span><span class="nv">PATHTOPYTHON</span><span class="k">}</span>python<span class="k">${</span><span class="nv">PYVER</span><span class="k">}</span>
+
+<span class="c"># find the root of the virtualenv, it should be the parent of the dir this script is in</span>
+<span class="nv">ENV</span><span class="o">=</span><span class="sb">`</span><span class="nv">$PYTHON</span> <span class="nt">-c</span> <span class="s2">"import os; print os.path.abspath(os.path.join(os.path.dirname(</span><span class="se">\"</span><span class="nv">$0</span><span class="se">\"</span><span class="s2">), '..'))"</span><span class="sb">`</span>
+
+<span class="c"># now run Python with the virtualenv set as Python's HOME</span>
+<span class="nb">export </span><span class="nv">PYTHONHOME</span><span class="o">=</span><span class="nv">$ENV</span>
+<span class="nb">exec</span> <span class="nv">$PYTHON</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span></code></pre></figure>
+
+<p>Make the scipt executable and install libraries.</p>
+
+<figure class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">chmod</span> +x <span class="nb">env</span>/bin/frameworkpython <span class="c"># make it executable</span>
+<span class="nb">source env</span>/bin/activate <span class="c"># activate environment</span>
+pip <span class="nb">install </span>matplotlib jupyter notebook <span class="c"># install matplotlib and jupyter notebook</span></code></pre></figure>
+
+<p>Only one problem was ahed of me. How to start the notebook from this script. It was pretty simple in the end <code class="highlighter-rouge">frameworkpython env/bin/jupyter-notebook</code>.</p>
+
+<p>You can use this code to test it. Don’t forget to use <code class="highlighter-rouge">%matplotlib inline</code> in your notebook to prevent window popping up.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p>I hope this article will save you some hours of your life I spent with this. You can see the result on my <a href="https://github.com/stlk/datatalks/blob/master/instagram/mds.ipynb">github</a>.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

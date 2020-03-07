@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Automatizace platby převodem na Shopify pomocí Fakturoidu &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Automatizace platby převodem na Shopify pomocí Fakturoidu" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě Shopify. Vymysleli jsme řešení, jak pomocí proformy využít schopnosti Fakturoid.cz. Fakturoid při zaplacení proformy vytvoří fakturu a následně informuje o jejím vytvoření.
+
+">
+      <meta content="Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě Shopify. Vymysleli jsme řešení, jak pomocí proformy využít schopnosti Fakturoid.cz. Fakturoid při zaplacení proformy vytvoří fakturu a následně informuje o jejím vytvoření.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/07/03/automatizace-platby-prevodem-na-shopify/" property="og:url">
+    
+    
+      <meta content="2017-07-03T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Automatizace platby převodem na Shopify pomocí Fakturoidu</h1>
+  <span class="post-date">03 Jul 2017</span>
+  <p>Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě <a href="https://www.shopify.com/?ref=developer-7be6616fd8bde970">Shopify</a>. Vymysleli jsme řešení, jak pomocí proformy využít schopnosti <a href="https://www.fakturoid.cz">Fakturoid.cz</a>. Fakturoid při zaplacení proformy vytvoří fakturu a následně informuje o jejím vytvoření.</p>
+
+<h4 id="ukážeme-si-jak-automaticky">Ukážeme si jak automaticky:</h4>
+
+<ul>
+  <li>poslat zákazníkovi platební informace</li>
+  <li>po zaplacení odeslat e-mail s fakturou</li>
+  <li>označit objednávku jako zaplacenou</li>
+</ul>
+
+<h2 id="jak-takový-proces-nastavit">Jak takový proces nastavit?</h2>
+
+<h3 id="základní-propojení">Základní propojení</h3>
+
+<p>Do vašeho obchodu si nainstalujte aplikaci <a href="https://apps.shopify.com/fakturoid-invoices?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=proforma_guide" target="_blank">Send invoices to Fakturoid.cz</a>. V sekci <em>Apps</em> se objeví aplikace <em>Send invoices to Fakturoid.cz</em>.</p>
+
+<p>Nejprve je nutné vyplnit přihlašovací údaje pro Fakturoid v sekci <em>Fakturoid credentials</em>. [<a href="https://youtu.be/ZjNwiaImy2Q" target="_blank">videonávod</a>] A následně klinutím na <em>Enable proforma invoices</em> v sekci <em>Proforma invoices</em> zapnout vytváření proforma faktur při vytvoření objednávky.</p>
+
+<p><a href="/public/enable-proforma-invoices.png" target="_blank">
+  <img src="/public/enable-proforma-invoices.png" alt="" class="post__image post__image-full-width" />
+</a></p>
+
+<p>Po zapnutí je ještě nutné nastavit <em>webhook</em> ve Fakturoidu. [<a href="https://youtu.be/mS6mlEcdEdU" target="_blank">videonávod</a>] Webhook je způsob, jakým Fakturoid informuje aplikaci o zaplacené faktuře.</p>
+
+<h3 id="platební-údaje-v-souhrnu-objednávky">Platební údaje v souhrnu objednávky</h3>
+
+<p>Zbývá najít způsob, jak dostat platební údaje k zákazníkovi. K tomuto účelu je možné využít notifikační e-mail <em>Order confirmation</em>. Proformy mají jako variabilní symbol nastavené číslo objednávky.</p>
+
+<blockquote>
+  <p>Návod předpokládá, že máte v sekci <em>Settings &gt; Payments &gt; Manual payments</em> zapnutou platbu s názvem <em>Bank Deposit</em>.</p>
+</blockquote>
+
+<p><a href="/public/order-confirmation.png" target="_blank">
+  <img src="/public/order-confirmation.png" alt="" class="post__image post__image-full-width" />
+</a></p>
+
+<p>V šabloně najděte sekci <code class="highlighter-rouge">&lt;h4&gt;Payment method&lt;/h4&gt;</code>, konkrétně <code class="highlighter-rouge">{{ transaction.gateway | replace: "_", " "...</code>. Za <code class="highlighter-rouge">{% endif %}</code> po tomto výrazu vložte kód uvozený <code class="highlighter-rouge">&lt;!-- Platební informace --&gt;</code> a <code class="highlighter-rouge">&lt;!-- / Platební informace --&gt;</code> dle příkladu.</p>
+
+<figure class="highlight"><pre><code class="language-liquid" data-lang="liquid">&lt;td class="customer-info__item"&gt;
+  &lt;h4&gt;Payment method&lt;/h4&gt;
+  ...
+    <span class="p">{%</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">%}</span>
+      <span class="p">{{</span><span class="w"> </span><span class="nv">transaction</span><span class="p">.</span><span class="nv">gateway</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">replace</span><span class="p">:</span><span class="w"> </span><span class="s2">"_"</span><span class="p">,</span><span class="w"> </span><span class="s2">" "</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">capitalize</span><span class="w"> </span><span class="p">}}</span> — &lt;strong&gt;<span class="p">{{</span><span class="w"> </span><span class="nv">transaction</span><span class="p">.</span><span class="nv">amount</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">money</span><span class="w"> </span><span class="p">}}</span>&lt;/strong&gt;
+    <span class="p">{%</span><span class="w"> </span><span class="kr">endif</span><span class="w"> </span><span class="p">%}</span>
+    &lt;!-- Platební informace --&gt;
+    <span class="p">{%</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="nv">transaction</span><span class="p">.</span><span class="nv">gateway</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Bank Deposit"</span><span class="w"> </span><span class="p">%}</span>
+      &lt;p class="customer-info__item-content"&gt;
+        &lt;strong&gt;Číslo účtu:&lt;/strong&gt; 123457/0000
+      &lt;/p&gt;
+      &lt;p class="customer-info__item-content"&gt;
+        &lt;strong&gt;Variabilní symbol:&lt;/strong&gt; <span class="p">{{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="p">}}</span>
+      &lt;/p&gt;
+    <span class="p">{%</span><span class="w"> </span><span class="kr">endif</span><span class="w"> </span><span class="p">%}</span>
+    &lt;!-- / Platební informace --&gt;</code></pre></figure>
+
+<h3 id="doručení-faktury-zákazníkovi">Doručení faktury zákazníkovi</h3>
+
+<p>Fakturoid umožňuje automatické odeslání faktury zákazníkovi po zaplacení proformy. V sekci <em>Nastavení &gt; Emaily &gt; Texty a způsob odesílání</em> je záložka <em>Zaplacení proformy</em>. Tuto záložku nastavte dle obrázku.</p>
+
+<p><a href="/public/fakturoid-nastaveni-emailu.png" target="_blank">
+  <img src="/public/fakturoid-nastaveni-emailu.png" alt="" class="post__image post__image-full-width" />
+</a></p>
+
+<p>Potřebujete pomoct s nastavením? Neváhejte mě kontaktovat na e-mailu josef@rousek.name.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

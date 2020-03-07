@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Netduino binary clock with PCF8574 &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Netduino binary clock with PCF8574" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Recently I found yet another binary clock and I realised that it might be nice way to try I2C expander **PCF8574**.">
+      <meta content="Recently I found yet another binary clock and I realised that it might be nice way to try I2C expander **PCF8574**." property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2011/10/28/netduino-binary-clock-with-pcf8574/" property="og:url">
+    
+    
+      <meta content="2011-10-28T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Netduino binary clock with PCF8574</h1>
+  <span class="post-date">28 Oct 2011</span>
+  <p>Recently I found yet another binary clock and I realised that it might be nice way to try I<sup>2</sup>C expander <strong>PCF8574</strong>. <a href="http://www.gme.cz/i-o-obvody-multifunkcni-periferie/pcf8574p-p433-053/" title="Link to czech shop">PCF8574</a> is cheap and easy to use 8bit I<sup>2</sup>C expander. Schematic below shows the minute part of circuit. Hour part is exactly the same except you can leave out one LED.</p>
+
+<iframe width="600" height="350" frameborder="0" src="http://c.circuitbee.com/build/r/schematic-embed.html?id=0000000192"></iframe>
+
+<p>There are two points that I’d like to highlight. When controlling LEDs with this chip you dont need to use resistors. And secondly this chip is current sink which means we need to send 1 to turn LED off and 0 to turn it on.</p>
+
+<p>So now we have the circuit, but how to feed it with data? Code below handles conversion of number to pseudo binary representation.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">    <span class="kt">int</span> <span class="n">digit2</span> <span class="o">=</span> <span class="n">intVal</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// calculate 2nd digit</span>
+
+    <span class="n">byte</span> <span class="n">byteVal</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span><span class="p">)</span><span class="n">digit2</span><span class="p">;</span> <span class="c1">// convert to byte</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">intVal</span> <span class="o">!=</span> <span class="n">digit2</span><span class="p">)</span> <span class="c1">// if number is higher than 9</span>
+    <span class="p">{</span>
+        <span class="n">intVal</span> <span class="o">/=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// divide by 10 to get single digit</span>
+
+        <span class="n">byteVal</span> <span class="o">+=</span> <span class="p">(</span><span class="n">byte</span><span class="p">)(</span><span class="n">intVal</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">);</span>
+        <span class="c1">// shift first digit by 4 bits(for example 00000001 becomes 00010000)</span>
+    <span class="p">}</span>
+
+    <span class="n">byte</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span><span class="p">)(</span><span class="o">~</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">byteVal</span><span class="p">);</span> <span class="c1">// invert value, explained earlier</span></code></pre></figure>
+
+<p>With data to send we just need to find out how to send them. I<sup>2</sup>C communication examples can be found almost everywhere so I will explain only values. Adress is determinated by pins A<sub>0</sub>, A<sub>1</sub>, A<sub>2</sub>. Binary representation is 0100A<sub>2</sub>A<sub>1</sub>A<sub>0</sub>. With all pins connected to GND we get 0100000 which is 20 in hexadecimal.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">    <span class="c1">// 0x20 is address in hexadecimal format, 100 is maximal frequency for this chip in kilohertz</span>
+    <span class="n">I2CDevice</span><span class="p">.</span><span class="n">Configuration</span> <span class="n">configChip1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">Configuration</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    <span class="n">I2CDevice</span> <span class="n">i2cbus</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">I2CDevice</span><span class="p">(</span><span class="n">configChip1</span><span class="p">);</span>
+
+    <span class="n">lock</span> <span class="p">(</span><span class="n">i2cbus</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">I2CDevice</span><span class="p">.</span><span class="n">I2CTransaction</span><span class="p">[]</span> <span class="n">xact</span> <span class="o">=</span> <span class="k">new</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">I2CTransaction</span><span class="p">[]</span>
+        <span class="p">{</span>                  
+            <span class="n">I2CDevice</span><span class="p">.</span><span class="n">CreateWriteTransaction</span><span class="p">(</span><span class="k">new</span> <span class="n">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="n">data</span> <span class="p">})</span>
+        <span class="p">};</span>
+
+        <span class="n">i2cbus</span><span class="p">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">xact</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>Finally, here is <a href="/public/binary_clock.jpg">prototype</a> on breadboard and whole class I use in my binary clock.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp">    <span class="k">public</span> <span class="k">class</span> <span class="nc">BinaryClock</span>
+    <span class="p">{</span>
+        <span class="k">private</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">Configuration</span> <span class="n">configChip1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">Configuration</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+        <span class="c1">// all three connected to GND</span>
+        <span class="k">private</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">Configuration</span> <span class="n">configChip2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">Configuration</span><span class="p">(</span><span class="mh">0x21</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+        <span class="c1">// 1st one connected to 5V, rest to GND</span>
+
+        <span class="k">private</span> <span class="n">I2CDevice</span> <span class="n">_i2cbus</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="n">BinaryClock</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">_i2cbus</span> <span class="o">=</span> <span class="k">new</span> <span class="n">I2CDevice</span><span class="p">(</span><span class="n">configChip1</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="kt">void</span> <span class="n">Tick</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">var</span> <span class="n">dt</span> <span class="o">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span><span class="p">;</span>
+
+            <span class="n">SendByte</span><span class="p">(</span><span class="n">IntToByte</span><span class="p">(</span><span class="n">dt</span><span class="p">.</span><span class="n">Hour</span><span class="p">),</span> <span class="n">configChip1</span><span class="p">);</span>
+            <span class="n">SendByte</span><span class="p">(</span><span class="n">IntToByte</span><span class="p">(</span><span class="n">dt</span><span class="p">.</span><span class="n">Minute</span><span class="p">),</span> <span class="n">configChip2</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="kt">void</span> <span class="n">SendByte</span><span class="p">(</span><span class="n">byte</span> <span class="n">data</span><span class="p">,</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">Configuration</span> <span class="n">config</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">lock</span> <span class="p">(</span><span class="n">_i2cbus</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">_i2cbus</span><span class="p">.</span><span class="n">Config</span> <span class="o">=</span> <span class="n">config</span><span class="p">;</span>
+
+                <span class="n">I2CDevice</span><span class="p">.</span><span class="n">I2CTransaction</span><span class="p">[]</span> <span class="n">xact</span> <span class="o">=</span> <span class="k">new</span> <span class="n">I2CDevice</span><span class="p">.</span><span class="n">I2CTransaction</span><span class="p">[]</span>
+                <span class="p">{</span>                  
+                    <span class="n">I2CDevice</span><span class="p">.</span><span class="n">CreateWriteTransaction</span><span class="p">(</span><span class="k">new</span> <span class="n">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="n">data</span> <span class="p">})</span>
+                <span class="p">};</span>
+
+                <span class="n">_i2cbus</span><span class="p">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">xact</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">private</span> <span class="n">byte</span> <span class="n">IntToByte</span><span class="p">(</span><span class="kt">int</span> <span class="n">intVal</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">digit2</span> <span class="o">=</span> <span class="n">intVal</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+
+            <span class="n">byte</span> <span class="n">byteVal</span> <span class="o">=</span> <span class="p">(</span><span class="n">byte</span><span class="p">)</span><span class="n">digit2</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">intVal</span> <span class="o">!=</span> <span class="n">digit2</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">intVal</span> <span class="o">/=</span> <span class="mi">10</span><span class="p">;</span>
+                <span class="n">byteVal</span> <span class="o">+=</span> <span class="p">(</span><span class="n">byte</span><span class="p">)(</span><span class="n">intVal</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="p">(</span><span class="n">byte</span><span class="p">)(</span><span class="o">~</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">byteVal</span><span class="p">);</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span></code></pre></figure>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

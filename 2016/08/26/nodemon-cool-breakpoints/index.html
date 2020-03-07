@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Nodemon: Breakpoints in node applications &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Nodemon: Breakpoints in node applications" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Nodemon is tool to improve backend JS development. It reloads files automatically so you don’t have to restart the server every time. Another cool thing is that you can debug the code in chrome dev tools.
+
+">
+      <meta content="Nodemon is tool to improve backend JS development. It reloads files automatically so you don’t have to restart the server every time. Another cool thing is that you can debug the code in chrome dev tools.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2016/08/26/nodemon-cool-breakpoints/" property="og:url">
+    
+    
+      <meta content="2016-08-26T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Nodemon: Breakpoints in node applications</h1>
+  <span class="post-date">26 Aug 2016</span>
+  <p>Nodemon is tool to improve backend JS development. It reloads files automatically so you don’t have to restart the server every time. Another cool thing is that you can debug the code in chrome dev tools.</p>
+
+<p>Lets take the express generated site as environment.</p>
+
+<p>Fist we need to install nodemon.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm i nodemon</code></pre></figure>
+
+<p>Then run nodemon with <code class="highlighter-rouge">--inspect</code> parameter</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>node ./node_modules/nodemon/bin/nodemon.js <span class="nt">--inspect</span> ./bin/www</code></pre></figure>
+
+<p>You can browse the code and even set breakpoints by clicking on the line number. This way you can inspect variables without having to use <code class="highlighter-rouge">console.log</code>.</p>
+
+<p class="post__image-center"><img src="/public/nodemon-folder.png" alt="How to get to source code" class="post__image-full-width" /></p>
+
+<p>When you are done, click play icon to continue execution of a program.</p>
+
+<p class="post__image-center"><img src="/public/nodemon-continue.png" alt="How to continue program" class="post__image-full-width" /></p>
+
+<p>Thanks <a href="https://twitter.com/mxstbr/status/768597725625454592">@mxstbr</a> for bringing this up.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

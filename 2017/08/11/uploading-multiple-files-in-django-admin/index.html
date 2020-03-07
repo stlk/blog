@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Upload multiple files in Django admin &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Upload multiple files in Django admin" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.
+
+">
+      <meta content="In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/08/11/uploading-multiple-files-in-django-admin/" property="og:url">
+    
+    
+      <meta content="2017-08-11T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Upload multiple files in Django admin</h1>
+  <span class="post-date">11 Aug 2017</span>
+  <p>In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.</p>
+
+<p>All we need are two files. <code class="highlighter-rouge">change_form.html</code> template override and <code class="highlighter-rouge">admin.py</code>. Template needs to be located in following structure.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── admin.py
+├── templates
+│   ├── admin
+│   │   └── catalog(app name)
+│   │       └── car(model name)
+│   │           └── change_form.html
+</code></pre></div></div>
+
+<p>In file <code class="highlighter-rouge">change_form.html</code> we need to override <code class="highlighter-rouge">inline_field_sets</code> block and include single <code class="highlighter-rouge">&lt;input</code> there.</p>
+
+<figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">"admin/change_form.html"</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">inline_field_sets</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">inline_admin_formset</span> <span class="ow">in</span> <span class="nv">inline_admin_formsets</span> <span class="cp">%}</span>
+    <span class="cp">{%</span> <span class="k">include</span> <span class="nv">inline_admin_formset.opts.template</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="nt">&lt;fieldset</span> <span class="na">class=</span><span class="s">"module"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Upload Photos<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">"photos_multiple"</span> <span class="na">type=</span><span class="s">"file"</span> <span class="na">multiple</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/fieldset&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span></code></pre></figure>
+
+<p>Then we need to handle data we receive when the model forms gets submitted. We will do that by overriding <code class="highlighter-rouge">save_model</code> inside our model admin. All we need to do is reach out for <code class="highlighter-rouge">photos_multiple</code> field and save all files that might be there. My <code class="highlighter-rouge">Car</code> model references <code class="highlighter-rouge">photos</code> which has only one <code class="highlighter-rouge">ImageField</code> called <code class="highlighter-rouge">image</code>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">CarAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">'photos_multiple'</span><span class="p">):</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">photos</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">afile</span><span class="p">)</span></code></pre></figure>
+
+<p>If everything worked out fine you should see <em>Upload Photos</em> section under inline model. There’s a complete <code class="highlighter-rouge">admin.py</code> below if you need a context.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Car</span><span class="p">,</span> <span class="n">Photo</span>
+
+<span class="k">class</span> <span class="nc">PhotoInline</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">StackedInline</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Photo</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">class</span> <span class="nc">CarAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">PhotoInline</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">'photos_multiple'</span><span class="p">):</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">photos</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">afile</span><span class="p">)</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Car</span><span class="p">,</span> <span class="n">CarAdmin</span><span class="p">)</span></code></pre></figure>
+
+<p>In later post I will probably cover how to configure Travis CI to run <code class="highlighter-rouge">LiveServerTestCase</code>.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Django: Under The Hood &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Django: Under The Hood" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="This year I a had an opportunity to attend Django: Under The Hood. A single track conference focused solely on Django. Due to a fact that significant number of contributors are attending, it’s great opportunity to discuss almost any issue with people who actually have a clue what is going on.
+
+">
+      <meta content="This year I a had an opportunity to attend Django: Under The Hood. A single track conference focused solely on Django. Due to a fact that significant number of contributors are attending, it’s great opportunity to discuss almost any issue with people who actually have a clue what is going on.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2016/11/12/django-under-hood/" property="og:url">
+    
+    
+      <meta content="2016-11-12T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Django: Under The Hood</h1>
+  <span class="post-date">12 Nov 2016</span>
+  <p>This year I a had an opportunity to attend <a href="https://djangounderthehood.com">Django: Under The Hood</a>. A single track conference focused solely on Django. Due to a fact that significant number of contributors are attending, it’s great opportunity to discuss almost any issue with people who actually have a clue what is going on.</p>
+
+<p class="post__image-center"><img src="/public/amsterdam-biking.jpg" alt="Amsterdam" class="post__image" /></p>
+
+<p>The conference takes place in Amsterdam. Amsterdam is wonderful city especially for me as a newbie cyclist. It’s fascinating to see so many people using bikes when infrastructure supports it.</p>
+
+<p>I decided to stay in a hostel so I could be able to walk almost anywhere and stay on budget. I picked Cocomama which turned out to be great choice. I picked room for 6 people, but I had the room for myself for two nights before the weekend! Another cool thing is that there’s a cat in the kitchen! Every morning he wanted me to let him go to the garden.</p>
+
+<p class="post__image-center"><img src="/public/amsterdam-cocomama.jpg" alt="Joop the cat" class="post__image" /></p>
+
+<p>All the talks were great and insightful, but four of them were very interesting for me. Andrew Godwin talked about <a href="https://channels.readthedocs.io/">Channels</a>. He talked about what do channels solve, how do they work and what is the current state.</p>
+
+<p>Jennifer Akullian shared how keen.io takes care about their employee’s mental health and what steps should we all take when we feel somewhat weird. She started the talk describing her mental condition which really helped to emphasize her words.</p>
+
+<p>For last three months I’ve worked as a fullstack JavaScript developer so I didn’t expect to learn anything new from Idan Gazit’s talk Modern JavaScript, but I actually did. I can ditch semicolons altogether when I don’t start lines with backtick <code>`</code>, open parens <code class="highlighter-rouge">(</code> or open bracket <code class="highlighter-rouge">[</code>. Idan did a great job describing current state of JavaScript, which is very complex for newcomers.</p>
+
+<p>Carl Meyer has joined Instagram only 6 months ago but as an experienced core Django contributor he had no trouble describing history of Django at Instagram. He also focused on how is code deployed and monitored with such a huge user base.</p>
+
+<p class="post__image-center"><img src="/public/duth-carl.jpg" alt="Carl Meyer" class="post__image" /></p>
+
+<p>Sprints are as important as talks are on this conference. I would say that almost every attendee came to sprints as well. This time sprints took place at Impact Hub Amsterdam. For me, being Impact Hub Prague fan, I was happy to visit Hub abroad.</p>
+
+<p class="post__image-center"><img src="/public/amsterdam-impacthub.jpg" alt="Impact Hub Amsterdam" class="post__image" /></p>
+
+<p>During sprints I skimmed through Django’s issue tracker and found one task that seemed reasonable. Its an <a href="https://code.djangoproject.com/ticket/27370">issue</a> where required attribute on <code class="highlighter-rouge">select</code> causes HTML validation failures in some cases.</p>
+
+<p>I managed to pull out the fix in few hours and at four o’clock I already had first code review. There were various places I missed something or just didn’t know about, but all the reviewers were really friendly and helpful.</p>
+
+<p>We went through several iterations and I learned a lot about Python and Django during my work on this issue. So I totally recommend contributing to opensource to everyone.</p>
+
+<p>On this day there were also eleven dinners with organizers and/or contributors. I attended one focused on topic “My first experience with the Django community was…” which attracted people involved in Django Girls and PyLadies. I appreciate such activities, because its really helps people with networking!</p>
+
+<p>Organizers did a splendid job and I had a wonderful time during Django: Under The Hood. I’m happy to be part of this wonderful community.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

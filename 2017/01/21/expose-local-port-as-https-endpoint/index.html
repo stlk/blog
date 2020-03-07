@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Expose local port as HTTPS endpoint on the internet &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Expose local port as HTTPS endpoint on the internet" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I recently needed to expose local port of my dev machine to the internet. I realized I could combine SSH port forwarding, nginx and letsencrypt. Ubuntu 16.04 is my OS of choice on the server.
+
+">
+      <meta content="I recently needed to expose local port of my dev machine to the internet. I realized I could combine SSH port forwarding, nginx and letsencrypt. Ubuntu 16.04 is my OS of choice on the server.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2017/01/21/expose-local-port-as-https-endpoint/" property="og:url">
+    
+    
+      <meta content="2017-01-21T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Expose local port as HTTPS endpoint on the internet</h1>
+  <span class="post-date">21 Jan 2017</span>
+  <p>I recently needed to expose local port of my dev machine to the internet. I realized I could combine SSH port forwarding, nginx and letsencrypt. Ubuntu 16.04 is my OS of choice on the server.</p>
+
+<p>I did this mostly to try out letsencrypt. If this looks too complicated for you, you might want to consider using <a href="https://ngrok.com">ngrok</a> or similar service.</p>
+
+<h2 id="port-forwarding">Port forwarding</h2>
+
+<p>Exposing local port using port forwarding is pretty simple assuming you have linux server which you can access by ssh. Let’s expose our local port 8000 as port 80 on yourserver.example.com.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>ssh <span class="nt">-N</span> user@yourserver.example.com <span class="nt">-R</span> 80:localhost:8000</code></pre></figure>
+
+<p>This was easy. Now the harder part, HTTPS.</p>
+
+<h2 id="getting-the-certificate">Getting the certificate</h2>
+
+<p>I followed tutorial written by <a href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04">Mitchell Anicas</a>. If you get lost on a way please refer back to it. First, let’s install <code class="highlighter-rouge">nginx</code> and <code class="highlighter-rouge">letsencrypt</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>apt-get update
+<span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>nginx letsencrypt</code></pre></figure>
+
+<p>Letsencrypt needs a way to verify that you control the domain name by visiting <code class="highlighter-rouge">http://yourserver.example.com/.well-known/SOMETHING</code>. We will use Webroot plugin to automatically create the file for us. Depending on your nginx configuration, you may need to explicitly allow access to the <code class="highlighter-rouge">/.well-known</code> directory.</p>
+
+<p>Open default nginx site config:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>nano /etc/nginx/sites-available/default</code></pre></figure>
+
+<p>Inside the <code class="highlighter-rouge">server</code> block, add new location:</p>
+
+<figure class="highlight"><pre><code class="language-nginx" data-lang="nginx">    <span class="k">location</span> <span class="p">~</span> <span class="sr">/.well-known</span> <span class="p">{</span>
+        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span></code></pre></figure>
+
+<p>Now apply our new configuration:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>systemctl reload nginx</code></pre></figure>
+
+<p>Let’s finally get the certificate!</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>letsencrypt certonly <span class="nt">-a</span> webroot <span class="nt">--webroot-path</span><span class="o">=</span>/var/www/html <span class="nt">-d</span> yourserver.example.com</code></pre></figure>
+
+<p>Letsencrypt will probably ask for your email and if everything succeeds you should be able to see your certificate in following directory(substituting in your domain name):</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo ls</span> <span class="nt">-l</span> /etc/letsencrypt/live/your_domain_name</code></pre></figure>
+
+<h2 id="https-proxy">HTTPS proxy</h2>
+
+<p>HTTPS configuration is hard, luckily there are configurations we can just copy. It’s a good practice to generate strong <a href="https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange">Diffie-Hellman group</a>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>openssl dhparam <span class="nt">-out</span> /etc/ssl/certs/dhparam.pem 2048</code></pre></figure>
+
+<p>Next, let’s create snippet with decent SSL configuration.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>nano /etc/nginx/snippets/ssl-params.conf</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-nginx" data-lang="nginx"><span class="c1"># from https://cipherli.st/ and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
+</span>
+<span class="k">ssl_protocols</span> <span class="s">TLSv1</span> <span class="s">TLSv1.1</span> <span class="s">TLSv1.2</span><span class="p">;</span>
+<span class="k">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
+<span class="k">ssl_ciphers</span> <span class="s">"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH"</span><span class="p">;</span>
+<span class="k">ssl_ecdh_curve</span> <span class="s">secp384r1</span><span class="p">;</span>
+<span class="k">ssl_session_cache</span> <span class="s">shared:SSL:10m</span><span class="p">;</span>
+<span class="k">ssl_session_tickets</span> <span class="no">off</span><span class="p">;</span>
+<span class="k">ssl_stapling</span> <span class="no">on</span><span class="p">;</span>
+<span class="k">ssl_stapling_verify</span> <span class="no">on</span><span class="p">;</span>
+<span class="k">resolver</span> <span class="mi">8</span><span class="s">.8.8.8</span> <span class="mi">8</span><span class="s">.8.4.4</span> <span class="s">valid=300s</span><span class="p">;</span>
+<span class="k">resolver_timeout</span> <span class="s">5s</span><span class="p">;</span>
+<span class="k">add_header</span> <span class="s">Strict-Transport-Security</span> <span class="s">"max-age=63072000</span><span class="p">;</span> <span class="k">includeSubdomains"</span><span class="p">;</span>
+<span class="k">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">DENY</span><span class="p">;</span>
+<span class="k">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">nosniff</span><span class="p">;</span>
+
+<span class="k">ssl_dhparam</span> <span class="n">/etc/ssl/certs/dhparam.pem</span><span class="p">;</span></code></pre></figure>
+
+<p>Be careful about <code class="highlighter-rouge">add_header X-Frame-Options DENY;</code>, this setting will prevent your site from being embedded in <code class="highlighter-rouge">IFRAME</code>. Last task left for us before creating a new tunnel is site configurations. Replace <code class="highlighter-rouge">yourserver.example.com</code> with your own domain name. Taking port <code class="highlighter-rouge">80</code> just for port forwarding is not really helpful with nginx installed, let’s use port <code class="highlighter-rouge">1111</code> instead.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>nano /etc/nginx/sites-available/default</code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-nginx" data-lang="nginx"><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">server_name</span> <span class="s">yourserver.example.com</span><span class="p">;</span>
+    <span class="kn">root</span> <span class="n">/var/www/html</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">proxy_set_header</span>   <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>   <span class="s">Host</span>      <span class="nv">$http_host</span><span class="p">;</span>
+        <span class="kn">proxy_pass</span>         <span class="s">http://127.0.0.1:1111</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>   <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>   <span class="s">X-Forwarded-Ssl</span> <span class="no">on</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span>   <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">listen</span> <span class="s">[::]:443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+
+    <span class="kn">include</span> <span class="nc">snippets/ssl-params</span><span class="s">.conf</span><span class="p">;</span>
+    <span class="kn">ssl_certificate</span> <span class="n">/etc/letsencrypt/live/yourserver.example.com/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="n">/etc/letsencrypt/live/yourserver.example.com/privkey.pem</span><span class="p">;</span>
+
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/.well-known</span> <span class="p">{</span>
+         <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Reload the nginx configuration and try visiting your server with <code class="highlighter-rouge">https</code>. You should see green lock and <code class="highlighter-rouge">Bad Gateway</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>ssh <span class="nt">-N</span> user@yourserver.example.com <span class="nt">-R</span> 1111:localhost:8000</code></pre></figure>
+
+<p>After you created the tunnel you should see the server you are running on your machine on port 8000. In case you don’t have server ready you can start python server which serves files in current directory.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python <span class="nt">-m</span> SimpleHTTPServer 8000</code></pre></figure>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

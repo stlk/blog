@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Zápisník Josefa Rouska" property="og:title">
+    
+    
+      <meta content="website" property="og:type">
+    
+    
+      <meta name="description" content="">
+      <meta content="" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/" property="og:url">
+    
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="posts">
+  
+  <div class="post">
+    <h2>
+      <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+        Speed up your reports using materialized views
+      </a>
+    </h2>
+
+    <span class="post-date">07 Mar 2020</span>
+
+    <p>We’re collecting anonymous customer events in our Shopify app into a single table. This table grew over time to sufficiently large volume, approximately 30 million, to make our reports take too much time for large customers. The first and easiest step to a better performance I could think of is to precompute the report. Materialized views seemed like a reasonable approach. So I went ahead and asked DB specialist if it’s a good idea.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+        Chrome 80, iframes and cookies
+      </a>
+    </h2>
+
+    <span class="post-date">01 Feb 2020</span>
+
+    <p>Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to <a href="https://web.dev/samesite-cookies-explained/">SameSite=Lax</a> and a relatively new <code class="highlighter-rouge">SameSite=None</code> option.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+        Forward your voicemail to Slack with Twilio
+      </a>
+    </h2>
+
+    <span class="post-date">02 Nov 2018</span>
+
+    <p>This post expands on the previous one I wrote on this topic. Please refer back to <a href="/2018/09/09/virtual-business-phone-number-with-twilio/">Virtual support phone number with Twilio</a> if you’re not familiar with Twilio.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/10/13/using-create-react-app-with-django/">
+        Using Create React App 2 with Django 2
+      </a>
+    </h2>
+
+    <span class="post-date">13 Oct 2018</span>
+
+    <p>I finally got opportunity to work on a project that used Django together with a React app. There’s a combination of packages that help with integrating CRA and Django.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/09/09/virtual-business-phone-number-with-twilio/">
+        Virtual support phone number with Twilio
+      </a>
+    </h2>
+
+    <span class="post-date">09 Sep 2018</span>
+
+    <p>For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/08/10/cool-image-loading-with-gatsbyjs-v2-and-netlify-cms-v2/">
+        Cool image loading with Gatsby.js v2 and Netlify CMS v2
+      </a>
+    </h2>
+
+    <span class="post-date">10 Aug 2018</span>
+
+    <p>Time has come and even I got the opportunity to try out currently trending Gatsby.js static site generator. The most popular feature, at least from my point of view, is <a href="https://image-processing.gatsbyjs.org/">Image Processing with gatsby-transformer-sharp</a>. I thought “Everyone talks that I can have out of the box responsive images and other cool things!”. Yeah sure, but they didn’t use it together with Netlify CMS while using beta of v2 :) Now with Gatsby v2 released things are a bit easier.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/08/05/visualizing-strava-activities-with-folium-and-jupyter-notebook/">
+        Visualizing Strava activites with Folium and Jupyter Notebook
+      </a>
+    </h2>
+
+    <span class="post-date">05 Aug 2018</span>
+
+    <p>Few days ago I participated in my first race ever! It was short triathlon called <a href="https://slapsky-triatlon.webnode.cz/">Slapský triatlon</a>. My friend was talking me into it for almost two years. The swimming is 500m, cycling is 34km and running is 4.5km. I don’t swim or run that much but I was pretty sure I can handle this. I was pretty confident with cycling which turned out to be a mistake. I was happy with the result overall. I wasn’t last. I’m pretty satisfied with swimming and running, but I could push a bit harder on the bike. The result is that I have some interesting data I can play around.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/07/19/stuff-i-wish-knew-when-starting-with-flow/">
+        Stuff I wish I knew when starting with Flow
+      </a>
+    </h2>
+
+    <span class="post-date">19 Jul 2018</span>
+
+    <p>Typing in dynamic languages is hard. Especially in small projects where interaction with libraries is hiding on every corner.
+I tried to get into Flow at least two times before. Now I finally think I got far enough to experience enough of important obstacles that suffice to write about them.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/06/08/local-state-management-pomoci-apollo/">
+        Local state management pomocí Apollo
+      </a>
+    </h2>
+
+    <span class="post-date">08 Jun 2018</span>
+
+    <p>Apollo je sada nástrojů pro práci s GraphQL od tvůrců Meteor.js. Apollo Client slouží k napojení UI na data, Apollo Engine na infrastrukturu a tooling a nakonec Apollo Server pro zpřístupnění REST API pomocí GraphQL.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/06/02/jak-umoznit-doruceni-pomoci-zasilkovna-cz-na-shopify/">
+        Jak umožnit doručení pomocí Zásilkovna.cz na Shopify
+      </a>
+    </h2>
+
+    <span class="post-date">02 Jun 2018</span>
+
+    <p>Klient mě oslovil se záměrem poskytovat doručování pomocí Zásilkovna.cz na Shopify. Vzhledem k omezeným možnostem ovlivnit checkout proces u levnějších Shopify variant se to ukázalo jako cvičení tvořivosti.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/05/22/variabilni-symbol-z-externiho-systemu/">
+        Shopify - Fakturoid: Variabilní symbol z externího systému
+      </a>
+    </h2>
+
+    <span class="post-date">22 May 2018</span>
+
+    <p>Máte systém na zpracování objednávek generující vlastní čísla objednávek a potřebujete použít toto číslo jako variabilní symbol?</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/04/12/statically-generated-ecommerce-using-shopify-and-netlify/">
+        Statically generated e-commerce using Shopify and Netlify
+      </a>
+    </h2>
+
+    <span class="post-date">12 Apr 2018</span>
+
+    <p>I recently fell in love with Netlify because of its simplicity and speed. Nelify allows you to build and host your website in one place with generous pricing levels. I wanted to explore what are possibilities when it comes to e-commerce so I decided to create a simple statically generated website where I could sell some products.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2018/03/01/export-rails-model-data-as-csv/">
+        Export Rails model data as CSV
+      </a>
+    </h2>
+
+    <span class="post-date">01 Mar 2018</span>
+
+    <p>I needed to allow my customer to export a bunch of tables. After some digging, I found a pretty neat solution.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/12/28/toggl-reports-to-slack-for-free-plan/">
+        Toggl reports to Slack for free plan
+      </a>
+    </h2>
+
+    <span class="post-date">28 Dec 2017</span>
+
+    <p>I wanted to expose a bit of insight to my team. As we work in kind of upredictable manner we could use a report on who worked a day before. We use Trello as our time tracking tool. It supports weekly email reports but the price for this feature was a bit expensive for us. So I did a quick research and found <a href="https://github.com/jsmartin/toggl_report">Trello report script</a> that does exactly what I wanted. It outputs <a href="https://github.com/jsmartin/toggl_report/blob/master/sample.md">markdown</a> to STDOUT.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/10/12/nextjs-server-side-rendering-bez-prace/">
+        Next.js - server-side rendering bez práce
+      </a>
+    </h2>
+
+    <span class="post-date">12 Oct 2017</span>
+
+    <p>Next.js je minimalistický framework pro tvorbu React aplikací s důrazem na jednoduchost server-side renderingu. Ukážeme si, jak nám pomůže vytvořit aplikaci, která bude přátelská jak pro uživatele, tak i pro vyhledávače.</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/09/22/tips-for-writing-maintainable-redux-apps/">
+        Tips for writing maintainable redux apps
+      </a>
+    </h2>
+
+    <span class="post-date">22 Sep 2017</span>
+
+    <p>I attended great talk by <a href="https://github.com/garbles">Gabe Scholz</a> which was full of useful and concise tips for writing better and more maintainable redux apps. It struck me that I was just recently coping with these issues so I decided to share my view on these issues.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/09/08/going-headless-with-firefox-since-55/">
+        Going headless with Firefox - since '55
+      </a>
+    </h2>
+
+    <span class="post-date">08 Sep 2017</span>
+
+    <p>Recently I found that Firefox supports <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">headless mode</a> on <a href="https://developer.mozilla.org/en-US/Firefox/Releases/55">Linux</a> for a month now. <a href="https://developer.mozilla.org/en-US/Firefox/Releases/56">Windows and MacOS</a> are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/08/11/uploading-multiple-files-in-django-admin/">
+        Upload multiple files in Django admin
+      </a>
+    </h2>
+
+    <span class="post-date">11 Aug 2017</span>
+
+    <p>In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/07/03/automatizace-platby-prevodem-na-shopify/">
+        Automatizace platby převodem na Shopify pomocí Fakturoidu
+      </a>
+    </h2>
+
+    <span class="post-date">03 Jul 2017</span>
+
+    <p>Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě <a href="https://www.shopify.com/?ref=developer-7be6616fd8bde970">Shopify</a>. Vymysleli jsme řešení, jak pomocí proformy využít schopnosti <a href="https://www.fakturoid.cz">Fakturoid.cz</a>. Fakturoid při zaplacení proformy vytvoří fakturu a následně informuje o jejím vytvoření.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/06/19/nextjs-server-side-rendering-for-masses/">
+        Next.js - server side rendering for masses
+      </a>
+    </h2>
+
+    <span class="post-date">19 Jun 2017</span>
+
+    <p>Recently I had opportunity to use <a href="https://github.com/zeit/next.js">Next.js</a> on a client project. I already heard how much work it saves but I just couldn’t believe how simple it was.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/06/14/why-i-got-interested-in-graphql-and-why-should-you-too/">
+        Why I got interested in GraphQL and why should you too
+      </a>
+    </h2>
+
+    <span class="post-date">14 Jun 2017</span>
+
+    <p>GraphQL is query language created by developers in Facebook to make their app development manageable. There are quite a few reasons why should we be interested in it even at small scale.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/06/11/prettier-pre-commit/">
+        Automatically format your javascript files on commit using Prettier
+      </a>
+    </h2>
+
+    <span class="post-date">11 Jun 2017</span>
+
+    <p>I recently fell in love with <a href="https://github.com/prettier/prettier">prettier</a>. Prettier is an opinionated code formatter.
+Having consistently formatted code is very pleasant feeling for me and having formatting done automatically?
+Woah! The best part is that you can easily run <code class="highlighter-rouge">prettier</code> on <code class="highlighter-rouge">git commit</code>. That way you can write messy code and it will get cleaned up automatically. Let’s do it.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/04/30/react-amsterdam/">
+        React Amsterdam 2017
+      </a>
+    </h2>
+
+    <span class="post-date">30 Apr 2017</span>
+
+    <p>Last Friday I attended my first React conference. It took place in Amsterdam. So once again I got the opportunity to visit Amsterdam because of a conference. I want to thank organizers of <a href="https://www.meetup.com/praguejs/">PragueJS</a> meetup for giving me a ticket!</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/03/27/on-writing-and-publishing-shopify-app/">
+        On writing and publishing Shopify application
+      </a>
+    </h2>
+
+    <span class="post-date">27 Mar 2017</span>
+
+    <p>Recently I got interested in small and hopefully profitable projects, sometimes called Micropreneurship. Later I found that one of the most “simple” ways to start a SAAS is Shopify application.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2017/01/21/expose-local-port-as-https-endpoint/">
+        Expose local port as HTTPS endpoint on the internet
+      </a>
+    </h2>
+
+    <span class="post-date">21 Jan 2017</span>
+
+    <p>I recently needed to expose local port of my dev machine to the internet. I realized I could combine SSH port forwarding, nginx and letsencrypt. Ubuntu 16.04 is my OS of choice on the server.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/12/21/repackaging-cheap-speakers/">
+        Převléknutí plastových reproduktorů do stylovější podoby
+      </a>
+    </h2>
+
+    <span class="post-date">21 Dec 2016</span>
+
+    <p>Už jsou to tři roky, co jsem rozebral plastové reproduktory a jejich elektroniku naskládal do krabice od vína a přikryl lepenkou z IKEA. Chtěl jsem jednu bednu, ideálně s bluetooth, ale nepotřebuji drahý stylový reproduktor. Nedlouho poté jsem svůj výtvor vylepšil bluetooth příjmačem a designová reprobedna byla na světě.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/11/12/django-under-hood/">
+        Django: Under The Hood
+      </a>
+    </h2>
+
+    <span class="post-date">12 Nov 2016</span>
+
+    <p>This year I a had an opportunity to attend <a href="https://djangounderthehood.com">Django: Under The Hood</a>. A single track conference focused solely on Django. Due to a fact that significant number of contributors are attending, it’s great opportunity to discuss almost any issue with people who actually have a clue what is going on.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/08/26/nodemon-cool-breakpoints/">
+        Nodemon: Breakpoints in node applications
+      </a>
+    </h2>
+
+    <span class="post-date">26 Aug 2016</span>
+
+    <p>Nodemon is tool to improve backend JS development. It reloads files automatically so you don’t have to restart the server every time. Another cool thing is that you can debug the code in chrome dev tools.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/08/19/python-leds-and-wifi/">
+        Python, LEDs and WiFi
+      </a>
+    </h2>
+
+    <span class="post-date">19 Aug 2016</span>
+
+    <p>I lost interest in electrotechnics almost a year ago. I turned off my binary clock, temperature sensor and left it in a drawer. But before that I bought ESP8266, cheap WiFi microcontroller running lua. It was unreliable and hard to program.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/07/06/island/">
+        Island: část 2.
+      </a>
+    </h2>
+
+    <span class="post-date">06 Jul 2016</span>
+
+    <p>Cesta do Þórsmörk pro nás začíná u vodopádu Seljalandsfoss. Vodopád <a href="https://www.instagram.com/p/BFoHwPTjAJC/">Seljalandsfoss</a> jsme pocítili na vlastní kůži, dopad vody, která už ve vzduchu působí úžasným dojmem, vytváří mlhu rozlétávající se do okolí. V jeho blízkosti je ještě jeden, velmi zajímavý vodopád zvaný Gljúfrabúi. Je totiž skrytý ve skalní průrvě.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/05/24/rejkjavik/">
+        Island: část 1.
+      </a>
+    </h2>
+
+    <span class="post-date">24 May 2016</span>
+
+    <p>Island mě překvapil na několika frontách. Jak odlišně, čistě a nádherně působí zdejší příroda, jak malá jsou města a vesnice mimo Rejkjavík.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/05/18/bristol/">
+        Bristol
+      </a>
+    </h2>
+
+    <span class="post-date">18 May 2016</span>
+
+    <p>Bristol. Naše přestupní stanice na Island. Jediné, co jsem znal předem byl Banksy a Bath. Nakonec na Bath ani nedošlo, Bristol nás zabavil víc než dost.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/05/14/irsko/">
+        Irsko: země, kde není nadávkou jít do hospody
+      </a>
+    </h2>
+
+    <span class="post-date">14 May 2016</span>
+
+    <p>Právě sedíme v našem dočasném pokoji u Bristolských Airbnb hostitelů. Je tedy čas napsat o mých pocitech z Irska.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2016/01/13/recommending-instagram-photos-using-scikit-learn/">
+        Recommending Instagram photos using scikit-learn
+      </a>
+    </h2>
+
+    <span class="post-date">13 Jan 2016</span>
+
+    <p>I recently published first working version of my latest project. It is an Instagram newsletter based on pretty basic Machine Learning method. I called it <a href="http://socialist.rousek.name">socialist</a>. Feel free to try it out I would love to hear your feedback.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2015/11/29/adventure-with-matplotlib-virtualenv-and-macosx/">
+        Adventure with matplotlib, virtualenv and MacOS
+      </a>
+    </h2>
+
+    <span class="post-date">29 Nov 2015</span>
+
+    <p>Recently I’ve developed passion for machine learning. Which includes many hours of fun with various modeling and plotting libraries.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2015/01/04/vylet-do-finska/">
+        Výlet do Finska
+      </a>
+    </h2>
+
+    <span class="post-date">04 Jan 2015</span>
+
+    <p>Na konci října jsem si udělal výlet do Finska. Ani nevím proč, rukavice nosím hned jak teplota klesne pod 10°C a válení se na slunci je mojí oblíbenou aktivitou. Nejspíš kvůli jazyku, který mě vždy přihoval. Původní úvahy začínaly na 14 dnech, nakonec jsem skončil na sedmi. A to je, opravdu málo. Tři dny v Helsinkách, přibližně jeden den ve městě Jyvaskyla a dva dny v Oulu.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2013/12/31/digispark-talking-with-dotnet/">
+        DigiSpark talking with .NET
+      </a>
+    </h2>
+
+    <span class="post-date">31 Dec 2013</span>
+
+    <p>With black Friday sales I decided to buy few DigiSparks to try them out and maybe spark some interest in electronics in my brother. Designer of the board did very good job, overall USB experience feels smooth and is easy to understand.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2013/06/13/using-attiny2313-as-gateway-between-ds18b20-and-netduino/">
+        Using ATTiny2313 as gateway between DS18B20 and Netduino
+      </a>
+    </h2>
+
+    <span class="post-date">13 Jun 2013</span>
+
+    <p>For some time I was happy user of Stanislav “CW2” Šimíček’s modified firmware which brought OneWire capability to Netduino, but new version(4.2) of .NET MicroFramework came and I realized there are other possibilities.</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2012/09/09/injecting-dependecies-into-web-api-action-filters/">
+        Injecting dependecies into Web API Action Filters
+      </a>
+    </h2>
+
+    <span class="post-date">09 Sep 2012</span>
+
+    <p>When I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject.</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2012/06/18/wireless-rgb-lamp-the-controller/">
+        Wireless RGB lamp - The controller
+      </a>
+    </h2>
+
+    <span class="post-date">18 Jun 2012</span>
+
+    <p>In this part I will show you how to control RGB lamp using Netduino. The basics such as wiring XBee to Netduino and XBee setup are described in my previous article, so I will highlight only most interesting bits.</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2012/05/29/wireless-rgb-lamp/">
+        Wireless RGB lamp
+      </a>
+    </h2>
+
+    <span class="post-date">29 May 2012</span>
+
+    <p>For a long time I wanted to have a wirelessly controlled RGB light in my kitchen. This idea got more specific shape when I saw hacked IKEA dioder light where original PIC microcontroller was removed and ATTiny took its place.</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2012/01/22/control-lights-remotely-using-xbee-and-netduino/">
+        Control lights remotely using XBee and Netduino
+      </a>
+    </h2>
+
+    <span class="post-date">22 Jan 2012</span>
+
+    <p>I’m moving to my own appartment and I want to control lamp and mood light wirelessly. Because I want to extend mood light across whole appartment in future. I have decided to use XBee. Specifically XBee Series 2.</p>
+
+
+  </div>
+  
+  <div class="post">
+    <h2>
+      <a href="/2011/10/28/netduino-binary-clock-with-pcf8574/">
+        Netduino binary clock with PCF8574
+      </a>
+    </h2>
+
+    <span class="post-date">28 Oct 2011</span>
+
+    <p>Recently I found yet another binary clock and I realised that it might be nice way to try I<sup>2</sup>C expander <strong>PCF8574</strong>.</p>
+
+  </div>
+  
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

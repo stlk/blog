@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Python, LEDs and WiFi &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Python, LEDs and WiFi" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I lost interest in electrotechnics almost a year ago. I turned off my binary clock, temperature sensor and left it in a drawer. But before that I bought ESP8266, cheap WiFi microcontroller running lua. It was unreliable and hard to program.
+
+">
+      <meta content="I lost interest in electrotechnics almost a year ago. I turned off my binary clock, temperature sensor and left it in a drawer. But before that I bought ESP8266, cheap WiFi microcontroller running lua. It was unreliable and hard to program.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2016/08/19/python-leds-and-wifi/" property="og:url">
+    
+    
+      <meta content="2016-08-19T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Python, LEDs and WiFi</h1>
+  <span class="post-date">19 Aug 2016</span>
+  <p>I lost interest in electrotechnics almost a year ago. I turned off my binary clock, temperature sensor and left it in a drawer. But before that I bought ESP8266, cheap WiFi microcontroller running lua. It was unreliable and hard to program.</p>
+
+<p>Fast forward year later I was stuck in a bed on a sunny summer day. I remembered local PyLadies group is going to hold an ESP8266 workshop. Out of pure boredom I decided to give it another chance, this time using the MicroPython project. I was pretty lucky as it was only few days after they released <a href="https://micropython.org/download/#esp8266">binaries</a> for ESP8266 to the public.</p>
+
+<p>First you need to flash the board using following commands.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>esptool.py <span class="nt">--port</span> /dev/tty.wchusbserial1420 erase_flash
+esptool.py v1.0.2-dev
+Connecting...
+Erasing flash <span class="o">(</span>this may take a <span class="k">while</span><span class="o">)</span>...
+
+<span class="nv">$ </span>esptool.py <span class="nt">--port</span> /dev/tty.wchusbserial1420 write_flash <span class="nt">--flash_size</span><span class="o">=</span>8m 0 esp8266-2016-07-31-v1.8.2-75-g4d22ade.bin
+esptool.py v1.2-dev
+Connecting...
+Running Cesanta flasher stub...
+Flash params <span class="nb">set </span>to 0x0020
+Writing 540672 @ 0x0... 540672 <span class="o">(</span>100 %<span class="o">)</span>
+Wrote 540672 bytes at 0x0 <span class="k">in </span>13.1 seconds <span class="o">(</span>330.8 kbit/s<span class="o">)</span>...
+Leaving...</code></pre></figure>
+
+<p>After restarting the device you can connect to python terminal using serial console of your choice. For me it is <code class="highlighter-rouge">screen /dev/tty.wchusbserial1420 115200</code>. You can then play around in REPL. I’m using <a href="https://github.com/nodemcu/nodemcu-devkit">NodeMCU</a> so I have blue led on port 16 so the first thing I did was to turn it on.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">machine</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pin</span><span class="o">.</span><span class="n">low</span><span class="p">()</span> <span class="c1"># pull the pin low to turn on the light</span></code></pre></figure>
+
+<p>To develop more complex applications it would be great to have a way to upload files to the module. Luckily there’s tool called <a href="https://github.com/micropython/webrepl">webrepl_cli</a>.</p>
+
+<p>Lets create file called <code class="highlighter-rouge">light.py</code> with following content.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">machine</span>
+<span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">on</span><span class="p">():</span>
+    <span class="n">pin</span><span class="o">.</span><span class="n">low</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">off</span><span class="p">():</span>
+    <span class="n">pin</span><span class="o">.</span><span class="n">high</span><span class="p">()</span></code></pre></figure>
+
+<p>And upload it to the device using following command.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>python webrepl_cli.py light.py 192.168.1.251:/
+put 192.168.1.251 8266
+light.py -&gt; /light.py
+Password:
+Sent 326 of 326 bytes</code></pre></figure>
+
+<blockquote>
+There's a chance that the command fails. Thats because webrepl might not be enabled by default. To enable it run <code>import webrepl; webrepl.start();</code>.
+</blockquote>
+
+<p>You can then use the file like every other module.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">light</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">light</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">light</span><span class="o">.</span><span class="n">off</span><span class="p">()</span></code></pre></figure>
+
+<p>Micropython supports various protocols. Eg. <a href="http://docs.micropython.org/en/latest/esp8266/esp8266/quickref.html#onewire-driver">onewire</a>, <a href="http://docs.micropython.org/en/latest/esp8266/esp8266/quickref.html#neopixel-driver">neopixel</a> and <a href="http://docs.micropython.org/en/latest/esp8266/esp8266_contents.html">others</a>. I had some leftover DS18B20 temperature sensor and neopixel LED so I combined them together and created WiFi thermometer with RGB status LED.</p>
+
+<p>Let’s start with the temperature sensor.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># the sensor is on GPIO14
+</span><span class="n">ds</span> <span class="o">=</span> <span class="n">onewire</span><span class="o">.</span><span class="n">DS18B20</span><span class="p">(</span><span class="n">onewire</span><span class="o">.</span><span class="n">OneWire</span><span class="p">(</span><span class="n">pin</span><span class="p">))</span>
+
+<span class="n">roms</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span> <span class="c1"># scan for devices on the bus
+</span><span class="k">print</span><span class="p">(</span><span class="s">'found devices:'</span><span class="p">,</span> <span class="n">roms</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'temperature:'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">convert_temp</span><span class="p">()</span> <span class="c1"># tell the sensor to start reading temperature
+</span><span class="n">time</span><span class="o">.</span><span class="n">sleep_ms</span><span class="p">(</span><span class="mi">750</span><span class="p">)</span> <span class="c1"># sensor needs some time read the temperature
+</span><span class="n">temp</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">read_temp</span><span class="p">(</span><span class="n">roms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># we know we only have one sensor connected
+</span><span class="k">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span></code></pre></figure>
+
+<p>The NeoPixel is even simpler. I created <a href="https://github.com/stlk/micropython/blob/master/temperature/status.py">module</a> that allows me to set the color using just one method call.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">from machine import Pin
+from neopixel import NeoPixel
+
+pin <span class="o">=</span> Pin<span class="o">(</span>4, Pin.OUT<span class="o">)</span> <span class="c"># the NeoPixel is on GPIO2</span>
+np <span class="o">=</span> NeoPixel<span class="o">(</span>pin, 1<span class="o">)</span> <span class="c"># only one pixel is connected</span>
+
+np[0] <span class="o">=</span> <span class="o">(</span>255, 128, 0<span class="o">)</span>
+np.write<span class="o">()</span></code></pre></figure>
+
+<p>With temperature reading and status notifications last part left to do is to send the data somewhere. At first I tried to send HTTP requests, but it wasn’t working well for some reason.</p>
+
+<p>My next shot was <a href="https://github.com/micropython/micropython-lib/tree/master/umqtt.simple">MQTT</a>, which is lightweight publish/subscribe messaging transport designed especially for small devices. MicroPython implementation implements only subset of the protocol, the one I missed the most is authentication, because I couldn’t use hosted MQTT server and had to start one myself.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># You can find the library on https://github.com/micropython/micropython-lib/tree/master/umqtt.simple
+</span><span class="kn">from</span> <span class="nn">umqtt.simple</span> <span class="kn">import</span> <span class="n">MQTTClient</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">MQTTClient</span><span class="p">(</span><span class="s">'umqtt_client'</span><span class="p">,</span> <span class="s">'example.com'</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="n">c</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s">'status'</span><span class="p">,</span> <span class="n">b</span><span class="s">'hi'</span><span class="p">)</span> <span class="c1"># send message "hi" to channel "status"
+</span>
+<span class="n">c</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s">'temp'</span><span class="p">,</span> <span class="n">b</span><span class="s">'</span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">temp</span><span class="p">,))</span> <span class="c1"># send temperature reading to channel "temp"</span></code></pre></figure>
+
+<p>I really enjoyed diving back to electrotechnics especially with python as a language of choice. You can find the finished project on <a href="https://github.com/stlk/micropython/tree/master/temperature">Github</a>.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

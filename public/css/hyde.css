@@ -1,0 +1,457 @@
+/*
+ __                  __
+/\ \                /\ \
+\ \ \___   __  __   \_\ \     __
+ \ \  _ `\/\ \/\ \  /'_` \  /'__`\
+  \ \ \ \ \ \ \_\ \/\ \_\ \/\  __/
+   \ \_\ \_\/`____ \ \___,_\ \____\
+    \/_/\/_/`/___/> \/__,_ /\/____/
+               /\___/
+               \/__/
+
+Hyde is an elegant, open source, mobile first theme for Jekyll.  It includes
+lightweight styles and placeholder content to get you up and running with a
+simple blog in no time.
+
+Designed, built, and released under MIT license by @mdo.
+
+Learn more at http://andhyde.com or https://github.com/mdo/hyde.
+
+*/
+
+
+
+/* Body resets
+-------------------------------------------------- */
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #454441;
+  background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 10px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-rendering: optimizeLegibility;
+}
+h1 {
+  font-size: 34px;
+}
+h2 {
+  margin-top: 20px;
+  font-size: 26px;
+}
+h3 {
+  margin-top: 24px;
+  font-size: 22px;
+}
+h4 {
+  margin-top: 22px;
+  font-size: 20px;
+}
+h5 {
+  font-weight: bold;
+}
+h5, h6 {
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+p {
+  margin: 0 0 15px;
+}
+.lead {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+ul, ol {
+  margin-bottom: 15px;
+}
+
+hr {
+  position: relative;
+  margin: 40px 0;
+  border: 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #fff;
+}
+
+strong {
+  color: #222;
+}
+
+abbr {
+  background-color: #eee;
+  display: inline-block;
+  padding: 3px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #555;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  border-radius: 3px;
+}
+
+code, pre {
+  padding: 0 3px 2px;
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  font-size: 14px;
+  border-radius: 3px;
+}
+code {
+  padding: 2px 4px;
+  color: #d14;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+}
+
+pre {
+  display: block;
+  margin: 0 0 14px;
+  padding: 15px 20px;
+  line-height: 28px;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+  background-color: #eee;
+}
+pre code {
+  padding: 0;
+  color: inherit;
+  background-color: transparent;
+  border: 0;
+}
+.highlight {
+  margin-bottom: 15px;
+  padding: 15px;
+  border-radius: 5px;
+}
+.highlight pre {
+  margin-bottom: 0;
+}
+
+/* Quotes */
+blockquote {
+  padding: 0 0 0 20px;
+  margin: 15px 30px 15px 0;
+  border-left: 5px solid #eee;
+}
+blockquote p {
+  margin-bottom: 0;
+  color: #7a7a7a;
+}
+
+img {
+  display: block;
+  margin: 0 0 15px;
+  border-radius: 5px;
+}
+
+
+/* Links
+-------------------------------------------------- */
+
+a {
+  font-weight: 600;
+  color: #222;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+
+/* Scaffolding
+-------------------------------------------------- */
+
+/* Header */
+.masthead {
+  color: #fff;
+  background-color: #2a2a2a;
+}
+.masthead-inner {
+  padding: 20px;
+}
+.masthead h1 {
+  margin-top: 0;
+  font-family: "Abril Fatface";
+}
+.masthead h1 a {
+  text-decoration: none;
+}
+.masthead .lead {
+  margin-bottom: 0;
+}
+.masthead a {
+  color: #fff;
+}
+
+/* Footer area of masthead */
+.colophon {
+  margin-top: 20px;
+  color: #7a7a7a;
+}
+.colophon-links {
+  padding-left: 0;
+  list-style: none;
+}
+
+
+/* Posts
+-------------------------------------------------- */
+
+.container {
+  margin: 0.5rem;
+}
+
+/* Wrapper for all posts on homepage */
+.posts {
+  margin-left:  20px;
+  margin-right: 20px;
+}
+
+/* Single post */
+.post {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+.post-date {
+  display: block;
+  margin: -10px 0 10px;
+  color: #9a9a9a;
+}
+
+/* Related posts */
+.related {
+  padding-top: 40px;
+  border-top: 1px solid #eee;
+}
+.related-posts {
+  list-style: none;
+}
+.related-posts li small {
+  font-size: 75%;
+  color: #999;
+}
+.related-posts li a:hover {
+  color: #000;
+  text-decoration: none;
+}
+.related-posts li a:hover small {
+  color: #000;
+}
+
+.post__image {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  max-width: 350px;
+  display: inline-block;
+}
+
+.post__image-full-width {
+  max-width: 100%;
+  display: inline;
+}
+
+.post__image-right {
+  float: right;
+}
+
+.post__image-center {
+  text-align: center;
+}
+
+.post__image-no-bottom-margin {
+  margin: 0;
+}
+
+.post__image-no-bottom-margin img {
+  margin: 0;
+}
+
+/* Error pages (404)
+-------------------------------------------------- */
+
+.fourohfour {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+
+/* Pagination
+-------------------------------------------------- */
+
+.pagination {
+  overflow: hidden; /* clearfix */
+  margin-top: 40px;
+  font-weight: bold;
+  color: #ccc;
+  text-align: center;
+  border-top: 1px solid #eee;
+}
+.pagination a,
+.pagination span {
+  float: left;
+  width: 50%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 20px;
+}
+.pagination a:first-child,
+.pagination span:first-child {
+  border-right: 1px solid #eee;
+}
+.pagination a:hover {
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+
+
+/* Responsive
+-------------------------------------------------- */
+
+@media (min-width: 768px) {
+  .masthead-inner {
+    padding: 40px;
+  }
+  .posts {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
+
+@media (min-width: 990px) {
+
+  body {
+    font-size: 16px;
+  }
+  .lead {
+    font-size: 20px;
+  }
+
+  /* Center container in available real estate */
+  .container {
+    margin-left: 35%;
+    margin-right: 10%;
+    width: 55%;
+  }
+
+  /* Fix the masthead to the side for impact and awesomeness */
+  .masthead {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 25%;
+    margin-bottom: 0;
+  }
+  .masthead-inner {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  .masthead h1 {
+    font-size: 46px;
+  }
+  .colophon {
+    margin-top: 40px;
+  }
+
+  /* Remove mobile device padding from list of posts */
+  .posts {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  /* Increase space between posts */
+  .post {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+
+  /* Make pagination stand alone */
+  .pagination {
+    margin-bottom: 60px;
+    border: 1px solid #eee;
+  }
+
+}
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */

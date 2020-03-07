@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Control lights remotely using XBee and Netduino &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Control lights remotely using XBee and Netduino" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I’m moving to my own appartment and I want to control lamp and mood light wirelessly. Because I want to extend mood light across whole appartment in future. I have decided to use XBee. Specifically XBee Series 2.
+
+">
+      <meta content="I’m moving to my own appartment and I want to control lamp and mood light wirelessly. Because I want to extend mood light across whole appartment in future. I have decided to use XBee. Specifically XBee Series 2.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2012/01/22/control-lights-remotely-using-xbee-and-netduino/" property="og:url">
+    
+    
+      <meta content="2012-01-22T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Control lights remotely using XBee and Netduino</h1>
+  <span class="post-date">22 Jan 2012</span>
+  <p>I’m moving to my own appartment and I want to control lamp and mood light wirelessly. Because I want to extend mood light across whole appartment in future. I have decided to use XBee. Specifically XBee Series 2.</p>
+
+<p>To start with XBees you need atleast 2 <a href="http://www.sparkfun.com/products/10414">XBees</a>, <a href="http://www.sparkfun.com/products/9976">XBee shield</a> or <a href="http://www.sparkfun.com/products/8276">breakout boards</a> and some sort of USB adapter. For example <a href="http://www.sparkfun.com/products/8687">XBee Explorer</a> or <a href="http://www.sparkfun.com/products/718">FT232RL USB to Serial breakout board</a>.</p>
+
+<p><strong>My setup is</strong></p>
+
+<ul>
+  <li>2 XBees</li>
+  <li>2 breakout boards</li>
+  <li>FT232RL USB to Serial breakout board</li>
+  <li>NetduinoPlus</li>
+</ul>
+
+<p>One of nice features of XBee is availability of 10 I/O pins. This allows XBee to sample sensor data without any other microcontroller. XBee can also send sample only when selected digital input changes. This chapter is not well covered online, so I’ve decided to share my experience.</p>
+
+<p>First of my XBees is running API Controller firmware, its connected to Netduino via serial port. API firmware allows you to receive I/O data from other XBees, which is exactly what I want. Second one is standalone, only two buttons and one lamp are connected. Its running end device API firmware.</p>
+
+<p>Lets configure our XBees using Digi’s configuration utility X-CTU.</p>
+
+<p><strong>Controller configuration</strong><br />
+ID - 70 // PAN ID - ID of your network<br /></p>
+
+<p><strong>End device configuration</strong><br />
+ID - 70 // PAN ID - ID of your network<br />
+DH - 13A200 // High part of destination(coordinator) address<br />
+DL - 407A26A8 // Low part of destination(coordinator) address<br />
+D0 - 3 // Port set to digital input<br />
+D1 - 3 // Port set to digital input<br />
+D2 - 4 // Port set to digital output, low<br />
+IC - 3 // Digital I/O change detection, enabled for pins D0 and D1<br /></p>
+
+<p>Next step is wiring circuit for controller.</p>
+
+<iframe width="600" height="350" frameborder="0" src="http://c.circuitbee.com/build/r/schematic-embed.html?id=0000000214"></iframe>
+
+<p>And end device.</p>
+
+<iframe width="600" height="350" frameborder="0" src="http://c.circuitbee.com/build/r/schematic-embed.html?id=0000000215"></iframe>
+
+<p>Only obstacle on our way to sucess is code to learn Netduino how to talk with xBee. As I already mentioned I have decided to use API mode.</p>
+
+<p>I’m using modified Asynchronus API XBee library from <a href="http://grommet.codeplex.com/" title="Link to Codeplex">Grommet</a>. My version is hosted on <a href="https://github.com/stlk/XBee" title="Link to GitHub">GitHub</a>, this version is modified to work with limited rescources of Netduino and more importantly to fulfill my needs. Because I have only one end device its address is hardcoded in source code. This will change sooner or later.</p>
+
+<p>To setup the library open XBee.cs and modify <em>ID of recipient</em> as shown in example below. Serial number of my xBee end device is 0013A200407126AA. (<strong>EDIT:</strong> This is no longer needed)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private readonly byte[] _txDataBase = new byte[] {
+    0x0, // frame type
+    0x1, // frame id, set to zero for no reply
+    // ID of recipient, or use 0xFFFF for broadcast 
+    0x0,
+    0x13,
+    0xA2,
+    0x0,
+    0x40,
+    0x7A,
+    0x26,
+    0xAA,
+    // 16 bit of recipient or 0xFFFE if unknown
+    0xFF,
+    0xFE
+};
+</code></pre></div></div>
+
+<p>Last thing I have prepared for you are some <a href="https://github.com/stlk/XBee/blob/master/Examples/Example.cs">examples</a>.</p>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

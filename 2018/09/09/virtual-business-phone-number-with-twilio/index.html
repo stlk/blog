@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Virtual support phone number with Twilio &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Virtual support phone number with Twilio" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.
+
+">
+      <meta content="For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2018/09/09/virtual-business-phone-number-with-twilio/" property="og:url">
+    
+    
+      <meta content="2018-09-09T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Virtual support phone number with Twilio</h1>
+  <span class="post-date">09 Sep 2018</span>
+  <p>For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.</p>
+
+<p>I like how Twilio makes things simple for developers so they were my first and only bet. What was I actually trying to achieve? I wanted to have a phone number that I could redirect to my phone and when the traffic gets high enough send caller to voicemail when needed. I also wanted to make a phone calls from that number using SIP phone.</p>
+
+<blockquote>
+  <p>If you don’t want to bother with setup you can use service I created to do the job for you.</p>
+
+  <p><a href="https://supportline.rousek.name/">Visit Support line</a></p>
+</blockquote>
+
+<p>First, create a Twilio account and get voice-enabled phone number. Now we need to connect the dots. Let’s assume <em>+420111111111</em> is your number and <em>+420999999999</em> is the number you got from Twilio.</p>
+
+<h3 id="receiving-calls">Receiving calls</h3>
+
+<p>Twilio uses TwiML a markup language used to tell Twilio what to do when you receive an incoming call or SMS. The place where we will store our TwiML commands is called TwiML Bins. TwiML Bins allow you to write TwiML that Twilio will host for you - so we don’t have to spin up a web server.</p>
+
+<p><a href="https://www.twilio.com/console/runtime/twiml-bins">Runtime &gt; TwiML Bins</a> is the place where we can manage our Bins.</p>
+
+<p>Create a new bin called <code class="highlighter-rouge">Forward incoming calls to my phone</code> and paste following code.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;Response&gt;</span>
+  <span class="nt">&lt;Dial</span> <span class="na">callerId=</span><span class="s">"+420999999999"</span><span class="nt">&gt;</span>
+    +420111111111
+  <span class="nt">&lt;/Dial&gt;</span>
+<span class="nt">&lt;/Response&gt;</span>
+</code></pre></div></div>
+
+<p class="post__image-center">
+  <img src="/public/twilio-incoming-call-bin.png" alt="" class="post__image post__image-full-width" />
+</p>
+
+<p>Then we need to associate this bin with a phone number. In <a href="https://www.twilio.com/console/phone-numbers/incoming">Phone Numbers &gt; Manage Numbers</a> section select your phone number and look for a field called <em>A call comes in</em>. Select <em>TwiML</em> and the select the bin we just created.</p>
+
+<p class="post__image-center">
+  <img src="/public/twilio-number-management.png" alt="" class="post__image post__image-full-width" />
+</p>
+
+<p>That’s it, you should now be able to accept incoming phone calls. Try calling your Twilio number.</p>
+
+<h3 id="making-calls-using-your-twilio-number">Making calls using your Twilio number</h3>
+
+<p>To make outgoing call using the Twilio number we will need to use VoIP application like <a href="https://www.zoiper.com/en/products">Zoiper</a> which is available on Android and iOS. To use this application we need to set up a SIP domain. In <a href="https://www.twilio.com/console/voice/sip/endpoints">Programmable Voice &gt; SIP Domains</a> create a new domain.</p>
+
+<p class="post__image-center">
+  <img src="/public/twilio-new-sip-domain.png" alt="" class="post__image post__image-full-width" />
+</p>
+
+<p>Make sure that you associate credentials for both <em>Voice Authentication</em> and <em>SIP Registration</em>. Then we create another TwiML Bin to handle outgoing calls.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;Response&gt;</span>
+  <span class="nt">&lt;Dial</span> <span class="na">callerId=</span><span class="s">"+420999999999"</span><span class="nt">&gt;</span>
+    {{#e164}}{{To}}{{/e164}}
+  <span class="nt">&lt;/Dial&gt;</span>
+<span class="nt">&lt;/Response&gt;</span>
+
+</code></pre></div></div>
+
+<p>The interesting part of this command is <code class="highlighter-rouge">{{#e164}}{{To}}{{/e164}}</code>. When using SIP Interface the <code class="highlighter-rouge">To</code> value that gets passed down is in following form <code class="highlighter-rouge">sip:+15125551212@freelance.sip.us1.twilio.com</code>. Function <code class="highlighter-rouge">e164</code> extracts the phone number from this text. After saving this bin we will copy its <em>URL</em> and use it as <em>Request URL</em> in the SIP Domain we created.</p>
+
+<h3 id="zoiper-configuration">Zoiper configuration</h3>
+
+<p>Now that Twilio is setup we can actually make an outgoing call. We will use our SIP credentials we created before. You might have to fill in domain with the region <code class="highlighter-rouge">us1</code> as domain without region or with any <a href="https://www.twilio.com/docs/voice/api/sending-sip#localized-sip-uris">other</a> didn’t work for me.</p>
+
+<p class="post__image-center">
+  <img src="/public/twilio-zoiper-configuration.jpeg" alt="" class="post__image post__image-full-width" />
+</p>
+
+<p>I’m pretty happy with the way how this solution works and the calls and number itself are pretty cheap.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/11/02/forward-your-voicemail-to-slack-with-twilio/">
+            Forward your voicemail to Slack with Twilio
+            <small>02 Nov 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>
