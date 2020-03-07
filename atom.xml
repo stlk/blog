@@ -4,7 +4,7 @@
  <title>Zápisník Josefa Rouska</title>
  <link href="https://blog.rousek.name/atom.xml" rel="self"/>
  <link href="https://blog.rousek.name/"/>
- <updated>2020-03-07T05:39:14-06:00</updated>
+ <updated>2020-03-07T05:41:18-06:00</updated>
  <id>https://blog.rousek.name</id>
  <author>
    <name>Josef Rousek</name>
@@ -345,12 +345,6 @@
    <content type="html">&lt;p&gt;For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.&lt;/p&gt;
 
 &lt;p&gt;I like how Twilio makes things simple for developers so they were my first and only bet. What was I actually trying to achieve? I wanted to have a phone number that I could redirect to my phone and when the traffic gets high enough send caller to voicemail when needed. I also wanted to make a phone calls from that number using SIP phone.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;If you don’t want to bother with setup you can use service I created to do the job for you.&lt;/p&gt;
-
-  &lt;p&gt;&lt;a href=&quot;https://supportline.rousek.name/&quot;&gt;Visit Support line&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
 
 &lt;p&gt;First, create a Twilio account and get voice-enabled phone number. Now we need to connect the dots. Let’s assume &lt;em&gt;+420111111111&lt;/em&gt; is your number and &lt;em&gt;+420999999999&lt;/em&gt; is the number you got from Twilio.&lt;/p&gt;
 
