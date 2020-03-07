@@ -5,10 +5,6 @@ title: Forward your voicemail to Slack with Twilio
 
 This post expands on the previous one I wrote on this topic. Please refer back to [Virtual support phone number with Twilio]({{ site.baseurl }}{% post_url 2018-09-09-virtual-business-phone-number-with-twilio %}) if you're not familiar with Twilio.
 
-> If you don't want to bother with setup you can use a service I created to do the job for you.
->
-> [Visit Support line](https://supportline.rousek.name/)
-
 Following up from last time. We have voice-enabled phone number *+420999999999*. Now We'll setup call forwarding and voicemail for this number.
 
 ### Twilio Functions

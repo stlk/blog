@@ -7,10 +7,6 @@ For a long time I was looking for a simple and, well, cheap solution to isolate 
 
 I like how Twilio makes things simple for developers so they were my first and only bet. What was I actually trying to achieve? I wanted to have a phone number that I could redirect to my phone and when the traffic gets high enough send caller to voicemail when needed. I also wanted to make a phone calls from that number using SIP phone.
 
-> If you don't want to bother with setup you can use service I created to do the job for you.
->
-> [Visit Support line](https://supportline.rousek.name/)
-
 First, create a Twilio account and get voice-enabled phone number. Now we need to connect the dots. Let's assume *+420111111111* is your number and *+420999999999* is the number you got from Twilio.
 
 ### Receiving calls

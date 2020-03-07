@@ -7,3 +7,16 @@ An elegant open source, mobile-first theme for [Jekyll](https://github.com/mojom
 Open sourced under the [MIT license](LICENSE.md).
 
 <3
+
+
+docker run --rm \
+  --volume="$PWD:/srv/jekyll" \
+  -it jekyll/minimal:3.8 \
+  rake site:publish
+
+
+docker run --rm \
+  --volume="$PWD:/srv/jekyll" \
+  -p 127.0.0.1:4000:4000 \
+  -it jekyll/minimal:3.8 \
+  jekyll serve
