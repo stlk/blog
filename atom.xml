@@ -4,13 +4,60 @@
  <title>Zápisník Josefa Rouska</title>
  <link href="https://blog.rousek.name/atom.xml" rel="self"/>
  <link href="https://blog.rousek.name/"/>
- <updated>2020-03-07T05:41:18-06:00</updated>
+ <updated>2020-03-28T07:20:01-05:00</updated>
  <id>https://blog.rousek.name</id>
  <author>
    <name>Josef Rousek</name>
    <email>josef.rousek@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>My year 2019</title>
+   <link href="https://blog.rousek.name/2020/03/28/my-2019/"/>
+   <updated>2020-03-28T00:00:00-05:00</updated>
+   <id>https://blog.rousek.name/2020/03/28/my-2019</id>
+   <content type="html">&lt;p&gt;I’m quite late to the party. Actually I’ve already done my taxes. But since I’m not using Instagram anymore. I decided to post some pictures here to remind me what actually happened.&lt;/p&gt;
+
+&lt;p&gt;We started a year by three week trip to Bali. Our first time outside Europe.&lt;/p&gt;
+
+&lt;p class=&quot;post__image-center&quot;&gt;&lt;img src=&quot;/public/2019-review/bali.jpg&quot; alt=&quot;&quot; class=&quot;post__image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I attended DjangoCon EU 2019: Copenhagen and met wondeful people from Django community namely &lt;a href=&quot;https://twitter.com/K_Vaiders&quot;&gt;Krišjānis Vaiders&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/carltongibson&quot;&gt;Carlton Gibson&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p class=&quot;post__image-center&quot;&gt;&lt;img src=&quot;/public/2019-review/djangocon_cph.jpg&quot; alt=&quot;&quot; class=&quot;post__image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We spent a week at &lt;a href=&quot;http://www.retreat.cz/&quot;&gt;retreat.cz&lt;/a&gt; again. Cottage with fireplace, great internet connectivity in Beskydy mountains. An awesome package!&lt;/p&gt;
+
+&lt;p class=&quot;post__image-center&quot;&gt;&lt;img src=&quot;/public/2019-review/retreat.jpg&quot; alt=&quot;&quot; class=&quot;post__image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Met with friends from local community at PyCon CZ in Ostrava.&lt;/p&gt;
+
+&lt;p class=&quot;post__image-center&quot;&gt;&lt;img src=&quot;/public/2019-review/pycon.jpg&quot; alt=&quot;&quot; class=&quot;post__image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Attended &lt;a href=&quot;https://www.strava.com/activities/2566668380&quot;&gt;Slapský triatlon&lt;/a&gt; for the 2nd time.&lt;/p&gt;
+
+&lt;p class=&quot;post__image-center&quot;&gt;&lt;img src=&quot;/public/2019-review/slapy.jpg&quot; alt=&quot;&quot; class=&quot;post__image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Had a great vacation in Greece.&lt;/p&gt;
+
+&lt;p class=&quot;post__image-center&quot;&gt;&lt;img src=&quot;/public/2019-review/greece.jpg&quot; alt=&quot;&quot; class=&quot;post__image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Five times at protests against Babiš.&lt;/p&gt;
+
+&lt;p class=&quot;post__image-center&quot;&gt;&lt;img src=&quot;/public/2019-review/pochod.jpg&quot; alt=&quot;&quot; class=&quot;post__image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;books&quot;&gt;Books&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/2052.The_Big_Sleep&quot;&gt;The Big Sleep&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://fabiensanglard.net/gebbdoom/&quot;&gt;Game Engine Black Book: DOOM&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jamesclear.com/atomic-habits&quot;&gt;Atomic Habits: An Easy &amp;amp; Proven Way to Build Good Habits &amp;amp; Break Bad Ones&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.goodreads.com/book/show/222146.Masters_of_Doom&quot;&gt;Masters of Doom: How Two Guys Created an Empire and Transformed Pop Culture&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Speed up your reports using materialized views</title>
