@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Pipenv is great &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Pipenv is great" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I wanted to write something about Pipenv for a long time. With the new release, I think it’s a good time to thank authors and maintainers of Pipfile. I started using Pipenv exactly two years ago and haven’t stopped ever since. This post is a writeup of my views from the perspective of app developer.
+
+">
+      <meta content="I wanted to write something about Pipenv for a long time. With the new release, I think it’s a good time to thank authors and maintainers of Pipfile. I started using Pipenv exactly two years ago and haven’t stopped ever since. This post is a writeup of my views from the perspective of app developer.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2020/07/16/pipenv-is-great/" property="og:url">
+    
+    
+      <meta content="2020-07-16T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Pipenv is great</h1>
+  <span class="post-date">16 Jul 2020</span>
+  <p>I wanted to write something about Pipenv for a long time. With the new release, I think it’s a good time to thank authors and maintainers of Pipfile. I started using Pipenv exactly two years ago and haven’t stopped ever since. This post is a writeup of my views from the perspective of app developer.</p>
+
+<h3 id="alternatives-or-not">Alternatives, or not?</h3>
+
+<p>With the release of Django 3.0 Pipenv had a hard time correctly resolving asgiref package, I had to add it to the <code class="highlighter-rouge">Pipfile</code>. I thought this is where it ends so I started looking for alternatives.</p>
+
+<h4 id="venv--pip--pip-tools">venv + pip + pip-tools</h4>
+
+<p>This is just not for me. But it works for <a href="https://twitter.com/AdamChainz/status/1239172374718808065">others</a>.</p>
+
+<h4 id="poetry">Poetry</h4>
+
+<p>Poetry is intended for libraries. But we tried it anyway. However, it doesn’t handle installing <a href="https://github.com/stlk/django-toolbox/">specific</a> packages from git in editable mode. Thanks to <a href="https://testandcode.com/119">Test &amp; Code podcast</a> I discovered that editable installs are a feature of setuptools. I know the fault is <a href="https://github.com/stlk/django-toolbox/">mine</a>, but I just couldn’t make it work.</p>
+
+<h4 id="pyflow">Pyflow</h4>
+
+<p>I only heard about <a href="https://github.com/David-OConnor/pyflow">Pyflow</a> in <a href="https://pythonbytes.fm/episodes/show/186/the-treebeard-will-guard-your-notebook"></a> but it looks promising. The nice thing is that it implements proposals that will most likely make it into python itself. It’s ticking all the boxes for me so I might give it a shot.</p>
+
+<h3 id="still-using-it">Still using it</h3>
+
+<p>Overall Pipenv is the perfect tool for my workflow. Version pinning, loading ENV variables, automatic environment creation and activation are just the chores I don’t want to worry about. I believe that package development and application development are so different tasks that I’m fine with Pipenv not adopting <code class="highlighter-rouge">pyproject.toml</code>. However, I expect that prominent community members communicate what tool should be used for application development. From the outside, it looks like everybody is concerned about packages. Yes, making package development simple is an important goal. But in the end, most of us are just users. We’re building applications. That’s why I love Pipenv.</p>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/03/28/my-2019/">
+            My year 2019
+            <small>28 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/02/01/chrome-80-iframes-and-cookies/">
+            Chrome 80, iframes and cookies
+            <small>01 Feb 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

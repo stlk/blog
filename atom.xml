@@ -4,13 +4,43 @@
  <title>Zápisník Josefa Rouska</title>
  <link href="https://blog.rousek.name/atom.xml" rel="self"/>
  <link href="https://blog.rousek.name/"/>
- <updated>2020-03-28T07:20:01-05:00</updated>
+ <updated>2020-07-16T03:43:33-05:00</updated>
  <id>https://blog.rousek.name</id>
  <author>
    <name>Josef Rousek</name>
    <email>josef.rousek@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Pipenv is great</title>
+   <link href="https://blog.rousek.name/2020/07/16/pipenv-is-great/"/>
+   <updated>2020-07-16T00:00:00-05:00</updated>
+   <id>https://blog.rousek.name/2020/07/16/pipenv-is-great</id>
+   <content type="html">&lt;p&gt;I wanted to write something about Pipenv for a long time. With the new release, I think it’s a good time to thank authors and maintainers of Pipfile. I started using Pipenv exactly two years ago and haven’t stopped ever since. This post is a writeup of my views from the perspective of app developer.&lt;/p&gt;
+
+&lt;h3 id=&quot;alternatives-or-not&quot;&gt;Alternatives, or not?&lt;/h3&gt;
+
+&lt;p&gt;With the release of Django 3.0 Pipenv had a hard time correctly resolving asgiref package, I had to add it to the &lt;code class=&quot;highlighter-rouge&quot;&gt;Pipfile&lt;/code&gt;. I thought this is where it ends so I started looking for alternatives.&lt;/p&gt;
+
+&lt;h4 id=&quot;venv--pip--pip-tools&quot;&gt;venv + pip + pip-tools&lt;/h4&gt;
+
+&lt;p&gt;This is just not for me. But it works for &lt;a href=&quot;https://twitter.com/AdamChainz/status/1239172374718808065&quot;&gt;others&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;poetry&quot;&gt;Poetry&lt;/h4&gt;
+
+&lt;p&gt;Poetry is intended for libraries. But we tried it anyway. However, it doesn’t handle installing &lt;a href=&quot;https://github.com/stlk/django-toolbox/&quot;&gt;specific&lt;/a&gt; packages from git in editable mode. Thanks to &lt;a href=&quot;https://testandcode.com/119&quot;&gt;Test &amp;amp; Code podcast&lt;/a&gt; I discovered that editable installs are a feature of setuptools. I know the fault is &lt;a href=&quot;https://github.com/stlk/django-toolbox/&quot;&gt;mine&lt;/a&gt;, but I just couldn’t make it work.&lt;/p&gt;
+
+&lt;h4 id=&quot;pyflow&quot;&gt;Pyflow&lt;/h4&gt;
+
+&lt;p&gt;I only heard about &lt;a href=&quot;https://github.com/David-OConnor/pyflow&quot;&gt;Pyflow&lt;/a&gt; in &lt;a href=&quot;https://pythonbytes.fm/episodes/show/186/the-treebeard-will-guard-your-notebook&quot;&gt;&lt;/a&gt; but it looks promising. The nice thing is that it implements proposals that will most likely make it into python itself. It’s ticking all the boxes for me so I might give it a shot.&lt;/p&gt;
+
+&lt;h3 id=&quot;still-using-it&quot;&gt;Still using it&lt;/h3&gt;
+
+&lt;p&gt;Overall Pipenv is the perfect tool for my workflow. Version pinning, loading ENV variables, automatic environment creation and activation are just the chores I don’t want to worry about. I believe that package development and application development are so different tasks that I’m fine with Pipenv not adopting &lt;code class=&quot;highlighter-rouge&quot;&gt;pyproject.toml&lt;/code&gt;. However, I expect that prominent community members communicate what tool should be used for application development. From the outside, it looks like everybody is concerned about packages. Yes, making package development simple is an important goal. But in the end, most of us are just users. We’re building applications. That’s why I love Pipenv.&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>My year 2019</title>
