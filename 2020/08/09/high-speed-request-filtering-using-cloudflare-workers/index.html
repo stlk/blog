@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Hi-speed request filtering using Cloudflare Workers &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Hi-speed request filtering using Cloudflare Workers" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the &lt;script&gt; tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.
+
+">
+      <meta content="Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the &lt;script&gt; tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.
+
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/" property="og:url">
+    
+    
+      <meta content="2020-08-09T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Hi-speed request filtering using Cloudflare Workers</h1>
+  <span class="post-date">09 Aug 2020</span>
+  <p>Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the <code class="highlighter-rouge">&lt;script&gt;</code> tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.</p>
+
+<p>Quite a few CDN providers now support running our code on CDN edge. I’m using it to return empty JS file for clients that uninstalled our app. Based on URL <code class="highlighter-rouge">https://my-awesome-app.com/static/main.js?shop=example-client.com</code> I can use Cloudflare Workers and KV store to make this decision in around 1ms.</p>
+
+<p>I wrote following worker and assigned it to <code class="highlighter-rouge">my-awesome-app.com/static/main.js*</code>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="kd">function</span> <span class="nx">getBlockedHostname</span><span class="p">(</span><span class="nx">myshopify_domain</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">myshopify_domain</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="k">await</span> <span class="nx">KV_NAMESPACE</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">myshopify_domain</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">async</span> <span class="kd">function</span> <span class="nx">handleRequest</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URL</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">)</span>
+  <span class="kd">let</span> <span class="nx">myshopify_domain</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">searchParams</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">shop</span><span class="dl">"</span><span class="p">)</span>
+
+  <span class="kd">let</span> <span class="nx">blocked_hostname</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">getBlockedHostname</span><span class="p">(</span><span class="nx">myshopify_domain</span><span class="p">)</span>
+  <span class="c1">// if KV contains key myshopify_domain we'll return empty response instead </span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">blocked_hostname</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="dl">""</span><span class="p">,</span>
+      <span class="p">{</span>
+        <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+          <span class="dl">'</span><span class="s1">content-type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/javascript</span><span class="dl">'</span><span class="p">,</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+  <span class="p">}</span>
+
+  <span class="c1">// else return regular response</span>
+  <span class="k">return</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">fetch</span><span class="dl">'</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">event</span><span class="p">.</span><span class="nx">respondWith</span><span class="p">(</span><span class="nx">handleRequest</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">))</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/07/16/pipenv-is-great/">
+            Pipenv is great
+            <small>16 Jul 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/03/28/my-2019/">
+            My year 2019
+            <small>28 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
+            Speed up your reports using materialized views
+            <small>07 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>
