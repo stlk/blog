@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I’m moving to my own appartment and I want to control lamp and mood light wirelessly. Because I want to extend mood light across whole appartment in future. I have decided to use XBee. Specifically XBee Series 2.
-
 ">
       <meta content="I’m moving to my own appartment and I want to control lamp and mood light wirelessly. Because I want to extend mood light across whole appartment in future. I have decided to use XBee. Specifically XBee Series 2.
-
 " property="og:description">
     
     
@@ -113,7 +111,7 @@ IC - 3 // Digital I/O change detection, enabled for pins D0 and D1<br /></p>
 
 <p>To setup the library open XBee.cs and modify <em>ID of recipient</em> as shown in example below. Serial number of my xBee end device is 0013A200407126AA. (<strong>EDIT:</strong> This is no longer needed)</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private readonly byte[] _txDataBase = new byte[] {
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private readonly byte[] _txDataBase = new byte[] {
     0x0, // frame type
     0x1, // frame id, set to zero for no reply
     // ID of recipient, or use 0xFFFF for broadcast 
@@ -142,6 +140,15 @@ IC - 3 // Digital I/O change detection, enabled for pins D0 and D1<br /></p>
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -154,15 +161,6 @@ IC - 3 // Digital I/O change detection, enabled for pins D0 and D1<br /></p>
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

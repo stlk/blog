@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.
-
 ">
       <meta content="In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.
-
 " property="og:description">
     
     
@@ -70,9 +68,9 @@
   <span class="post-date">11 Aug 2017</span>
   <p>In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.</p>
 
-<p>All we need are two files. <code class="highlighter-rouge">change_form.html</code> template override and <code class="highlighter-rouge">admin.py</code>. Template needs to be located in following structure.</p>
+<p>All we need are two files. <code class="language-plaintext highlighter-rouge">change_form.html</code> template override and <code class="language-plaintext highlighter-rouge">admin.py</code>. Template needs to be located in following structure.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── admin.py
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>├── admin.py
 ├── templates
 │   ├── admin
 │   │   └── catalog(app name)
@@ -80,7 +78,7 @@
 │   │           └── change_form.html
 </code></pre></div></div>
 
-<p>In file <code class="highlighter-rouge">change_form.html</code> we need to override <code class="highlighter-rouge">inline_field_sets</code> block and include single <code class="highlighter-rouge">&lt;input</code> there.</p>
+<p>In file <code class="language-plaintext highlighter-rouge">change_form.html</code> we need to override <code class="language-plaintext highlighter-rouge">inline_field_sets</code> block and include single <code class="language-plaintext highlighter-rouge">&lt;input</code> there.</p>
 
 <figure class="highlight"><pre><code class="language-django" data-lang="django"><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">"admin/change_form.html"</span> <span class="cp">%}</span>
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">inline_field_sets</span> <span class="cp">%}</span>
@@ -93,43 +91,52 @@
 <span class="nt">&lt;/fieldset&gt;</span>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span></code></pre></figure>
 
-<p>Then we need to handle data we receive when the model forms gets submitted. We will do that by overriding <code class="highlighter-rouge">save_model</code> inside our model admin. All we need to do is reach out for <code class="highlighter-rouge">photos_multiple</code> field and save all files that might be there. My <code class="highlighter-rouge">Car</code> model references <code class="highlighter-rouge">photos</code> which has only one <code class="highlighter-rouge">ImageField</code> called <code class="highlighter-rouge">image</code>.</p>
+<p>Then we need to handle data we receive when the model forms gets submitted. We will do that by overriding <code class="language-plaintext highlighter-rouge">save_model</code> inside our model admin. All we need to do is reach out for <code class="language-plaintext highlighter-rouge">photos_multiple</code> field and save all files that might be there. My <code class="language-plaintext highlighter-rouge">Car</code> model references <code class="language-plaintext highlighter-rouge">photos</code> which has only one <code class="language-plaintext highlighter-rouge">ImageField</code> called <code class="language-plaintext highlighter-rouge">image</code>.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">CarAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">CarAdmin</span><span class="p">(</span><span class="n">admin</span><span class="p">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">obj</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">'photos_multiple'</span><span class="p">):</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">photos</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">afile</span><span class="p">)</span></code></pre></figure>
+        <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">request</span><span class="p">.</span><span class="n">FILES</span><span class="p">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">'photos_multiple'</span><span class="p">):</span>
+            <span class="n">obj</span><span class="p">.</span><span class="n">photos</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">afile</span><span class="p">)</span></code></pre></figure>
 
-<p>If everything worked out fine you should see <em>Upload Photos</em> section under inline model. There’s a complete <code class="highlighter-rouge">admin.py</code> below if you need a context.</p>
+<p>If everything worked out fine you should see <em>Upload Photos</em> section under inline model. There’s a complete <code class="language-plaintext highlighter-rouge">admin.py</code> below if you need a context.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Car</span><span class="p">,</span> <span class="n">Photo</span>
 
-<span class="k">class</span> <span class="nc">PhotoInline</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">StackedInline</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PhotoInline</span><span class="p">(</span><span class="n">admin</span><span class="p">.</span><span class="n">StackedInline</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Photo</span>
     <span class="n">extra</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="k">class</span> <span class="nc">CarAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">CarAdmin</span><span class="p">(</span><span class="n">admin</span><span class="p">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
     <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">PhotoInline</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">obj</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">'photos_multiple'</span><span class="p">):</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">photos</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">afile</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">afile</span> <span class="ow">in</span> <span class="n">request</span><span class="p">.</span><span class="n">FILES</span><span class="p">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">'photos_multiple'</span><span class="p">):</span>
+            <span class="n">obj</span><span class="p">.</span><span class="n">photos</span><span class="p">.</span><span class="n">create</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">afile</span><span class="p">)</span>
 
-<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Car</span><span class="p">,</span> <span class="n">CarAdmin</span><span class="p">)</span></code></pre></figure>
+<span class="n">admin</span><span class="p">.</span><span class="n">site</span><span class="p">.</span><span class="n">register</span><span class="p">(</span><span class="n">Car</span><span class="p">,</span> <span class="n">CarAdmin</span><span class="p">)</span></code></pre></figure>
 
-<p>In later post I will probably cover how to configure Travis CI to run <code class="highlighter-rouge">LiveServerTestCase</code>.</p>
+<p>In later post I will probably cover how to configure Travis CI to run <code class="language-plaintext highlighter-rouge">LiveServerTestCase</code>.</p>
 
 </div>
 
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
@@ -145,15 +152,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

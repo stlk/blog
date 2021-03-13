@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I lost interest in electrotechnics almost a year ago. I turned off my binary clock, temperature sensor and left it in a drawer. But before that I bought ESP8266, cheap WiFi microcontroller running lua. It was unreliable and hard to program.
-
 ">
       <meta content="I lost interest in electrotechnics almost a year ago. I turned off my binary clock, temperature sensor and left it in a drawer. But before that I bought ESP8266, cheap WiFi microcontroller running lua. It was unreliable and hard to program.
-
 " property="og:description">
     
     
@@ -88,24 +86,24 @@ Writing 540672 @ 0x0... 540672 <span class="o">(</span>100 %<span class="o">)</s
 Wrote 540672 bytes at 0x0 <span class="k">in </span>13.1 seconds <span class="o">(</span>330.8 kbit/s<span class="o">)</span>...
 Leaving...</code></pre></figure>
 
-<p>After restarting the device you can connect to python terminal using serial console of your choice. For me it is <code class="highlighter-rouge">screen /dev/tty.wchusbserial1420 115200</code>. You can then play around in REPL. I’m using <a href="https://github.com/nodemcu/nodemcu-devkit">NodeMCU</a> so I have blue led on port 16 so the first thing I did was to turn it on.</p>
+<p>After restarting the device you can connect to python terminal using serial console of your choice. For me it is <code class="language-plaintext highlighter-rouge">screen /dev/tty.wchusbserial1420 115200</code>. You can then play around in REPL. I’m using <a href="https://github.com/nodemcu/nodemcu-devkit">NodeMCU</a> so I have blue led on port 16 so the first thing I did was to turn it on.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">machine</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">pin</span><span class="o">.</span><span class="n">low</span><span class="p">()</span> <span class="c1"># pull the pin low to turn on the light</span></code></pre></figure>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="p">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">machine</span><span class="p">.</span><span class="n">Pin</span><span class="p">.</span><span class="n">OUT</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pin</span><span class="p">.</span><span class="n">low</span><span class="p">()</span> <span class="c1"># pull the pin low to turn on the light</span></code></pre></figure>
 
 <p>To develop more complex applications it would be great to have a way to upload files to the module. Luckily there’s tool called <a href="https://github.com/micropython/webrepl">webrepl_cli</a>.</p>
 
-<p>Lets create file called <code class="highlighter-rouge">light.py</code> with following content.</p>
+<p>Lets create file called <code class="language-plaintext highlighter-rouge">light.py</code> with following content.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">machine</span>
-<span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+<span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="p">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">machine</span><span class="p">.</span><span class="n">Pin</span><span class="p">.</span><span class="n">OUT</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">on</span><span class="p">():</span>
-    <span class="n">pin</span><span class="o">.</span><span class="n">low</span><span class="p">()</span>
+    <span class="n">pin</span><span class="p">.</span><span class="n">low</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">off</span><span class="p">():</span>
-    <span class="n">pin</span><span class="o">.</span><span class="n">high</span><span class="p">()</span></code></pre></figure>
+    <span class="n">pin</span><span class="p">.</span><span class="n">high</span><span class="p">()</span></code></pre></figure>
 
 <p>And upload it to the device using following command.</p>
 
@@ -122,22 +120,22 @@ There's a chance that the command fails. Thats because webrepl might not be enab
 <p>You can then use the file like every other module.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">light</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">light</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">light</span><span class="o">.</span><span class="n">off</span><span class="p">()</span></code></pre></figure>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">light</span><span class="p">.</span><span class="n">on</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">light</span><span class="p">.</span><span class="n">off</span><span class="p">()</span></code></pre></figure>
 
 <p>Micropython supports various protocols. Eg. <a href="http://docs.micropython.org/en/latest/esp8266/esp8266/quickref.html#onewire-driver">onewire</a>, <a href="http://docs.micropython.org/en/latest/esp8266/esp8266/quickref.html#neopixel-driver">neopixel</a> and <a href="http://docs.micropython.org/en/latest/esp8266/esp8266_contents.html">others</a>. I had some leftover DS18B20 temperature sensor and neopixel LED so I combined them together and created WiFi thermometer with RGB status LED.</p>
 
 <p>Let’s start with the temperature sensor.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># the sensor is on GPIO14
-</span><span class="n">ds</span> <span class="o">=</span> <span class="n">onewire</span><span class="o">.</span><span class="n">DS18B20</span><span class="p">(</span><span class="n">onewire</span><span class="o">.</span><span class="n">OneWire</span><span class="p">(</span><span class="n">pin</span><span class="p">))</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pin</span> <span class="o">=</span> <span class="n">machine</span><span class="p">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># the sensor is on GPIO14
+</span><span class="n">ds</span> <span class="o">=</span> <span class="n">onewire</span><span class="p">.</span><span class="n">DS18B20</span><span class="p">(</span><span class="n">onewire</span><span class="p">.</span><span class="n">OneWire</span><span class="p">(</span><span class="n">pin</span><span class="p">))</span>
 
-<span class="n">roms</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span> <span class="c1"># scan for devices on the bus
+<span class="n">roms</span> <span class="o">=</span> <span class="n">ds</span><span class="p">.</span><span class="n">scan</span><span class="p">()</span> <span class="c1"># scan for devices on the bus
 </span><span class="k">print</span><span class="p">(</span><span class="s">'found devices:'</span><span class="p">,</span> <span class="n">roms</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s">'temperature:'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">' '</span><span class="p">)</span>
-<span class="n">ds</span><span class="o">.</span><span class="n">convert_temp</span><span class="p">()</span> <span class="c1"># tell the sensor to start reading temperature
-</span><span class="n">time</span><span class="o">.</span><span class="n">sleep_ms</span><span class="p">(</span><span class="mi">750</span><span class="p">)</span> <span class="c1"># sensor needs some time read the temperature
-</span><span class="n">temp</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">read_temp</span><span class="p">(</span><span class="n">roms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># we know we only have one sensor connected
+<span class="n">ds</span><span class="p">.</span><span class="n">convert_temp</span><span class="p">()</span> <span class="c1"># tell the sensor to start reading temperature
+</span><span class="n">time</span><span class="p">.</span><span class="n">sleep_ms</span><span class="p">(</span><span class="mi">750</span><span class="p">)</span> <span class="c1"># sensor needs some time read the temperature
+</span><span class="n">temp</span> <span class="o">=</span> <span class="n">ds</span><span class="p">.</span><span class="n">read_temp</span><span class="p">(</span><span class="n">roms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># we know we only have one sensor connected
 </span><span class="k">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span></code></pre></figure>
 
 <p>The NeoPixel is even simpler. I created <a href="https://github.com/stlk/micropython/blob/master/temperature/status.py">module</a> that allows me to set the color using just one method call.</p>
@@ -159,10 +157,10 @@ np.write<span class="o">()</span></code></pre></figure>
 </span><span class="kn">from</span> <span class="nn">umqtt.simple</span> <span class="kn">import</span> <span class="n">MQTTClient</span>
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">MQTTClient</span><span class="p">(</span><span class="s">'umqtt_client'</span><span class="p">,</span> <span class="s">'example.com'</span><span class="p">)</span>
-<span class="n">c</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
-<span class="n">c</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s">'status'</span><span class="p">,</span> <span class="n">b</span><span class="s">'hi'</span><span class="p">)</span> <span class="c1"># send message "hi" to channel "status"
+<span class="n">c</span><span class="p">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="n">c</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="sa">b</span><span class="s">'status'</span><span class="p">,</span> <span class="sa">b</span><span class="s">'hi'</span><span class="p">)</span> <span class="c1"># send message "hi" to channel "status"
 </span>
-<span class="n">c</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s">'temp'</span><span class="p">,</span> <span class="n">b</span><span class="s">'</span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">temp</span><span class="p">,))</span> <span class="c1"># send temperature reading to channel "temp"</span></code></pre></figure>
+<span class="n">c</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="sa">b</span><span class="s">'temp'</span><span class="p">,</span> <span class="sa">b</span><span class="s">'%s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">temp</span><span class="p">,))</span> <span class="c1"># send temperature reading to channel "temp"</span></code></pre></figure>
 
 <p>I really enjoyed diving back to electrotechnics especially with python as a language of choice. You can find the finished project on <a href="https://github.com/stlk/micropython/tree/master/temperature">Github</a>.</p>
 
@@ -171,6 +169,15 @@ np.write<span class="o">()</span></code></pre></figure>
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
@@ -186,15 +193,6 @@ np.write<span class="o">()</span></code></pre></figure>
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

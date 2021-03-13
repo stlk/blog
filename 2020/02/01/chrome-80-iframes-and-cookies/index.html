@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to SameSite=Lax and a relatively new SameSite=None option.
-
 ">
       <meta content="Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to SameSite=Lax and a relatively new SameSite=None option.
-
 " property="og:description">
     
     
@@ -68,9 +66,9 @@
       <div class="post">
   <h1>Chrome 80, iframes and cookies</h1>
   <span class="post-date">01 Feb 2020</span>
-  <p>Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to <a href="https://web.dev/samesite-cookies-explained/">SameSite=Lax</a> and a relatively new <code class="highlighter-rouge">SameSite=None</code> option.</p>
+  <p>Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to <a href="https://web.dev/samesite-cookies-explained/">SameSite=Lax</a> and a relatively new <code class="language-plaintext highlighter-rouge">SameSite=None</code> option.</p>
 
-<p>I’m building Shopify apps using Django. The app is embedded inside stores admin meaning <a href="https://help.shopify.com/en/api/guides/samesite-cookies">I can’t use Strict or Lax</a>. Django did the same thing and on <a href="https://docs.djangoproject.com/en/dev/releases/2.1/#django-contrib-sessions">August 2018</a> added <code class="highlighter-rouge">SESSION_COOKIE_SAMESITE</code> which defaults to Lax. The way I see it changing defaults on the server-side is a good step. However, this change on the browser side came just too quickly for the ecosystem to adapt. The frameworks haven’t <a href="https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-SESSION_COOKIE_SAMESITE">caught up yet</a> and even if they did they would have to consider <a href="https://www.chromium.org/updates/same-site/incompatible-clients">incompatible browsers</a>.</p>
+<p>I’m building Shopify apps using Django. The app is embedded inside stores admin meaning <a href="https://help.shopify.com/en/api/guides/samesite-cookies">I can’t use Strict or Lax</a>. Django did the same thing and on <a href="https://docs.djangoproject.com/en/dev/releases/2.1/#django-contrib-sessions">August 2018</a> added <code class="language-plaintext highlighter-rouge">SESSION_COOKIE_SAMESITE</code> which defaults to Lax. The way I see it changing defaults on the server-side is a good step. However, this change on the browser side came just too quickly for the ecosystem to adapt. The frameworks haven’t <a href="https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-SESSION_COOKIE_SAMESITE">caught up yet</a> and even if they did they would have to consider <a href="https://www.chromium.org/updates/same-site/incompatible-clients">incompatible browsers</a>.</p>
 
 <p>I and <a href="https://github.com/tystar86">tystar</a> wrote a <a href="https://github.com/stlk/django-toolbox/blob/master/django_toolbox/cookies_middleware.py">middleware</a> for Django 2.2.x and 3.x to handle this. This middleware should be placed before any other middleware.</p>
 
@@ -86,6 +84,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -98,15 +105,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

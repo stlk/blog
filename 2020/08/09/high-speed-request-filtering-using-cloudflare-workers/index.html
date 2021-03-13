@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the &lt;script&gt; tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.
-
 ">
       <meta content="Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the &lt;script&gt; tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.
-
 " property="og:description">
     
     
@@ -68,11 +66,11 @@
       <div class="post">
   <h1>Hi-speed request filtering using Cloudflare Workers</h1>
   <span class="post-date">09 Aug 2020</span>
-  <p>Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the <code class="highlighter-rouge">&lt;script&gt;</code> tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.</p>
+  <p>Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.</p>
 
-<p>Quite a few CDN providers now support running our code on CDN edge. I’m using it to return empty JS file for clients that uninstalled our app. Based on URL <code class="highlighter-rouge">https://my-awesome-app.com/static/main.js?shop=example-client.com</code> I can use Cloudflare Workers and KV store to make this decision in around 1ms.</p>
+<p>Quite a few CDN providers now support running our code on CDN edge. I’m using it to return empty JS file for clients that uninstalled our app. Based on URL <code class="language-plaintext highlighter-rouge">https://my-awesome-app.com/static/main.js?shop=example-client.com</code> I can use Cloudflare Workers and KV store to make this decision in around 1ms.</p>
 
-<p>I wrote following worker and assigned it to <code class="highlighter-rouge">my-awesome-app.com/static/main.js*</code>.</p>
+<p>I wrote following worker and assigned it to <code class="language-plaintext highlighter-rouge">my-awesome-app.com/static/main.js*</code>.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="kd">function</span> <span class="nx">getBlockedHostname</span><span class="p">(</span><span class="nx">myshopify_domain</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">myshopify_domain</span><span class="p">)</span> <span class="p">{</span>
@@ -114,6 +112,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
@@ -126,15 +133,6 @@
           <a href="/2020/03/28/my-2019/">
             My year 2019
             <small>28 Mar 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/07/speed-up-reports-using-materialized-views/">
-            Speed up your reports using materialized views
-            <small>07 Mar 2020</small>
           </a>
         </h3>
       </li>

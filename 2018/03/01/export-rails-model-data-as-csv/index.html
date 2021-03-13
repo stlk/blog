@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I needed to allow my customer to export a bunch of tables. After some digging, I found a pretty neat solution.
-
 ">
       <meta content="I needed to allow my customer to export a bunch of tables. After some digging, I found a pretty neat solution.
-
 " property="og:description">
     
     
@@ -70,7 +68,7 @@
   <span class="post-date">01 Mar 2018</span>
   <p>I needed to allow my customer to export a bunch of tables. After some digging, I found a pretty neat solution.</p>
 
-<p>Let’s say we have a <code class="highlighter-rouge">Customer</code>, <code class="highlighter-rouge">Order</code> and <code class="highlighter-rouge">OrderItem</code> model. We want to allow the user to download exported data as CSV in a single zip file. To generate CSV from the model we can use following code.</p>
+<p>Let’s say we have a <code class="language-plaintext highlighter-rouge">Customer</code>, <code class="language-plaintext highlighter-rouge">Order</code> and <code class="language-plaintext highlighter-rouge">OrderItem</code> model. We want to allow the user to download exported data as CSV in a single zip file. To generate CSV from the model we can use following code.</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">class</span> <span class="nc">Customer</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
 
@@ -87,13 +85,13 @@
   <span class="k">end</span>
 <span class="k">end</span></code></pre></figure>
 
-<p>Then we need only to package up the files in <code class="highlighter-rouge">zip</code> file and send it to the user.</p>
+<p>Then we need only to package up the files in <code class="language-plaintext highlighter-rouge">zip</code> file and send it to the user.</p>
 
-<p>We will use a gem called <code class="highlighter-rouge">rubyzip</code>. To instal it add this to your <code class="highlighter-rouge">Gemfile</code>:</p>
+<p>We will use a gem called <code class="language-plaintext highlighter-rouge">rubyzip</code>. To instal it add this to your <code class="language-plaintext highlighter-rouge">Gemfile</code>:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">gem</span> <span class="s1">'rubyzip'</span><span class="p">,</span> <span class="ss">require: </span><span class="s1">'zip'</span></code></pre></figure>
 
-<p>We can write text files directly to an archived file using <code class="highlighter-rouge">puts</code>, so all we need to do is to use <code class="highlighter-rouge">Tempfile</code> as our backing file.</p>
+<p>We can write text files directly to an archived file using <code class="language-plaintext highlighter-rouge">puts</code>, so all we need to do is to use <code class="language-plaintext highlighter-rouge">Tempfile</code> as our backing file.</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">module</span> <span class="nn">Admin</span>
   <span class="k">class</span> <span class="nc">ExportsController</span> <span class="o">&lt;</span> <span class="no">Admin</span><span class="o">::</span><span class="no">ApplicationController</span>
@@ -135,6 +133,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -147,15 +154,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      Websockets on Django and React &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="Websockets on Django and React" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="For our new Shopify app I needed to create a websocket server that broadcasts a message when model is updated. I ended up with this solution. Start with installing channels and channels-redis to you Django app.
+">
+      <meta content="For our new Shopify app I needed to create a websocket server that broadcasts a message when model is updated. I ended up with this solution. Start with installing channels and channels-redis to you Django app.
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2021/03/13/websockets-on-django-and-react/" property="og:url">
+    
+    
+      <meta content="2021-03-13T00:00:00-06:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>Websockets on Django and React</h1>
+  <span class="post-date">13 Mar 2021</span>
+  <p>For our new Shopify app I needed to create a websocket server that broadcasts a message when model is updated. I ended up with this solution. Start with installing <code class="language-plaintext highlighter-rouge">channels</code> and <code class="language-plaintext highlighter-rouge">channels-redis</code> to you Django app.</p>
+
+<p>Add <code class="language-plaintext highlighter-rouge">channels</code> to <code class="language-plaintext highlighter-rouge">INSTALLED_APPS</code> and configure <code class="language-plaintext highlighter-rouge">ASGI_APPLICATION</code> and <code class="language-plaintext highlighter-rouge">CHANNEL_LAYERS</code>.</p>
+
+<p>myproject/settings.py</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">...</span>
+    <span class="s">"channels"</span><span class="p">,</span>
+    <span class="p">...</span>
+<span class="p">]</span>
+
+<span class="n">WSGI_APPLICATION</span> <span class="o">=</span> <span class="s">"myproject.wsgi.application"</span>
+<span class="n">ASGI_APPLICATION</span> <span class="o">=</span> <span class="s">"myproject.asgi.application"</span>
+
+<span class="n">CHANNEL_LAYERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"default"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"BACKEND"</span><span class="p">:</span> <span class="s">"channels_redis.core.RedisChannelLayer"</span><span class="p">,</span>
+        <span class="s">"CONFIG"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"hosts"</span><span class="p">:</span> <span class="p">[</span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"REDIS_URL"</span><span class="p">)],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><a href="https://channels.readthedocs.io/en/latest/deploying.html#configuring-the-asgi-application">Setup the ASGI</a> application so it’s production ready. Based on <a href="https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/">How to deploy with ASGI</a> I replaced waitress with daphne.</p>
+
+<p>collection_sorting/asgi.py</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">django.core.asgi</span> <span class="kn">import</span> <span class="n">get_asgi_application</span>
+
+<span class="c1"># Fetch Django ASGI application early to ensure AppRegistry is populated
+# before importing consumers and AuthMiddlewareStack that may import ORM
+# models.
+</span><span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">"DJANGO_SETTINGS_MODULE"</span><span class="p">,</span> <span class="s">"myproject.settings"</span><span class="p">)</span>
+<span class="n">django_asgi_app</span> <span class="o">=</span> <span class="n">get_asgi_application</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">channels.auth</span> <span class="kn">import</span> <span class="n">AuthMiddlewareStack</span>
+<span class="kn">from</span> <span class="nn">channels.routing</span> <span class="kn">import</span> <span class="n">ProtocolTypeRouter</span><span class="p">,</span> <span class="n">URLRouter</span>
+
+<span class="kn">import</span> <span class="nn">myapp.routing</span>
+
+<span class="n">application</span> <span class="o">=</span> <span class="n">ProtocolTypeRouter</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s">"http"</span><span class="p">:</span> <span class="n">django_asgi_app</span><span class="p">,</span>
+        <span class="s">"websocket"</span><span class="p">:</span> <span class="n">AuthMiddlewareStack</span><span class="p">(</span><span class="n">URLRouter</span><span class="p">(</span><span class="n">myapp</span><span class="p">.</span><span class="n">routing</span><span class="p">.</span><span class="n">websocket_urlpatterns</span><span class="p">)),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Create <code class="language-plaintext highlighter-rouge">routing.py</code> to hook up the consumer.</p>
+
+<p>myapp/routing.py</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">re_path</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">consumers</span>
+
+<span class="n">websocket_urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># We use re_path() due to limitations in URLRouter.
+</span>    <span class="n">re_path</span><span class="p">(</span><span class="sa">r</span><span class="s">"ws/job-status/$"</span><span class="p">,</span> <span class="n">consumers</span><span class="p">.</span><span class="n">JobStatusConsumer</span><span class="p">.</span><span class="n">as_asgi</span><span class="p">()),</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>What is a consumer? This is a description form Django Channels documentation.</p>
+
+<blockquote>
+  <p>When Django accepts an HTTP request, it consults the root URLconf to lookup a view function, and then calls the view function to handle the request. Similarly, when Channels accepts a WebSocket connection, it consults the root routing configuration to lookup a consumer, and then calls various functions on the consumer to handle events from the connection.</p>
+</blockquote>
+
+<p>This consumer accepts connections when user is signed in and adds them to their own group. When it receives <code class="language-plaintext highlighter-rouge">propagate_status</code> message it forwards it to all subscribers.</p>
+
+<p>myapp/consumers.py</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">channels.generic.websocket</span> <span class="kn">import</span> <span class="n">AsyncWebsocketConsumer</span>
+
+
+<span class="k">class</span> <span class="nc">JobStatusConsumer</span><span class="p">(</span><span class="n">AsyncWebsocketConsumer</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">scope</span><span class="p">[</span><span class="s">"user"</span><span class="p">].</span><span class="n">is_anonymous</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">scope</span><span class="p">[</span><span class="s">"user"</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"job-posting-</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">user</span><span class="p">.</span><span class="nb">id</span><span class="si">}</span><span class="s">"</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="p">.</span><span class="n">channel_layer</span><span class="p">.</span><span class="n">group_add</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">group_name</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">channel_name</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="p">.</span><span class="n">accept</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">propagate_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">.</span><span class="n">scope</span><span class="p">[</span><span class="s">"user"</span><span class="p">].</span><span class="n">is_anonymous</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s">"message"</span><span class="p">]</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">text_data</span><span class="o">=</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Now in model’s save method we call <code class="language-plaintext highlighter-rouge">group_send</code> to publish the update.</p>
+
+<p>myapp/models.py</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">channels.layers</span>
+<span class="kn">from</span> <span class="nn">asgiref.sync</span> <span class="kn">import</span> <span class="n">async_to_sync</span>
+
+<span class="k">class</span> <span class="nc">JobPosting</span><span class="p">(</span><span class="n">models</span><span class="p">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="p">...</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">().</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">channel_layer</span> <span class="o">=</span> <span class="n">channels</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">get_channel_layer</span><span class="p">()</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="sa">f</span><span class="s">"job-posting-</span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">user</span><span class="p">.</span><span class="nb">id</span><span class="si">}</span><span class="s">"</span>
+    <span class="n">async_to_sync</span><span class="p">(</span><span class="n">channel_layer</span><span class="p">.</span><span class="n">group_send</span><span class="p">)(</span>
+        <span class="n">group</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s">"type"</span><span class="p">:</span> <span class="s">"propagate_status"</span><span class="p">,</span>
+            <span class="s">"message"</span><span class="p">:</span> <span class="p">{</span><span class="s">"id"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span> <span class="s">"state"</span><span class="p">:</span> <span class="bp">self</span><span class="p">.</span><span class="n">state</span><span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now when everything is wired up I created very simple client to make sure messages are being received.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">updatesSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="s2">`ws://</span><span class="p">${</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="p">}</span><span class="s2">/ws/job-status/`</span><span class="p">);</span>
+
+<span class="nx">updatesSocket</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">updatesSocket</span><span class="p">.</span><span class="nx">onclose</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Chat socket closed unexpectedly</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>When the server side was working I used <code class="language-plaintext highlighter-rouge">react-use-websocket</code> to add live updates to React.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">useWebSocket</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-use-websocket</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">List</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">data</span><span class="p">,</span> <span class="nx">setData</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">([]);</span>
+
+  <span class="nx">useWebSocket</span><span class="p">(</span><span class="s2">`wss://</span><span class="p">${</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">host</span><span class="p">}</span><span class="s2">/ws/job-status/`</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">onMessage</span><span class="p">:</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+      <span class="nx">setData</span><span class="p">((</span><span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">item</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">message</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">item</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="nx">message</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="nx">item</span><span class="p">;</span>
+        <span class="p">}));</span>
+    <span class="p">},</span>
+    <span class="na">shouldReconnect</span><span class="p">:</span> <span class="p">(</span><span class="nx">closeEvent</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">});</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;&lt;</span><span class="sr">/div&gt;</span><span class="se">)</span><span class="err">;
+</span><span class="p">}</span>
+
+</code></pre></div></div>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
+            Hi-speed request filtering using Cloudflare Workers
+            <small>09 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/07/16/pipenv-is-great/">
+            Pipenv is great
+            <small>16 Jul 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/03/28/my-2019/">
+            My year 2019
+            <small>28 Mar 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-485461-11');
+    </script>
+
+
+
+  </body>
+</html>

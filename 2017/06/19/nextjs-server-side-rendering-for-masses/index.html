@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="Recently I had opportunity to use Next.js on a client project. I already heard how much work it saves but I just couldn’t believe how simple it was.
-
 ">
       <meta content="Recently I had opportunity to use Next.js on a client project. I already heard how much work it saves but I just couldn’t believe how simple it was.
-
 " property="og:description">
     
     
@@ -72,13 +70,13 @@
 
 <p>My requirements were following. Server rendered react application with jest as testing framework and <a href="https://www.styled-components.com">styled-components</a> as the <em>best</em> way to manage styles. If you aren’t interested in these be sure to checkout <a href="https://zeit.co/blog/next2#more-examples">blogpost announcing version 2.0</a> of Next.js. There’s a bunch of examples showing integrations with other libraries.</p>
 
-<p>To grasp the basics I followed tutorial on <a href="https://learnnextjs.com">Learning Next.js</a>. It got me through some early surprises. Eg. how route resolving is done on the server when using custom routes. But first lets take a look on how you define custom route. Magic is hidden behind the <code class="highlighter-rouge">as</code> attribute and everything is handled automatically.</p>
+<p>To grasp the basics I followed tutorial on <a href="https://learnnextjs.com">Learning Next.js</a>. It got me through some early surprises. Eg. how route resolving is done on the server when using custom routes. But first lets take a look on how you define custom route. Magic is hidden behind the <code class="language-plaintext highlighter-rouge">as</code> attribute and everything is handled automatically.</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">Link</span> <span class="k">as</span><span class="o">=</span><span class="p">{</span><span class="s2">`/post/</span><span class="p">${</span><span class="nx">show</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span> <span class="nx">href</span><span class="o">=</span><span class="p">{</span><span class="s2">`/post?id=</span><span class="p">${</span><span class="nx">show</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">}</span><span class="o">&gt;</span>
   <span class="o">&lt;</span><span class="nx">a</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">show</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/a</span><span class="err">&gt;
 </span><span class="o">&lt;</span><span class="sr">/Link&gt;</span></code></pre></figure>
 
-<p>On the other hand server configuration is done on, well, server level. We need to manually define a route and then tell <code class="highlighter-rouge">next.js</code> which page is it. You can use plethora of nodejs servers as backend, but I’ve used the default one which is <code class="highlighter-rouge">express</code>.</p>
+<p>On the other hand server configuration is done on, well, server level. We need to manually define a route and then tell <code class="language-plaintext highlighter-rouge">next.js</code> which page is it. You can use plethora of nodejs servers as backend, but I’ve used the default one which is <code class="language-plaintext highlighter-rouge">express</code>.</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">server</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">/post/:id</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">actualPage</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">/post</span><span class="dl">'</span><span class="p">;</span>
@@ -90,7 +88,7 @@
 
 <h3 id="styled-components">Styled components</h3>
 
-<p>First library I want to integrate is <a href="https://github.com/zeit/next.js/tree/master/examples/with-styled-components">styled-components</a> integrating this library is pretty simple. Just copy <code class="highlighter-rouge">pages/_document.js</code> from example repo. To not break server side rendering we need to use babel plugin called <code class="highlighter-rouge">babel-plugin-styled-components</code>. Don’t forget to include <code class="highlighter-rouge">.babelrc</code>, I prefer to keep my babel configuration in <code class="highlighter-rouge">package.json</code>.</p>
+<p>First library I want to integrate is <a href="https://github.com/zeit/next.js/tree/master/examples/with-styled-components">styled-components</a> integrating this library is pretty simple. Just copy <code class="language-plaintext highlighter-rouge">pages/_document.js</code> from example repo. To not break server side rendering we need to use babel plugin called <code class="language-plaintext highlighter-rouge">babel-plugin-styled-components</code>. Don’t forget to include <code class="language-plaintext highlighter-rouge">.babelrc</code>, I prefer to keep my babel configuration in <code class="language-plaintext highlighter-rouge">package.json</code>.</p>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
   </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello-next"</span><span class="p">,</span><span class="w">
@@ -116,9 +114,9 @@
 
 <h3 id="tests-using-jest">Tests using jest</h3>
 
-<p>To set up jest all you need to do is to add <code class="highlighter-rouge">env</code> to <a href="https://github.com/stlk/next-workshop/blob/master/package.json#L33">babel presets</a>.</p>
+<p>To set up jest all you need to do is to add <code class="language-plaintext highlighter-rouge">env</code> to <a href="https://github.com/stlk/next-workshop/blob/master/package.json#L33">babel presets</a>.</p>
 
-<p>I also have a <a href="https://github.com/stlk/next-workshop/blob/master/test.js">script</a> that will automatically disable <code class="highlighter-rouge">watch</code> when run on CI server.</p>
+<p>I also have a <a href="https://github.com/stlk/next-workshop/blob/master/test.js">script</a> that will automatically disable <code class="language-plaintext highlighter-rouge">watch</code> when run on CI server.</p>
 
 <h3 id="want-to-learn-more">Want to learn more?</h3>
 
@@ -136,6 +134,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -148,15 +155,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

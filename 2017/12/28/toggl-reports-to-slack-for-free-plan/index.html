@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I wanted to expose a bit of insight to my team. As we work in kind of upredictable manner we could use a report on who worked a day before. We use Trello as our time tracking tool. It supports weekly email reports but the price for this feature was a bit expensive for us. So I did a quick research and found Trello report script that does exactly what I wanted. It outputs markdown to STDOUT.
-
 ">
       <meta content="I wanted to expose a bit of insight to my team. As we work in kind of upredictable manner we could use a report on who worked a day before. We use Trello as our time tracking tool. It supports weekly email reports but the price for this feature was a bit expensive for us. So I did a quick research and found Trello report script that does exactly what I wanted. It outputs markdown to STDOUT.
-
 " property="og:description">
     
     
@@ -90,7 +88,7 @@
 
 <p>I’ve set up a cron job to run the script every day at 10:00.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00 09 * * * cd /home/ubuntu/toggl-report/ &amp;&amp; /home/ubuntu/toggl-report/env/bin/dotenv-run /home/ubuntu/toggl-report/env/bin/python /home/ubuntu/toggl-report/run-report.py &gt;&gt; /home/ubuntu/toggl-report/log.log 2&gt;&amp;1
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00 09 * * * cd /home/ubuntu/toggl-report/ &amp;&amp; /home/ubuntu/toggl-report/env/bin/dotenv-run /home/ubuntu/toggl-report/env/bin/python /home/ubuntu/toggl-report/run-report.py &gt;&gt; /home/ubuntu/toggl-report/log.log 2&gt;&amp;1
 </code></pre></div></div>
 
 <p>The project is available on https://github.com/stlk/slack-toggl-report</p>
@@ -100,6 +98,15 @@
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
@@ -115,15 +122,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

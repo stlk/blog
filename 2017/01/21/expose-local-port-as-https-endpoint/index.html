@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I recently needed to expose local port of my dev machine to the internet. I realized I could combine SSH port forwarding, nginx and letsencrypt. Ubuntu 16.04 is my OS of choice on the server.
-
 ">
       <meta content="I recently needed to expose local port of my dev machine to the internet. I realized I could combine SSH port forwarding, nginx and letsencrypt. Ubuntu 16.04 is my OS of choice on the server.
-
 " property="og:description">
     
     
@@ -82,18 +80,18 @@
 
 <h2 id="getting-the-certificate">Getting the certificate</h2>
 
-<p>I followed tutorial written by <a href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04">Mitchell Anicas</a>. If you get lost on a way please refer back to it. First, let’s install <code class="highlighter-rouge">nginx</code> and <code class="highlighter-rouge">letsencrypt</code>.</p>
+<p>I followed tutorial written by <a href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04">Mitchell Anicas</a>. If you get lost on a way please refer back to it. First, let’s install <code class="language-plaintext highlighter-rouge">nginx</code> and <code class="language-plaintext highlighter-rouge">letsencrypt</code>.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>apt-get update
 <span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>nginx letsencrypt</code></pre></figure>
 
-<p>Letsencrypt needs a way to verify that you control the domain name by visiting <code class="highlighter-rouge">http://yourserver.example.com/.well-known/SOMETHING</code>. We will use Webroot plugin to automatically create the file for us. Depending on your nginx configuration, you may need to explicitly allow access to the <code class="highlighter-rouge">/.well-known</code> directory.</p>
+<p>Letsencrypt needs a way to verify that you control the domain name by visiting <code class="language-plaintext highlighter-rouge">http://yourserver.example.com/.well-known/SOMETHING</code>. We will use Webroot plugin to automatically create the file for us. Depending on your nginx configuration, you may need to explicitly allow access to the <code class="language-plaintext highlighter-rouge">/.well-known</code> directory.</p>
 
 <p>Open default nginx site config:</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>nano /etc/nginx/sites-available/default</code></pre></figure>
 
-<p>Inside the <code class="highlighter-rouge">server</code> block, add new location:</p>
+<p>Inside the <code class="language-plaintext highlighter-rouge">server</code> block, add new location:</p>
 
 <figure class="highlight"><pre><code class="language-nginx" data-lang="nginx">    <span class="k">location</span> <span class="p">~</span> <span class="sr">/.well-known</span> <span class="p">{</span>
         <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
@@ -121,8 +119,8 @@
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>nano /etc/nginx/snippets/ssl-params.conf</code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-nginx" data-lang="nginx"><span class="c1"># from https://cipherli.st/ and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
-</span>
+<figure class="highlight"><pre><code class="language-nginx" data-lang="nginx"><span class="c1"># from https://cipherli.st/ and https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html</span>
+
 <span class="k">ssl_protocols</span> <span class="s">TLSv1</span> <span class="s">TLSv1.1</span> <span class="s">TLSv1.2</span><span class="p">;</span>
 <span class="k">ssl_prefer_server_ciphers</span> <span class="no">on</span><span class="p">;</span>
 <span class="k">ssl_ciphers</span> <span class="s">"EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH"</span><span class="p">;</span>
@@ -139,7 +137,7 @@
 
 <span class="k">ssl_dhparam</span> <span class="n">/etc/ssl/certs/dhparam.pem</span><span class="p">;</span></code></pre></figure>
 
-<p>Be careful about <code class="highlighter-rouge">add_header X-Frame-Options DENY;</code>, this setting will prevent your site from being embedded in <code class="highlighter-rouge">IFRAME</code>. Last task left for us before creating a new tunnel is site configurations. Replace <code class="highlighter-rouge">yourserver.example.com</code> with your own domain name. Taking port <code class="highlighter-rouge">80</code> just for port forwarding is not really helpful with nginx installed, let’s use port <code class="highlighter-rouge">1111</code> instead.</p>
+<p>Be careful about <code class="language-plaintext highlighter-rouge">add_header X-Frame-Options DENY;</code>, this setting will prevent your site from being embedded in <code class="language-plaintext highlighter-rouge">IFRAME</code>. Last task left for us before creating a new tunnel is site configurations. Replace <code class="language-plaintext highlighter-rouge">yourserver.example.com</code> with your own domain name. Taking port <code class="language-plaintext highlighter-rouge">80</code> just for port forwarding is not really helpful with nginx installed, let’s use port <code class="language-plaintext highlighter-rouge">1111</code> instead.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">sudo </span>nano /etc/nginx/sites-available/default</code></pre></figure>
 
@@ -170,7 +168,7 @@
     <span class="p">}</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Reload the nginx configuration and try visiting your server with <code class="highlighter-rouge">https</code>. You should see green lock and <code class="highlighter-rouge">Bad Gateway</code>.</p>
+<p>Reload the nginx configuration and try visiting your server with <code class="language-plaintext highlighter-rouge">https</code>. You should see green lock and <code class="language-plaintext highlighter-rouge">Bad Gateway</code>.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>ssh <span class="nt">-N</span> user@yourserver.example.com <span class="nt">-R</span> 1111:localhost:8000</code></pre></figure>
 
@@ -187,6 +185,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -199,15 +206,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

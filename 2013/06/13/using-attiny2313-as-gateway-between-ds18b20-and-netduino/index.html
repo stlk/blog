@@ -74,7 +74,7 @@
 
 <p>The program is a bit more interesting but its fairly simple. It waits for character “t” followed by “1” or “2” and replies with it’s identificator(t1 or t2) followed by LSB and MSB of temperature. I then convert temperature to float using following statement.</p>
 
-<p><code class="highlighter-rouge">float temp = ((short)((MSB &lt;&lt; 8) | LSB)) / 16F;</code></p>
+<p><code class="language-plaintext highlighter-rouge">float temp = ((short)((MSB &lt;&lt; 8) | LSB)) / 16F;</code></p>
 
 <p>I’m using minimal implementation of OneWire protocol originally written by <a href="http://walda.starhill.org/elektronika-avr-gcc-stripky.html" title="Walda's website">Walda</a> with added CRC verification. This implementation requires you to use separate pin for each sensor. But it isn’t an issue for me. Almost each line of source code is commented so I will rather focus on describing my configuration.</p>
 
@@ -99,6 +99,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -111,15 +120,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

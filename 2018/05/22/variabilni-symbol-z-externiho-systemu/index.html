@@ -70,9 +70,9 @@
   <p>Tento článek se vztahuje k integraci propojující <a href="https://apps.shopify.com/fakturoid-invoices">Shopify a Fakturoid.cz</a>.</p>
 </blockquote>
 
-<p>Máte systém na zpracování objednávek generující vlastní čísla objednávek a potřebujete použít toto číslo jako variabilní symbol? Nově je možné použít atributy uložené v <code class="highlighter-rouge">note_attributes</code> jako variabilní symbol na faktuře. Tento atribut má několik názvů v závislosti na místě použití.</p>
+<p>Máte systém na zpracování objednávek generující vlastní čísla objednávek a potřebujete použít toto číslo jako variabilní symbol? Nově je možné použít atributy uložené v <code class="language-plaintext highlighter-rouge">note_attributes</code> jako variabilní symbol na faktuře. Tento atribut má několik názvů v závislosti na místě použití.</p>
 
-<p>Celý proces začíná v nákupním košíku, kde je možné pomocí skrytého <code class="highlighter-rouge">input</code> elementu nastavit <a href="https://help.shopify.com/themes/customization/cart/get-more-information-with-cart-attributes#sectioned-themes">Cart attribute</a>.</p>
+<p>Celý proces začíná v nákupním košíku, kde je možné pomocí skrytého <code class="language-plaintext highlighter-rouge">input</code> elementu nastavit <a href="https://help.shopify.com/themes/customization/cart/get-more-information-with-cart-attributes#sectioned-themes">Cart attribute</a>.</p>
 
 <figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"attributes[shopify_fakturoid_variable_symbol]"</span> <span class="na">value=</span><span class="s">"{{ cart.attributes["</span><span class="na">shopify_fakturoid_variable_symbol</span><span class="err">"]</span> <span class="err">}}"</span><span class="nt">&gt;</span></code></pre></figure>
 
@@ -100,7 +100,7 @@
   <img src="/public/order-confirmation.png" alt="" class="post__image post__image-full-width" />
 </a></p>
 
-<p>V šabloně najděte sekci <code class="highlighter-rouge">&lt;h4&gt;Payment method&lt;/h4&gt;</code>, konkrétně <code class="highlighter-rouge">{{ transaction.gateway | replace: "_", " "...</code>. Za <code class="highlighter-rouge">{% endif %}</code> po tomto výrazu vložte kód uvozený <code class="highlighter-rouge">&lt;!-- Platební informace --&gt;</code> a <code class="highlighter-rouge">&lt;!-- / Platební informace --&gt;</code> dle příkladu.</p>
+<p>V šabloně najděte sekci <code class="language-plaintext highlighter-rouge">&lt;h4&gt;Payment method&lt;/h4&gt;</code>, konkrétně <code class="language-plaintext highlighter-rouge">{{ transaction.gateway | replace: "_", " "...</code>. Za <code class="language-plaintext highlighter-rouge">{% endif %}</code> po tomto výrazu vložte kód uvozený <code class="language-plaintext highlighter-rouge">&lt;!-- Platební informace --&gt;</code> a <code class="language-plaintext highlighter-rouge">&lt;!-- / Platební informace --&gt;</code> dle příkladu.</p>
 
 <figure class="highlight"><pre><code class="language-liquid" data-lang="liquid">&lt;!-- Platební informace --&gt;
 <span class="p">{%</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="nv">transaction</span><span class="p">.</span><span class="nv">gateway</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"Bank Deposit"</span><span class="w"> </span><span class="p">%}</span>
@@ -110,8 +110,8 @@
 &lt;p class="customer-info__item-content"&gt;
     &lt;strong&gt;Variabilní symbol:&lt;/strong&gt;
     <span class="p">{%</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="nv">order</span><span class="p">.</span><span class="nv">attributes</span><span class="w"> </span><span class="p">%}</span>
-        <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">attribute</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">order.attributes</span><span class="w"> </span><span class="p">%}</span>
-            <span class="p">{%</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="nv">attribute</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="nv">first</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"shopify_fakturoid_variable_symbol"</span><span class="w"> </span><span class="p">%}</span>
+        <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">attribute</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">order.attributes</span><span class="w"> </span><span class="p">%}</span>
+            <span class="p">{%</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="nv">attribute</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="nf">first</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"shopify_fakturoid_variable_symbol"</span><span class="w"> </span><span class="p">%}</span>
                 <span class="p">{{</span><span class="w"> </span><span class="nv">attribute</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">last</span><span class="w"> </span><span class="p">}}</span>
             <span class="p">{%</span><span class="w"> </span><span class="kr">endif</span><span class="w"> </span><span class="p">%}</span>
         <span class="p">{%</span><span class="w"> </span><span class="nt">endfor</span><span class="w"> </span><span class="p">%}</span>
@@ -139,6 +139,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -151,15 +160,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

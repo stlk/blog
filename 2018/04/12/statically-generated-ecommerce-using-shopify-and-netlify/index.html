@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I recently fell in love with Netlify because of its simplicity and speed. Nelify allows you to build and host your website in one place with generous pricing levels. I wanted to explore what are possibilities when it comes to e-commerce so I decided to create a simple statically generated website where I could sell some products.
-
 ">
       <meta content="I recently fell in love with Netlify because of its simplicity and speed. Nelify allows you to build and host your website in one place with generous pricing levels. I wanted to explore what are possibilities when it comes to e-commerce so I decided to create a simple statically generated website where I could sell some products.
-
 " property="og:description">
     
     
@@ -76,13 +74,13 @@
 
 <h2 id="setting-up">Setting up</h2>
 
-<p>Let’s start by creating Store in Shopify. Then add new sales channel called Buy Button. Now you need to find API token so you can use the API. To get there select a product and then click <em>Generate code</em>. In the generated script find and copy <code class="highlighter-rouge">domain</code> and <code class="highlighter-rouge">apiKey</code>.</p>
+<p>Let’s start by creating Store in Shopify. Then add new sales channel called Buy Button. Now you need to find API token so you can use the API. To get there select a product and then click <em>Generate code</em>. In the generated script find and copy <code class="language-plaintext highlighter-rouge">domain</code> and <code class="language-plaintext highlighter-rouge">apiKey</code>.</p>
 
 <p><a href="/public/shopify_buy_button_code.png" target="_blank">
   <img src="/public/shopify_buy_button_code.png" alt="" class="post__image post__image-full-width" />
 </a></p>
 
-<p>With the credentials from the script, we can focus on Netlify. First fork my project from <a href="https://github.com/stlk/shopify-buy-button">github.com/stlk/shopify-buy-button</a> so you can add it to your Netlify account. In the Netlify <em>site Settings</em> go to <em>Build &amp; deploy</em> and the to <em>Build environment variables</em> section. While in there fill in <code class="highlighter-rouge">SHOPIFY_SHOP_DOMAIN</code> (only the part before <code class="highlighter-rouge">.myshopify.com</code>) and <code class="highlighter-rouge">SHOPIFY_STOREFRONT_TOKEN</code>.</p>
+<p>With the credentials from the script, we can focus on Netlify. First fork my project from <a href="https://github.com/stlk/shopify-buy-button">github.com/stlk/shopify-buy-button</a> so you can add it to your Netlify account. In the Netlify <em>site Settings</em> go to <em>Build &amp; deploy</em> and the to <em>Build environment variables</em> section. While in there fill in <code class="language-plaintext highlighter-rouge">SHOPIFY_SHOP_DOMAIN</code> (only the part before <code class="language-plaintext highlighter-rouge">.myshopify.com</code>) and <code class="language-plaintext highlighter-rouge">SHOPIFY_STOREFRONT_TOKEN</code>.</p>
 
 <p><a href="/public/netlify_env_variables.png" target="_blank">
   <img src="/public/netlify_env_variables.png" alt="" class="post__image post__image-full-width" />
@@ -102,7 +100,7 @@
   <img src="/public/netlify_webhooks.png" alt="" class="post__image post__image-full-width" />
 </a></p>
 
-<p>In your Shopify Store administration go to <em>Settings</em> &gt; <em>Notifications</em> and scroll down to <em>Webhooks</em>. In there create three webhooks for <code class="highlighter-rouge">Product creation</code>, <code class="highlighter-rouge">Product update</code> and <code class="highlighter-rouge">Product deletion</code> point all three to the <em>Build hook</em> we just created. Don’t the format setting as we aren’t reading any data from it.</p>
+<p>In your Shopify Store administration go to <em>Settings</em> &gt; <em>Notifications</em> and scroll down to <em>Webhooks</em>. In there create three webhooks for <code class="language-plaintext highlighter-rouge">Product creation</code>, <code class="language-plaintext highlighter-rouge">Product update</code> and <code class="language-plaintext highlighter-rouge">Product deletion</code> point all three to the <em>Build hook</em> we just created. Don’t the format setting as we aren’t reading any data from it.</p>
 
 <p><a href="/public/shopify_webhooks.png" target="_blank">
   <img src="/public/shopify_webhooks.png" alt="" class="post__image post__image-full-width" />
@@ -114,7 +112,7 @@
 
 <p>The script uses <a href="https://help.shopify.com/api/storefront-api/getting-started#accessing-the-storefront-api-graphql-endpoint">Storefront API GraphQL</a> which lets us to specify exactly what data we need. You can play around with data from example shop using <a href="https://help.shopify.com/api/storefront-api/graphql-explorer/graphiql">GraphiQL</a>.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
   shop {
     name
     products(first: 10) {
@@ -137,13 +135,22 @@
 }
 </code></pre></div></div>
 
-<p>You can see it in action in <code class="highlighter-rouge">build.py</code> on <a href="https://github.com/stlk/shopify-buy-button/blob/master/build.py#L25">GitHub</a>.</p>
+<p>You can see it in action in <code class="language-plaintext highlighter-rouge">build.py</code> on <a href="https://github.com/stlk/shopify-buy-button/blob/master/build.py#L25">GitHub</a>.</p>
 
 </div>
 
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
@@ -159,15 +166,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

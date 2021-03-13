@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I attended great talk by Gabe Scholz which was full of useful and concise tips for writing better and more maintainable redux apps. It struck me that I was just recently coping with these issues so I decided to share my view on these issues.
-
 ">
       <meta content="I attended great talk by Gabe Scholz which was full of useful and concise tips for writing better and more maintainable redux apps. It struck me that I was just recently coping with these issues so I decided to share my view on these issues.
-
 " property="og:description">
     
     
@@ -111,11 +109,11 @@
 
 <h2 id="avoid-logic-in-components">Avoid logic in components</h2>
 
-<p>Write dumb components and use HOC when needed. When components are almost like templates, there’s almost no reason to test them. In this example <code class="highlighter-rouge">formatTime</code> is tested on its own, so I got away with not testing this component.</p>
+<p>Write dumb components and use HOC when needed. When components are almost like templates, there’s almost no reason to test them. In this example <code class="language-plaintext highlighter-rouge">formatTime</code> is tested on its own, so I got away with not testing this component.</p>
 
 <figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">export</span> <span class="k">default</span> <span class="p">({</span> <span class="nx">currentTime</span><span class="p">,</span> <span class="nx">duration</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="k">return</span> <span class="p">(</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className=</span><span class="s2">"seekInfo"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="p">=</span><span class="s">"seekInfo"</span><span class="p">&gt;</span>
       <span class="si">{</span><span class="nx">formatTime</span><span class="p">(</span><span class="nx">currentTime</span><span class="p">)</span><span class="si">}</span>
       /
       <span class="si">{</span><span class="nx">formatTime</span><span class="p">(</span><span class="nx">duration</span><span class="p">)</span><span class="si">}</span>
@@ -132,6 +130,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -144,15 +151,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

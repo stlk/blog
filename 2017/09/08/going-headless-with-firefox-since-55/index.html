@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="Recently I found that Firefox supports headless mode on Linux for a month now. Windows and MacOS are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.
-
 ">
       <meta content="Recently I found that Firefox supports headless mode on Linux for a month now. Windows and MacOS are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.
-
 " property="og:description">
     
     
@@ -70,9 +68,9 @@
   <span class="post-date">08 Sep 2017</span>
   <p>Recently I found that Firefox supports <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">headless mode</a> on <a href="https://developer.mozilla.org/en-US/Firefox/Releases/55">Linux</a> for a month now. <a href="https://developer.mozilla.org/en-US/Firefox/Releases/56">Windows and MacOS</a> are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.</p>
 
-<p>When running CI in windowed I had to setup virtual framebuffer in <code class="highlighter-rouge">before_install</code> of <code class="highlighter-rouge">.travis.yml</code>.</p>
+<p>When running CI in windowed I had to setup virtual framebuffer in <code class="language-plaintext highlighter-rouge">before_install</code> of <code class="language-plaintext highlighter-rouge">.travis.yml</code>.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DISPLAY=:99.0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export DISPLAY=:99.0
 sh -e /etc/init.d/xvfb start
 sleep 3
 </code></pre></div></div>
@@ -81,9 +79,9 @@ sleep 3
 
 <h3 id="how-to-do-it">How to do it?</h3>
 
-<p>All we need to do is to make sure that we are using at least Firefox 55 and then set <code class="highlighter-rouge">MOZ_HEADLESS=1</code> environment variable. That’s right. One environment variable!</p>
+<p>All we need to do is to make sure that we are using at least Firefox 55 and then set <code class="language-plaintext highlighter-rouge">MOZ_HEADLESS=1</code> environment variable. That’s right. One environment variable!</p>
 
-<p>My entire <code class="highlighter-rouge">.travis.yml</code> from <a href="https://github.com/stlk/auto-fisera">auto-fisera</a> project.</p>
+<p>My entire <code class="language-plaintext highlighter-rouge">.travis.yml</code> from <a href="https://github.com/stlk/auto-fisera">auto-fisera</a> project.</p>
 
 <figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">language</span><span class="pi">:</span> <span class="s">python</span>
 <span class="na">addons</span><span class="pi">:</span>
@@ -114,6 +112,15 @@ sleep 3
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -126,15 +133,6 @@ sleep 3
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

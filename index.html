@@ -62,6 +62,19 @@
   
   <div class="post">
     <h2>
+      <a href="/2021/03/13/websockets-on-django-and-react/">
+        Websockets on Django and React
+      </a>
+    </h2>
+
+    <span class="post-date">13 Mar 2021</span>
+
+    <p>For our new Shopify app I needed to create a websocket server that broadcasts a message when model is updated. I ended up with this solution. Start with installing <code class="language-plaintext highlighter-rouge">channels</code> and <code class="language-plaintext highlighter-rouge">channels-redis</code> to you Django app.</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
       <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
         Hi-speed request filtering using Cloudflare Workers
       </a>
@@ -69,8 +82,7 @@
 
     <span class="post-date">09 Aug 2020</span>
 
-    <p>Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the <code class="highlighter-rouge">&lt;script&gt;</code> tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.</p>
-
+    <p>Recently I was facing very interesting challenge. We distribute our app’s javascript using Cloudflare. Sometimes the <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag stays on the site after the app is uninstalled resulting in unnecessary load on our server. This means that eventually we’ll have to quickly determine whenever should the script run or not.</p>
 
   </div>
   
@@ -85,7 +97,6 @@
 
     <p>I wanted to write something about Pipenv for a long time. With the new release, I think it’s a good time to thank authors and maintainers of Pipfile. I started using Pipenv exactly two years ago and haven’t stopped ever since. This post is a writeup of my views from the perspective of app developer.</p>
 
-
   </div>
   
   <div class="post">
@@ -98,7 +109,6 @@
     <span class="post-date">28 Mar 2020</span>
 
     <p>I’m quite late to the party. Actually I’ve already done my taxes. But since I’m not using Instagram anymore. I decided to post some pictures here to remind me what actually happened.</p>
-
 
   </div>
   
@@ -113,7 +123,6 @@
 
     <p>We’re collecting anonymous customer events in our Shopify app into a single table. This table grew over time to sufficiently large volume, approximately 30 million, to make our reports take too much time for large customers. The first and easiest step to a better performance I could think of is to precompute the report. Materialized views seemed like a reasonable approach. So I went ahead and asked DB specialist if it’s a good idea.</p>
 
-
   </div>
   
   <div class="post">
@@ -125,8 +134,7 @@
 
     <span class="post-date">01 Feb 2020</span>
 
-    <p>Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to <a href="https://web.dev/samesite-cookies-explained/">SameSite=Lax</a> and a relatively new <code class="highlighter-rouge">SameSite=None</code> option.</p>
-
+    <p>Google is always kind enough to provide us with something to do. This time it’s about Chrome defaulting cookies to <a href="https://web.dev/samesite-cookies-explained/">SameSite=Lax</a> and a relatively new <code class="language-plaintext highlighter-rouge">SameSite=None</code> option.</p>
 
   </div>
   
@@ -141,7 +149,6 @@
 
     <p>This post expands on the previous one I wrote on this topic. Please refer back to <a href="/2018/09/09/virtual-business-phone-number-with-twilio/">Virtual support phone number with Twilio</a> if you’re not familiar with Twilio.</p>
 
-
   </div>
   
   <div class="post">
@@ -154,7 +161,6 @@
     <span class="post-date">13 Oct 2018</span>
 
     <p>I finally got opportunity to work on a project that used Django together with a React app. There’s a combination of packages that help with integrating CRA and Django.</p>
-
 
   </div>
   
@@ -169,7 +175,6 @@
 
     <p>For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.</p>
 
-
   </div>
   
   <div class="post">
@@ -183,7 +188,6 @@
 
     <p>Time has come and even I got the opportunity to try out currently trending Gatsby.js static site generator. The most popular feature, at least from my point of view, is <a href="https://image-processing.gatsbyjs.org/">Image Processing with gatsby-transformer-sharp</a>. I thought “Everyone talks that I can have out of the box responsive images and other cool things!”. Yeah sure, but they didn’t use it together with Netlify CMS while using beta of v2 :) Now with Gatsby v2 released things are a bit easier.</p>
 
-
   </div>
   
   <div class="post">
@@ -196,7 +200,6 @@
     <span class="post-date">05 Aug 2018</span>
 
     <p>Few days ago I participated in my first race ever! It was short triathlon called <a href="https://slapsky-triatlon.webnode.cz/">Slapský triatlon</a>. My friend was talking me into it for almost two years. The swimming is 500m, cycling is 34km and running is 4.5km. I don’t swim or run that much but I was pretty sure I can handle this. I was pretty confident with cycling which turned out to be a mistake. I was happy with the result overall. I wasn’t last. I’m pretty satisfied with swimming and running, but I could push a bit harder on the bike. The result is that I have some interesting data I can play around.</p>
-
 
   </div>
   
@@ -212,7 +215,6 @@
     <p>Typing in dynamic languages is hard. Especially in small projects where interaction with libraries is hiding on every corner.
 I tried to get into Flow at least two times before. Now I finally think I got far enough to experience enough of important obstacles that suffice to write about them.</p>
 
-
   </div>
   
   <div class="post">
@@ -226,7 +228,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
     <p>Apollo je sada nástrojů pro práci s GraphQL od tvůrců Meteor.js. Apollo Client slouží k napojení UI na data, Apollo Engine na infrastrukturu a tooling a nakonec Apollo Server pro zpřístupnění REST API pomocí GraphQL.</p>
 
-
   </div>
   
   <div class="post">
@@ -239,7 +240,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
     <span class="post-date">02 Jun 2018</span>
 
     <p>Klient mě oslovil se záměrem poskytovat doručování pomocí Zásilkovna.cz na Shopify. Vzhledem k omezeným možnostem ovlivnit checkout proces u levnějších Shopify variant se to ukázalo jako cvičení tvořivosti.</p>
-
 
   </div>
   
@@ -267,7 +267,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
     <p>I recently fell in love with Netlify because of its simplicity and speed. Nelify allows you to build and host your website in one place with generous pricing levels. I wanted to explore what are possibilities when it comes to e-commerce so I decided to create a simple statically generated website where I could sell some products.</p>
 
-
   </div>
   
   <div class="post">
@@ -281,7 +280,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
     <p>I needed to allow my customer to export a bunch of tables. After some digging, I found a pretty neat solution.</p>
 
-
   </div>
   
   <div class="post">
@@ -294,7 +292,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
     <span class="post-date">28 Dec 2017</span>
 
     <p>I wanted to expose a bit of insight to my team. As we work in kind of upredictable manner we could use a report on who worked a day before. We use Trello as our time tracking tool. It supports weekly email reports but the price for this feature was a bit expensive for us. So I did a quick research and found <a href="https://github.com/jsmartin/toggl_report">Trello report script</a> that does exactly what I wanted. It outputs <a href="https://github.com/jsmartin/toggl_report/blob/master/sample.md">markdown</a> to STDOUT.</p>
-
 
   </div>
   
@@ -322,7 +319,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
     <p>I attended great talk by <a href="https://github.com/garbles">Gabe Scholz</a> which was full of useful and concise tips for writing better and more maintainable redux apps. It struck me that I was just recently coping with these issues so I decided to share my view on these issues.</p>
 
-
   </div>
   
   <div class="post">
@@ -335,7 +331,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
     <span class="post-date">08 Sep 2017</span>
 
     <p>Recently I found that Firefox supports <a href="https://developer.mozilla.org/en-US/Firefox/Headless_mode">headless mode</a> on <a href="https://developer.mozilla.org/en-US/Firefox/Releases/55">Linux</a> for a month now. <a href="https://developer.mozilla.org/en-US/Firefox/Releases/56">Windows and MacOS</a> are now in beta and will be released on September 26, 2017. I was pretty excited to find out so I immediately switched over Travis configuration for Selenium tests in my Django project.</p>
-
 
   </div>
   
@@ -350,7 +345,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
     <p>In my current project I wanted to let user upload multiple photos at once in Django admin. I got intimidated by huge libraries that do this and dozens of other things. So I ended up using small tweak which works surprisingly well.</p>
 
-
   </div>
   
   <div class="post">
@@ -363,7 +357,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
     <span class="post-date">03 Jul 2017</span>
 
     <p>Můj klient potřeboval automatizovat platbu převodem v obchodě na platformě <a href="https://www.shopify.com/?ref=developer-7be6616fd8bde970">Shopify</a>. Vymysleli jsme řešení, jak pomocí proformy využít schopnosti <a href="https://www.fakturoid.cz">Fakturoid.cz</a>. Fakturoid při zaplacení proformy vytvoří fakturu a následně informuje o jejím vytvoření.</p>
-
 
   </div>
   
@@ -378,7 +371,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
     <p>Recently I had opportunity to use <a href="https://github.com/zeit/next.js">Next.js</a> on a client project. I already heard how much work it saves but I just couldn’t believe how simple it was.</p>
 
-
   </div>
   
   <div class="post">
@@ -391,7 +383,6 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
     <span class="post-date">14 Jun 2017</span>
 
     <p>GraphQL is query language created by developers in Facebook to make their app development manageable. There are quite a few reasons why should we be interested in it even at small scale.</p>
-
 
   </div>
   
@@ -406,8 +397,7 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
     <p>I recently fell in love with <a href="https://github.com/prettier/prettier">prettier</a>. Prettier is an opinionated code formatter.
 Having consistently formatted code is very pleasant feeling for me and having formatting done automatically?
-Woah! The best part is that you can easily run <code class="highlighter-rouge">prettier</code> on <code class="highlighter-rouge">git commit</code>. That way you can write messy code and it will get cleaned up automatically. Let’s do it.</p>
-
+Woah! The best part is that you can easily run <code class="language-plaintext highlighter-rouge">prettier</code> on <code class="language-plaintext highlighter-rouge">git commit</code>. That way you can write messy code and it will get cleaned up automatically. Let’s do it.</p>
 
   </div>
   
@@ -422,7 +412,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>Last Friday I attended my first React conference. It took place in Amsterdam. So once again I got the opportunity to visit Amsterdam because of a conference. I want to thank organizers of <a href="https://www.meetup.com/praguejs/">PragueJS</a> meetup for giving me a ticket!</p>
 
-
   </div>
   
   <div class="post">
@@ -435,7 +424,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
     <span class="post-date">27 Mar 2017</span>
 
     <p>Recently I got interested in small and hopefully profitable projects, sometimes called Micropreneurship. Later I found that one of the most “simple” ways to start a SAAS is Shopify application.</p>
-
 
   </div>
   
@@ -450,7 +438,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>I recently needed to expose local port of my dev machine to the internet. I realized I could combine SSH port forwarding, nginx and letsencrypt. Ubuntu 16.04 is my OS of choice on the server.</p>
 
-
   </div>
   
   <div class="post">
@@ -463,7 +450,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
     <span class="post-date">21 Dec 2016</span>
 
     <p>Už jsou to tři roky, co jsem rozebral plastové reproduktory a jejich elektroniku naskládal do krabice od vína a přikryl lepenkou z IKEA. Chtěl jsem jednu bednu, ideálně s bluetooth, ale nepotřebuji drahý stylový reproduktor. Nedlouho poté jsem svůj výtvor vylepšil bluetooth příjmačem a designová reprobedna byla na světě.</p>
-
 
   </div>
   
@@ -478,7 +464,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>This year I a had an opportunity to attend <a href="https://djangounderthehood.com">Django: Under The Hood</a>. A single track conference focused solely on Django. Due to a fact that significant number of contributors are attending, it’s great opportunity to discuss almost any issue with people who actually have a clue what is going on.</p>
 
-
   </div>
   
   <div class="post">
@@ -492,7 +477,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>Nodemon is tool to improve backend JS development. It reloads files automatically so you don’t have to restart the server every time. Another cool thing is that you can debug the code in chrome dev tools.</p>
 
-
   </div>
   
   <div class="post">
@@ -505,7 +489,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
     <span class="post-date">19 Aug 2016</span>
 
     <p>I lost interest in electrotechnics almost a year ago. I turned off my binary clock, temperature sensor and left it in a drawer. But before that I bought ESP8266, cheap WiFi microcontroller running lua. It was unreliable and hard to program.</p>
-
 
   </div>
   
@@ -534,7 +517,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>Island mě překvapil na několika frontách. Jak odlišně, čistě a nádherně působí zdejší příroda, jak malá jsou města a vesnice mimo Rejkjavík.</p>
 
-
   </div>
   
   <div class="post">
@@ -547,7 +529,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
     <span class="post-date">18 May 2016</span>
 
     <p>Bristol. Naše přestupní stanice na Island. Jediné, co jsem znal předem byl Banksy a Bath. Nakonec na Bath ani nedošlo, Bristol nás zabavil víc než dost.</p>
-
 
   </div>
   
@@ -562,7 +543,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>Právě sedíme v našem dočasném pokoji u Bristolských Airbnb hostitelů. Je tedy čas napsat o mých pocitech z Irska.</p>
 
-
   </div>
   
   <div class="post">
@@ -575,7 +555,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
     <span class="post-date">13 Jan 2016</span>
 
     <p>I recently published first working version of my latest project. It is an Instagram newsletter based on pretty basic Machine Learning method. I called it <a href="http://socialist.rousek.name">socialist</a>. Feel free to try it out I would love to hear your feedback.</p>
-
 
   </div>
   
@@ -590,7 +569,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>Recently I’ve developed passion for machine learning. Which includes many hours of fun with various modeling and plotting libraries.</p>
 
-
   </div>
   
   <div class="post">
@@ -604,7 +582,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
 
     <p>Na konci října jsem si udělal výlet do Finska. Ani nevím proč, rukavice nosím hned jak teplota klesne pod 10°C a válení se na slunci je mojí oblíbenou aktivitou. Nejspíš kvůli jazyku, který mě vždy přihoval. Původní úvahy začínaly na 14 dnech, nakonec jsem skončil na sedmi. A to je, opravdu málo. Tři dny v Helsinkách, přibližně jeden den ve městě Jyvaskyla a dva dny v Oulu.</p>
 
-
   </div>
   
   <div class="post">
@@ -617,7 +594,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
     <span class="post-date">31 Dec 2013</span>
 
     <p>With black Friday sales I decided to buy few DigiSparks to try them out and maybe spark some interest in electronics in my brother. Designer of the board did very good job, overall USB experience feels smooth and is easy to understand.</p>
-
 
   </div>
   
@@ -683,7 +659,6 @@ Woah! The best part is that you can easily run <code class="highlighter-rouge">p
     <span class="post-date">22 Jan 2012</span>
 
     <p>I’m moving to my own appartment and I want to control lamp and mood light wirelessly. Because I want to extend mood light across whole appartment in future. I have decided to use XBee. Specifically XBee Series 2.</p>
-
 
   </div>
   

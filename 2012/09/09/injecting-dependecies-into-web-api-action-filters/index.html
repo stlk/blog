@@ -66,7 +66,7 @@
   <span class="post-date">09 Sep 2012</span>
   <p>When I was working with ASP.NET Web API I needed to inject dependencies to ActionFilters using Ninject. This is solved by <a href="https://github.com/azzlack/Ninject.Web.WebApi" title="Link to GitHub project">Ninject.Web.WebApi</a>, but I had some stability issues with this library. When I started to dig a little deeper I found that in fact I’m using only one class from this library. Which is <a href="https://github.com/azzlack/Ninject.Web.WebApi/blob/master/src/Ninject.Web.WebApi/Filter/DefaultFilterProvider.cs">DefaultFilterProvider</a> this class steps into play before filter methods are executed and injects dependencies into it.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public IEnumerable&lt;FilterInfo&gt; GetFilters(HttpConfiguration configuration,
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public IEnumerable&lt;FilterInfo&gt; GetFilters(HttpConfiguration configuration,
                                         HttpActionDescriptor actionDescriptor)
 {
     var filters = this.filterProviders.SelectMany(fp =&gt; 
@@ -83,7 +83,7 @@
 
 <p>And how do we tell the WEB API that we want to use this provider? First we need to register our provider to GlobalConfiguration services and then remove the default one.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var providers = GlobalConfiguration.Configuration.Services.GetFilterProviders().ToList();
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var providers = GlobalConfiguration.Configuration.Services.GetFilterProviders().ToList();
 GlobalConfiguration.Configuration.Services.Add(typeof (IFilterProvider),
                                                new DefaultFilterProvider(ninjectKernel, providers));
             
@@ -102,6 +102,15 @@ GlobalConfiguration.Configuration.Services.Remove(typeof(IFilterProvider), defau
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -114,15 +123,6 @@ GlobalConfiguration.Configuration.Services.Remove(typeof(IFilterProvider), defau
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

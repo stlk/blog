@@ -22,11 +22,9 @@
     
       <meta name="description" content="Typing in dynamic languages is hard. Especially in small projects where interaction with libraries is hiding on every corner.
 I tried to get into Flow at least two times before. Now I finally think I got far enough to experience enough of important obstacles that suffice to write about them.
-
 ">
       <meta content="Typing in dynamic languages is hard. Especially in small projects where interaction with libraries is hiding on every corner.
 I tried to get into Flow at least two times before. Now I finally think I got far enough to experience enough of important obstacles that suffice to write about them.
-
 " property="og:description">
     
     
@@ -79,12 +77,12 @@ I tried to get into Flow at least two times before. Now I finally think I got fa
 
 <h2 id="where-to-start">Where to start</h2>
 
-<p>With Flow you can pick the file you want to start with. Flow will treat imported untyped files as type <code class="highlighter-rouge">any</code>.
+<p>With Flow you can pick the file you want to start with. Flow will treat imported untyped files as type <code class="language-plaintext highlighter-rouge">any</code>.
 I started with a React component which accepts simple object just to get my feet wet and get familiar with the syntax. After this exploration phase it’s good to try getting business logic typed.</p>
 
 <h2 id="interacting-with-html-elements">Interacting with HTML elements</h2>
 
-<p>Finding the correct way to handle type casting of HTML elements took me surprisingly a lot of the time. But the solution turned out to be pretty simple. Flow looks for <code class="highlighter-rouge">instanceof</code> conditions and for following code it works with correct type. Useful tool for asserting HTML elements is <code class="highlighter-rouge">invariant</code>. It takes condition and error message and raises the error message when the condition isn’t met.</p>
+<p>Finding the correct way to handle type casting of HTML elements took me surprisingly a lot of the time. But the solution turned out to be pretty simple. Flow looks for <code class="language-plaintext highlighter-rouge">instanceof</code> conditions and for following code it works with correct type. Useful tool for asserting HTML elements is <code class="language-plaintext highlighter-rouge">invariant</code>. It takes condition and error message and raises the error message when the condition isn’t met.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">formId</span><span class="p">);</span>
 <span class="nx">invariant</span><span class="p">(</span>
@@ -95,19 +93,19 @@ I started with a React component which accepts simple object just to get my feet
 
 <h2 id="arrays---type-syntax-can-actually-differ">Arrays - type syntax can actually differ</h2>
 
-<p>When specifying a type for an array I automatically typed <code class="highlighter-rouge">[Item]</code>. This is valid syntax in Flow, but it means something which you won’t need most of the time. It means array with one item of type <code class="highlighter-rouge">Item</code>. You are most likely looking for <code class="highlighter-rouge">Item[]</code>. This took me quite some time to realize.</p>
+<p>When specifying a type for an array I automatically typed <code class="language-plaintext highlighter-rouge">[Item]</code>. This is valid syntax in Flow, but it means something which you won’t need most of the time. It means array with one item of type <code class="language-plaintext highlighter-rouge">Item</code>. You are most likely looking for <code class="language-plaintext highlighter-rouge">Item[]</code>. This took me quite some time to realize.</p>
 
 <h2 id="higher-order-components">Higher-Order Components</h2>
 
-<p>HOCs are sometimes tough to type correctly because it’s so easy to mix in <code class="highlighter-rouge">any</code> type and lose the type checking. Let’s try typing this <code class="highlighter-rouge">withLoader</code> HOC. I confess that I haven’t figured out how to write fully generic HOC.</p>
+<p>HOCs are sometimes tough to type correctly because it’s so easy to mix in <code class="language-plaintext highlighter-rouge">any</code> type and lose the type checking. Let’s try typing this <code class="language-plaintext highlighter-rouge">withLoader</code> HOC. I confess that I haven’t figured out how to write fully generic HOC.</p>
 
 <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">withLoader</span><span class="p">(</span><span class="nx">LoaderComponent</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">function</span> <span class="nx">innerComponent</span><span class="p">(</span><span class="nx">WrappedComponent</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">props</span> <span class="o">=&gt;</span>
       <span class="nx">props</span><span class="p">.</span><span class="nx">loading</span> <span class="o">===</span> <span class="kc">true</span> <span class="p">?</span> <span class="p">(</span>
-        <span class="p">&lt;</span><span class="nc">LoaderComponent</span> <span class="err">{</span><span class="p">...</span><span class="nt">props</span><span class="err">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">LoaderComponent</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="p">/&gt;</span>
       <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
-        <span class="p">&lt;</span><span class="nc">WrappedComponent</span> <span class="err">{</span><span class="p">...</span><span class="nt">props</span><span class="err">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">WrappedComponent</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="p">/&gt;</span>
       <span class="p">)</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">innerComponent</span>
@@ -119,7 +117,7 @@ I started with a React component which accepts simple object just to get my feet
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">WrappedComponentWithLoader</span> <span class="o">=</span> <span class="nx">withLoader</span><span class="p">(</span><span class="nx">LoaderComponent</span><span class="p">)(</span><span class="nx">WrappedComponent</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Looking at <a href="https://flow.org/en/docs/react/types/#toc-react-componenttype">Flow docs</a> I found that React uses two types to define component types. I will use <code class="highlighter-rouge">React.StatelessFunctionalComponent</code> to keep things “simple”.</p>
+<p>Looking at <a href="https://flow.org/en/docs/react/types/#toc-react-componenttype">Flow docs</a> I found that React uses two types to define component types. I will use <code class="language-plaintext highlighter-rouge">React.StatelessFunctionalComponent</code> to keep things “simple”.</p>
 
 <div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">withLoader</span><span class="p">(</span><span class="nx">LoaderComponent</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">StatelessFunctionalComponent</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">function</span> <span class="nx">innerComponent</span><span class="o">&lt;</span><span class="nx">Props</span><span class="p">:</span> <span class="p">{</span> <span class="nl">loading</span><span class="p">:</span> <span class="nx">boolean</span> <span class="p">}</span><span class="o">&gt;</span><span class="p">(</span>
@@ -129,7 +127,7 @@ I started with a React component which accepts simple object just to get my feet
       <span class="nx">props</span><span class="p">.</span><span class="nx">loading</span> <span class="o">===</span> <span class="kc">true</span> <span class="p">?</span> <span class="p">(</span>
         <span class="p">&lt;</span><span class="nc">LoaderComponent</span> <span class="p">/&gt;</span>
       <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
-        <span class="p">&lt;</span><span class="nc">WrappedComponent</span> <span class="err">{</span><span class="p">...</span><span class="nt">props</span><span class="err">}</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nc">WrappedComponent</span> <span class="si">{</span><span class="p">...</span><span class="nx">props</span><span class="si">}</span> <span class="p">/&gt;</span>
       <span class="p">);</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="nx">innerComponent</span><span class="p">;</span>
@@ -138,7 +136,7 @@ I started with a React component which accepts simple object just to get my feet
 
 <p>After adding types this HOC looks pretty intimidating. I will try to walk you through without scaring you off.</p>
 
-<p><code class="highlighter-rouge">LoaderComponent: React.StatelessFunctionalComponent&lt;any&gt;</code> means that function <code class="highlighter-rouge">withLoader</code> accepts any stateless component. Then there is my generic wrapped component. <code class="highlighter-rouge">innerComponent&lt;Props: { loading: boolean }&gt;</code> part defines that function has generic type which is required to be object with <code class="highlighter-rouge">loading</code> field of type <code class="highlighter-rouge">boolean</code>. I used this type to define <code class="highlighter-rouge">Props</code> of my wrapped component. This is the only solution I found that passes up the types defined in decorated component so the type restrictions are correctly propagated and property <code class="highlighter-rouge">loading</code> is also required. The last line that is related to flow is <code class="highlighter-rouge">): React.StatelessFunctionalComponent&lt;Props&gt; {</code> which actually defines that new component will have type discussed previously.</p>
+<p><code class="language-plaintext highlighter-rouge">LoaderComponent: React.StatelessFunctionalComponent&lt;any&gt;</code> means that function <code class="language-plaintext highlighter-rouge">withLoader</code> accepts any stateless component. Then there is my generic wrapped component. <code class="language-plaintext highlighter-rouge">innerComponent&lt;Props: { loading: boolean }&gt;</code> part defines that function has generic type which is required to be object with <code class="language-plaintext highlighter-rouge">loading</code> field of type <code class="language-plaintext highlighter-rouge">boolean</code>. I used this type to define <code class="language-plaintext highlighter-rouge">Props</code> of my wrapped component. This is the only solution I found that passes up the types defined in decorated component so the type restrictions are correctly propagated and property <code class="language-plaintext highlighter-rouge">loading</code> is also required. The last line that is related to flow is <code class="language-plaintext highlighter-rouge">): React.StatelessFunctionalComponent&lt;Props&gt; {</code> which actually defines that new component will have type discussed previously.</p>
 
 <p>You can play with this component on <a href="https://flow.org/try/#0PTAEAEDMBsHsHdQGcAuAnAlgYxQWjlgIbQBQGAtgA6xoqgBUohSoASgKaE6iRqzmgARGk45BAbhIlIAVwB2ODLDmh4GFAAsAMrEIATdmgAUO-YYDC-anPZyUALjaiUAOgDKKQinbR2SJABi8orKxJZUyrYoADyEcgCeAHwAlKAA3iSgPMEoSioYcjZo4dZR0QAKfJRIjmmgcPoFAOaOAEawsL5xoAC+iUaZWaAA6miElJTseiWRdo4cXK4eXj5+gTl5YVazMZWw1YmDyfPO7p7evv5BCrmh0DM2dhVVSInpg1kiKDJoKpQvoAAvIchkN-vskC4GnpmkDAYDQOgZOxQAB+UADUGg6KmAzFbaPOjAEFY1KOTFYrLRUbjSbTAlRdIuZng6o9UDEj5DZKSLI9QZfH75QoWBl2ST8khYZSoUC4wxAjGpYGgaIwgBuiWhzWZLmiwA1iUkUpldAAsvEHoyEUY6t4AB50Hq1RHsR2OVCYORNXrKt4ZT7sb6-VWGtIOlA9fWGiVSaVyWUAES8hEVak08uMmeSRgtVrsPLjptAAEEJoqjH6MYM1RhNVzosnPPVdDDvYDw2hkeyI4DBJoMCxB6AsGMAF7xACEgg5JKpTdT2vbne7s4bC9djr7A6HLFHhAn07XVINdcOhZIbuotFABkghBk0DoZco4iAAa">Try Flow</a> and see that Flow warns us about missing props.</p>
 
@@ -147,6 +145,15 @@ I started with a React component which accepts simple object just to get my feet
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
@@ -162,15 +169,6 @@ I started with a React component which accepts simple object just to get my feet
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

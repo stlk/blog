@@ -23,12 +23,10 @@
       <meta name="description" content="I recently fell in love with prettier. Prettier is an opinionated code formatter.
 Having consistently formatted code is very pleasant feeling for me and having formatting done automatically?
 Woah! The best part is that you can easily run prettier on git commit. That way you can write messy code and it will get cleaned up automatically. Let’s do it.
-
 ">
       <meta content="I recently fell in love with prettier. Prettier is an opinionated code formatter.
 Having consistently formatted code is very pleasant feeling for me and having formatting done automatically?
 Woah! The best part is that you can easily run prettier on git commit. That way you can write messy code and it will get cleaned up automatically. Let’s do it.
-
 " property="og:description">
     
     
@@ -74,12 +72,12 @@ Woah! The best part is that you can easily run prettier on git commit. That way 
   <span class="post-date">11 Jun 2017</span>
   <p>I recently fell in love with <a href="https://github.com/prettier/prettier">prettier</a>. Prettier is an opinionated code formatter.
 Having consistently formatted code is very pleasant feeling for me and having formatting done automatically?
-Woah! The best part is that you can easily run <code class="highlighter-rouge">prettier</code> on <code class="highlighter-rouge">git commit</code>. That way you can write messy code and it will get cleaned up automatically. Let’s do it.</p>
+Woah! The best part is that you can easily run <code class="language-plaintext highlighter-rouge">prettier</code> on <code class="language-plaintext highlighter-rouge">git commit</code>. That way you can write messy code and it will get cleaned up automatically. Let’s do it.</p>
 
-<p>By combining three packages we can create pre-commit git hook that will transform javascript files using <a href="https://github.com/prettier/prettier">prettier</a>. Those packages are <code class="highlighter-rouge">lint-staged</code>, <code class="highlighter-rouge">pre-commit</code> and <code class="highlighter-rouge">prettier</code>.
-To install them run <code class="highlighter-rouge">npm install --save-dev lint-staged pre-commit prettier</code>.</p>
+<p>By combining three packages we can create pre-commit git hook that will transform javascript files using <a href="https://github.com/prettier/prettier">prettier</a>. Those packages are <code class="language-plaintext highlighter-rouge">lint-staged</code>, <code class="language-plaintext highlighter-rouge">pre-commit</code> and <code class="language-plaintext highlighter-rouge">prettier</code>.
+To install them run <code class="language-plaintext highlighter-rouge">npm install --save-dev lint-staged pre-commit prettier</code>.</p>
 
-<p>Then add following keys to your <code class="highlighter-rouge">package.json</code>.</p>
+<p>Then add following keys to your <code class="language-plaintext highlighter-rouge">package.json</code>.</p>
 
 <figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
   </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -94,7 +92,7 @@ To install them run <code class="highlighter-rouge">npm install --save-dev lint-
   </span><span class="nl">"pre-commit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lint:staged"</span><span class="w">
 </span><span class="p">}</span></code></pre></figure>
 
-<p>Now when you commit you code you should see <code class="highlighter-rouge">✔ Running tasks for *.js</code> message.</p>
+<p>Now when you commit you code you should see <code class="language-plaintext highlighter-rouge">✔ Running tasks for *.js</code> message.</p>
 
 <figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git commit <span class="nt">-m</span> <span class="s1">'Initial commit'</span>
  ✔ Running tasks <span class="k">for</span> <span class="k">*</span>.js
@@ -110,6 +108,15 @@ To install them run <code class="highlighter-rouge">npm install --save-dev lint-
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -122,15 +129,6 @@ To install them run <code class="highlighter-rouge">npm install --save-dev lint-
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

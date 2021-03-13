@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="I finally got opportunity to work on a project that used Django together with a React app. There’s a combination of packages that help with integrating CRA and Django.
-
 ">
       <meta content="I finally got opportunity to work on a project that used Django together with a React app. There’s a combination of packages that help with integrating CRA and Django.
-
 " property="og:description">
     
     
@@ -74,11 +72,11 @@
 
 <h3 id="webpack-bundle-tracker--django-webpack-loader">webpack-bundle-tracker + django-webpack-loader</h3>
 
-<p><code class="highlighter-rouge">django-webpack-loader</code> and <code class="highlighter-rouge">webpack-bundle-tracker</code> work together in the following way. webpack-bundle-tracker plugin emits information about webpack’s compilation process and results so django-webpack-loader can consume it. To add <code class="highlighter-rouge">webpack-bundle-tracker</code> to CRA we will need to hook up a plugin to webpack.</p>
+<p><code class="language-plaintext highlighter-rouge">django-webpack-loader</code> and <code class="language-plaintext highlighter-rouge">webpack-bundle-tracker</code> work together in the following way. webpack-bundle-tracker plugin emits information about webpack’s compilation process and results so django-webpack-loader can consume it. To add <code class="language-plaintext highlighter-rouge">webpack-bundle-tracker</code> to CRA we will need to hook up a plugin to webpack.</p>
 
 <h3 id="cra-configuration">CRA configuration</h3>
 
-<p>With your CRA app generated we start with <code class="highlighter-rouge">react-app-rewired</code> configuration. Rewired uses <code class="highlighter-rouge">config-overrides.js</code> file to hook into webpack configuration. There is one more change we have to make apart from adding <code class="highlighter-rouge">BundleTracker</code>. The new <a href="https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366">splitChunks</a> configuration is not entirely supported, so we have to use only named chunks.</p>
+<p>With your CRA app generated we start with <code class="language-plaintext highlighter-rouge">react-app-rewired</code> configuration. Rewired uses <code class="language-plaintext highlighter-rouge">config-overrides.js</code> file to hook into webpack configuration. There is one more change we have to make apart from adding <code class="language-plaintext highlighter-rouge">BundleTracker</code>. The new <a href="https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366">splitChunks</a> configuration is not entirely supported, so we have to use only named chunks.</p>
 
 <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">BundleTracker</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">webpack-bundle-tracker</span><span class="dl">'</span><span class="p">);</span>
 
@@ -99,21 +97,21 @@
 <span class="p">};</span>
 </code></pre></div></div>
 
-<p>After running <code class="highlighter-rouge">npm start</code> we should see additional file <code class="highlighter-rouge">webpack-stats.json</code> in build folder containing all the data we need.</p>
+<p>After running <code class="language-plaintext highlighter-rouge">npm start</code> we should see additional file <code class="language-plaintext highlighter-rouge">webpack-stats.json</code> in build folder containing all the data we need.</p>
 
 <h3 id="django-configuration">Django configuration</h3>
 
-<p>Install <code class="highlighter-rouge">django-webpack-loader</code> using <a href="https://packaging.python.org/tutorials/managing-dependencies/">pipenv</a> or pip. Then go to your <code class="highlighter-rouge">settings.py</code>. Add webpack_loader to INSTALLED_APPS. This will enable us to use template tags.</p>
+<p>Install <code class="language-plaintext highlighter-rouge">django-webpack-loader</code> using <a href="https://packaging.python.org/tutorials/managing-dependencies/">pipenv</a> or pip. Then go to your <code class="language-plaintext highlighter-rouge">settings.py</code>. Add webpack_loader to INSTALLED_APPS. This will enable us to use template tags.</p>
 
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="o">...</span>
+    <span class="p">...</span>
     <span class="s">'webpack_loader'</span><span class="p">,</span>
 <span class="p">]</span>
 </code></pre></div></div>
 
 <h4 id="project-structure">Project structure</h4>
 
-<p>My project directory structure looks like this. I decided to put my CRA app to <code class="highlighter-rouge">frontend</code> folder.</p>
+<p>My project directory structure looks like this. I decided to put my CRA app to <code class="language-plaintext highlighter-rouge">frontend</code> folder.</p>
 
 <pre><code class="language-tree">├── Pipfile
 ├── Pipfile.lock
@@ -140,21 +138,21 @@
 
 <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">STATICFILES_DIRS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c1"># So Django knows about webpack files
-</span>    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">"frontend"</span><span class="p">,</span> <span class="s">"build"</span><span class="p">,</span> <span class="s">"static"</span><span class="p">),</span>
+</span>    <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">"frontend"</span><span class="p">,</span> <span class="s">"build"</span><span class="p">,</span> <span class="s">"static"</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="n">WEBPACK_LOADER</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">"DEFAULT"</span><span class="p">:</span> <span class="p">{</span>
         <span class="s">"CACHE"</span><span class="p">:</span> <span class="ow">not</span> <span class="n">DEBUG</span><span class="p">,</span>
         <span class="s">"BUNDLE_DIR_NAME"</span><span class="p">:</span> <span class="s">"frontend/build/static/"</span><span class="p">,</span>  <span class="c1"># must end with slash
-</span>        <span class="s">"STATS_FILE"</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">"frontend"</span><span class="p">,</span> <span class="s">"build"</span><span class="p">,</span> <span class="s">"webpack-stats.json"</span><span class="p">),</span>
+</span>        <span class="s">"STATS_FILE"</span><span class="p">:</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s">"frontend"</span><span class="p">,</span> <span class="s">"build"</span><span class="p">,</span> <span class="s">"webpack-stats.json"</span><span class="p">),</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
 <h3 id="usage">Usage</h3>
 
-<p>In our Django template we can then use <code class="highlighter-rouge">render_bundle</code> to load our CRA app.</p>
+<p>In our Django template we can then use <code class="language-plaintext highlighter-rouge">render_bundle</code> to load our CRA app.</p>
 
 <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="p">{%</span><span class="w"> </span><span class="nt">load</span><span class="w"> </span>render_bundle<span class="w"> </span>from<span class="w"> </span>webpack_loader<span class="w"> </span><span class="p">%}</span>
@@ -187,6 +185,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -199,15 +206,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

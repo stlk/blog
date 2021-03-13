@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="With black Friday sales I decided to buy few DigiSparks to try them out and maybe spark some interest in electronics in my brother. Designer of the board did very good job, overall USB experience feels smooth and is easy to understand.
-
 ">
       <meta content="With black Friday sales I decided to buy few DigiSparks to try them out and maybe spark some interest in electronics in my brother. Designer of the board did very good job, overall USB experience feels smooth and is easy to understand.
-
 " property="og:description">
     
     
@@ -88,9 +86,9 @@
   <span class="n">Console</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="n">Encoding</span><span class="p">.</span><span class="n">Default</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">value</span><span class="p">));</span>
 <span class="p">}</span></code></pre></figure>
 
-<p>Application can detect when device is connected or disconnected using event <code class="highlighter-rouge">ArduinoUsbDeviceChangeNotifier</code>. There is one thing we need to be aware of. In order to receive events in console application we need to call <code class="highlighter-rouge">Application.DoEvents();</code> in each cycle. Because class <code class="highlighter-rouge">Application</code> is in namespace <code class="highlighter-rouge">System.Windows.Forms</code> we need to reference it.</p>
+<p>Application can detect when device is connected or disconnected using event <code class="language-plaintext highlighter-rouge">ArduinoUsbDeviceChangeNotifier</code>. There is one thing we need to be aware of. In order to receive events in console application we need to call <code class="language-plaintext highlighter-rouge">Application.DoEvents();</code> in each cycle. Because class <code class="language-plaintext highlighter-rouge">Application</code> is in namespace <code class="language-plaintext highlighter-rouge">System.Windows.Forms</code> we need to reference it.</p>
 
-<p>There is nothing special on DigiSpark side too. We will control onboard LED. I’ve used breathing LED just to make it look nice. Sketch listens for incoming bytes, if its “1” <code class="highlighter-rouge">breathing</code> is set to true. In both cases we send LED’s status.</p>
+<p>There is nothing special on DigiSpark side too. We will control onboard LED. I’ve used breathing LED just to make it look nice. Sketch listens for incoming bytes, if its “1” <code class="language-plaintext highlighter-rouge">breathing</code> is set to true. In both cases we send LED’s status.</p>
 
 <figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="k">if</span> <span class="p">(</span><span class="n">DigiUSB</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">breathing</span> <span class="o">=</span> <span class="n">DigiUSB</span><span class="p">.</span><span class="n">read</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span>
@@ -116,6 +114,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -128,15 +135,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

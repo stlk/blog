@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="Apollo je sada nástrojů pro práci s GraphQL od tvůrců Meteor.js. Apollo Client slouží k napojení UI na data, Apollo Engine na infrastrukturu a tooling a nakonec Apollo Server pro zpřístupnění REST API pomocí GraphQL.
-
 ">
       <meta content="Apollo je sada nástrojů pro práci s GraphQL od tvůrců Meteor.js. Apollo Client slouží k napojení UI na data, Apollo Engine na infrastrukturu a tooling a nakonec Apollo Server pro zpřístupnění REST API pomocí GraphQL.
-
 " property="og:description">
     
     
@@ -72,9 +70,9 @@
 
 <p>V tomto článku bych se rád zaměřil na velmi užitečnou část zvanou <a href="https://github.com/apollographql/apollo-link-state">apollo-link-state</a>. Když používám <a href="https://www.apollographql.com/docs/react/essentials/get-started.html#apollo-boost">Apollo Client</a>, tak mám vyřešenou práci s API. V aplikaci je ale vždy nějaký lokální stav, s jehož správou mi Apollo Client může pomoci.</p>
 
-<p>Běžně se pro uchování lokálního stavu používá Redux nebo MobX. S pomocí <code class="highlighter-rouge">apollo-link-state</code> je nově možné použít cache Apollo Clienta jako úložiště pro všechna naše data. Pro čtení nebo zápis lokálního stavu použijeme queries a mutations jako bychom pracovali s daty na serveru.</p>
+<p>Běžně se pro uchování lokálního stavu používá Redux nebo MobX. S pomocí <code class="language-plaintext highlighter-rouge">apollo-link-state</code> je nově možné použít cache Apollo Clienta jako úložiště pro všechna naše data. Pro čtení nebo zápis lokálního stavu použijeme queries a mutations jako bychom pracovali s daty na serveru.</p>
 
-<p>Začít ukládat stav pomocí <code class="highlighter-rouge">apollo-link-state</code> je velmi jednoduché. Jako základ používám <a href="https://www.apollographql.com/docs/react/essentials/get-started.html#apollo-boost">apollo-boost</a>. <code class="highlighter-rouge">apollo-boost</code> je balíček apollo knihoven, který zahrnuje i <code class="highlighter-rouge">apollo-link-state</code>. Při inicializaci klienta nastavím <code class="highlighter-rouge">clientState</code> a vyplním výchozí hodnoty.</p>
+<p>Začít ukládat stav pomocí <code class="language-plaintext highlighter-rouge">apollo-link-state</code> je velmi jednoduché. Jako základ používám <a href="https://www.apollographql.com/docs/react/essentials/get-started.html#apollo-boost">apollo-boost</a>. <code class="language-plaintext highlighter-rouge">apollo-boost</code> je balíček apollo knihoven, který zahrnuje i <code class="language-plaintext highlighter-rouge">apollo-link-state</code>. Při inicializaci klienta nastavím <code class="language-plaintext highlighter-rouge">clientState</code> a vyplním výchozí hodnoty.</p>
 
 <figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">import</span> <span class="nx">ApolloClient</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">apollo-boost</span><span class="dl">"</span><span class="p">;</span>
 
@@ -86,9 +84,9 @@
   <span class="p">}</span>
 <span class="p">});</span></code></pre></figure>
 
-<p><code class="highlighter-rouge">clientState</code> přijímá i parametr <code class="highlighter-rouge">typeDefs</code>. Toto schéma se nepoužívá pro validaci jako na serveru, protože knihovna <code class="highlighter-rouge">graphql-js</code> by výrazně zvedla velikost výsledného balíku. Client-side schéma se používá v Apollo DevTools, kde je možné schéma prozkoumat.</p>
+<p><code class="language-plaintext highlighter-rouge">clientState</code> přijímá i parametr <code class="language-plaintext highlighter-rouge">typeDefs</code>. Toto schéma se nepoužívá pro validaci jako na serveru, protože knihovna <code class="language-plaintext highlighter-rouge">graphql-js</code> by výrazně zvedla velikost výsledného balíku. Client-side schéma se používá v Apollo DevTools, kde je možné schéma prozkoumat.</p>
 
-<p>Pro čtení dat pak stačí použít GraphQL query s direktivou <code class="highlighter-rouge">@client</code>. Na stejném principu fungují ostatní Apollo Link knihovny, např. <code class="highlighter-rouge">apollo-link-rest</code>. Ta používá <code class="highlighter-rouge">@rest</code> direktivu pro označení polí, která by měla být načtena z REST endpointu. Direktivy <code class="highlighter-rouge">@client</code> a <code class="highlighter-rouge">@rest</code> nemění podobu dat, jen určují odkud se data načítají.</p>
+<p>Pro čtení dat pak stačí použít GraphQL query s direktivou <code class="language-plaintext highlighter-rouge">@client</code>. Na stejném principu fungují ostatní Apollo Link knihovny, např. <code class="language-plaintext highlighter-rouge">apollo-link-rest</code>. Ta používá <code class="language-plaintext highlighter-rouge">@rest</code> direktivu pro označení polí, která by měla být načtena z REST endpointu. Direktivy <code class="language-plaintext highlighter-rouge">@client</code> a <code class="language-plaintext highlighter-rouge">@rest</code> nemění podobu dat, jen určují odkud se data načítají.</p>
 
 <figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">import</span> <span class="p">{</span> <span class="nx">Query</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-apollo</span><span class="dl">"</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">gql</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">apollo-boost</span><span class="dl">"</span><span class="p">;</span>
@@ -100,12 +98,12 @@
 `</span><span class="p">;</span>
 
 <span class="k">export</span> <span class="kd">const</span> <span class="nx">Expander</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
-  <span class="p">&lt;</span><span class="nc">Query</span> <span class="na">query=</span><span class="si">{</span><span class="nx">SECTION_QUERY</span><span class="si">}</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nc">Query</span> <span class="na">query</span><span class="p">=</span><span class="si">{</span><span class="nx">SECTION_QUERY</span><span class="si">}</span><span class="p">&gt;</span>
     <span class="si">{</span><span class="p">({</span> <span class="nx">data</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">expanded</span> <span class="p">?</span> <span class="dl">"</span><span class="s2">expanded</span><span class="dl">"</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">collapsed</span><span class="dl">"</span><span class="p">)</span><span class="si">}</span>
   <span class="p">&lt;/</span><span class="nc">Query</span><span class="p">&gt;</span>
 <span class="p">);</span></code></pre></figure>
 
-<p>Zbýva vyřešit zápis dat. Zde jsou na výběr dvě možnosti. První je zápis přímo do cache použitím <code class="highlighter-rouge">client.writeData</code> v komponentách <code class="highlighter-rouge">ApolloConsumer</code>, nebo <code class="highlighter-rouge">Query</code>. Přímý zápis je vhodný pro jednorázové zápisy nezávislé na datech uložených v cache. Druhá možnost je Mutation, volající client-side resolver. Resolver může pracovat s daty v cache, hodí se tedy např. na přidávání položek do seznamu nebo přepínání hodnoty. Přímý zápis bych přirovnal k <code class="highlighter-rouge">setState</code>, zatímco resolver připomíná Redux.</p>
+<p>Zbýva vyřešit zápis dat. Zde jsou na výběr dvě možnosti. První je zápis přímo do cache použitím <code class="language-plaintext highlighter-rouge">client.writeData</code> v komponentách <code class="language-plaintext highlighter-rouge">ApolloConsumer</code>, nebo <code class="language-plaintext highlighter-rouge">Query</code>. Přímý zápis je vhodný pro jednorázové zápisy nezávislé na datech uložených v cache. Druhá možnost je Mutation, volající client-side resolver. Resolver může pracovat s daty v cache, hodí se tedy např. na přidávání položek do seznamu nebo přepínání hodnoty. Přímý zápis bych přirovnal k <code class="language-plaintext highlighter-rouge">setState</code>, zatímco resolver připomíná Redux.</p>
 
 <figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">import</span> <span class="p">{</span> <span class="nx">ApolloConsumer</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-apollo</span><span class="dl">"</span><span class="p">;</span>
 
@@ -116,11 +114,11 @@
 
 <span class="k">export</span> <span class="k">default</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">(</span>
   <span class="p">&lt;</span><span class="nc">ApolloConsumer</span><span class="p">&gt;</span>
-    <span class="si">{</span><span class="nx">client</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick=</span><span class="si">{</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">expand</span><span class="p">(</span><span class="nx">client</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>See FAQs<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span><span class="si">}</span>
+    <span class="si">{</span><span class="nx">client</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">expand</span><span class="p">(</span><span class="nx">client</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>See FAQs<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span><span class="si">}</span>
   <span class="p">&lt;/</span><span class="nc">ApolloConsumer</span><span class="p">&gt;</span>
 <span class="p">);</span></code></pre></figure>
 
-<p>Pokud bych potřeboval použít mutation, musím nejdříve do <code class="highlighter-rouge">ApolloClient</code> přidat <a href="https://www.apollographql.com/docs/react/essentials/local-state.html#resolvers">resolver</a>.</p>
+<p>Pokud bych potřeboval použít mutation, musím nejdříve do <code class="language-plaintext highlighter-rouge">ApolloClient</code> přidat <a href="https://www.apollographql.com/docs/react/essentials/local-state.html#resolvers">resolver</a>.</p>
 
 <figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">export</span> <span class="kd">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ApolloClient</span><span class="p">({</span>
   <span class="na">uri</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
@@ -138,7 +136,7 @@
   <span class="p">}</span>
 <span class="p">});</span></code></pre></figure>
 
-<p>Potom přidám komponentu <code class="highlighter-rouge">Mutation</code> a předám jí mutation s direktivou <code class="highlighter-rouge">@client</code>. To řekne <code class="highlighter-rouge">apollo-link-state</code>, aby volal lokální <code class="highlighter-rouge">expand</code> mutation resolver pro zpracování mutation.</p>
+<p>Potom přidám komponentu <code class="language-plaintext highlighter-rouge">Mutation</code> a předám jí mutation s direktivou <code class="language-plaintext highlighter-rouge">@client</code>. To řekne <code class="language-plaintext highlighter-rouge">apollo-link-state</code>, aby volal lokální <code class="language-plaintext highlighter-rouge">expand</code> mutation resolver pro zpracování mutation.</p>
 
 <figure class="highlight"><pre><code class="language-jsx" data-lang="jsx"><span class="k">import</span> <span class="p">{</span> <span class="nx">Mutation</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-apollo</span><span class="dl">"</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">FAQ_SECTION_EXPAND</span> <span class="o">=</span> <span class="nx">gql</span><span class="s2">`
@@ -147,11 +145,11 @@
   }
 `</span><span class="p">;</span>
 
-<span class="p">&lt;</span><span class="nc">Mutation</span> <span class="na">mutation=</span><span class="si">{</span><span class="nx">FAQ_SECTION_EXPAND</span><span class="si">}</span><span class="p">&gt;</span>
-  <span class="si">{</span><span class="nx">expand</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">onClick=</span><span class="si">{</span><span class="nx">expand</span><span class="si">}</span><span class="p">&gt;</span>See FAQs<span class="p">&lt;/</span><span class="nc">Button</span><span class="p">&gt;</span><span class="si">}</span>
+<span class="p">&lt;</span><span class="nc">Mutation</span> <span class="na">mutation</span><span class="p">=</span><span class="si">{</span><span class="nx">FAQ_SECTION_EXPAND</span><span class="si">}</span><span class="p">&gt;</span>
+  <span class="si">{</span><span class="nx">expand</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nc">Button</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">expand</span><span class="si">}</span><span class="p">&gt;</span>See FAQs<span class="p">&lt;/</span><span class="nc">Button</span><span class="p">&gt;</span><span class="si">}</span>
 <span class="p">&lt;/</span><span class="nc">Mutation</span><span class="p">&gt;</span></code></pre></figure>
 
-<p>Toto bylo moje základní seznámení s <code class="highlighter-rouge">apollo-link-state</code>. V jednom z budoucích článků popíšu jak na kombinování lokálního stavu se stavem ze serveru a složitější mutations. Aplikaci používající <a href="https://codesandbox.io/s/2jvjvllr9y">přímý zápis</a> i <a href="https://codesandbox.io/s/l4mkk62k39">mutations</a> najdete na CodeSandbox.</p>
+<p>Toto bylo moje základní seznámení s <code class="language-plaintext highlighter-rouge">apollo-link-state</code>. V jednom z budoucích článků popíšu jak na kombinování lokálního stavu se stavem ze serveru a složitější mutations. Aplikaci používající <a href="https://codesandbox.io/s/2jvjvllr9y">přímý zápis</a> i <a href="https://codesandbox.io/s/l4mkk62k39">mutations</a> najdete na CodeSandbox.</p>
 
 <h3 id="školení-graphql-a-apollo">Školení GraphQL a Apollo</h3>
 
@@ -162,6 +160,15 @@
 <div class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
@@ -177,15 +184,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

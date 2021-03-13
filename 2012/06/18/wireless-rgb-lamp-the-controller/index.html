@@ -66,11 +66,11 @@
   <span class="post-date">18 Jun 2012</span>
   <p>In this part I will show you how to control <a href="http://rousek.name/blog/wireless-rgb-lamp" title="Link to my previous post">RGB lamp</a> using Netduino. The basics such as <a href="http://rousek.name/blog/control-lights-remotely-using-xbee-and-netduino" title="Link to another blog post">wiring XBee to Netduino and XBee setup</a> are described in my previous article, so I will highlight only most interesting bits.</p>
 
-<p>Method <code class="highlighter-rouge">RequestReceived</code> handles incoming HTTP requests and decides which command send to XBee.</p>
+<p>Method <code class="language-plaintext highlighter-rouge">RequestReceived</code> handles incoming HTTP requests and decides which command send to XBee.</p>
 
 <p>If URL is (your XBee’s IP)/fade/1000 where 1000 is delay in milliseconds, following code is executed. Because highest number we can squeeze to one byte is 255 we need to use two bytes to achieve more suitable range 0 - 65535. We then need to split that number into two bytes as shown below.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>short fadeDelay = short.Parse(param[2]); // param[2] is delay in milliseconds
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>short fadeDelay = short.Parse(param[2]); // param[2] is delay in milliseconds
 _xBee.SendData(0x0013A200407A26AA, 0xFFFE,
                 new byte[]
                     {
@@ -82,7 +82,7 @@ _xBee.SendData(0x0013A200407A26AA, 0xFFFE,
 
 <p>Following two commands are simple. Just parse number and send it.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case "mode":
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>case "mode":
     if (param.Length == 3)
     {
         byte fadeMode = byte.Parse(param[2]);
@@ -100,15 +100,15 @@ case "color":
 
 <p>Command <em>colorx</em> takes 3 arguments. So URL will look like this (your XBee’s IP)/colorx/(0-255 red)/(0-255 green)/(0-255 blue)</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>byte colorR = byte.Parse(param[2]);
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>byte colorR = byte.Parse(param[2]);
 byte colorG = byte.Parse(param[3]);
 byte colorB = byte.Parse(param[4]);
 _xBee.SendData(0x0013A200407A26AA, 0xFFFE, new byte[] { 23, colorR, colorG, colorB }, null);
 </code></pre></div></div>
 
-<p>Last command sends just one byte which requests current settings. When it’s received method <code class="highlighter-rouge">XBeeFrameReceived</code> gets called. You can put breakpoint into the empty <code class="highlighter-rouge">case</code> statement or print incoming data. Format is described in table below.</p>
+<p>Last command sends just one byte which requests current settings. When it’s received method <code class="language-plaintext highlighter-rouge">XBeeFrameReceived</code> gets called. You can put breakpoint into the empty <code class="language-plaintext highlighter-rouge">case</code> statement or print incoming data. Format is described in table below.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_xBee.SendData(0x0013A200407A26AA, 0xFFFE, new byte[] { 24 }, null);
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>_xBee.SendData(0x0013A200407A26AA, 0xFFFE, new byte[] { 24 }, null);
 </code></pre></div></div>
 
 <h3 id="commands">Commands</h3>
@@ -163,6 +163,15 @@ _xBee.SendData(0x0013A200407A26AA, 0xFFFE, new byte[] { 23, colorR, colorG, colo
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -175,15 +184,6 @@ _xBee.SendData(0x0013A200407A26AA, 0xFFFE, new byte[] { 23, colorR, colorG, colo
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>

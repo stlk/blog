@@ -21,10 +21,8 @@
     
     
       <meta name="description" content="For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.
-
 ">
       <meta content="For a long time I was looking for a simple and, well, cheap solution to isolate my support phone number from my personal number and I’m going to share my solution with you.
-
 " property="og:description">
     
     
@@ -80,7 +78,7 @@
 
 <p><a href="https://www.twilio.com/console/runtime/twiml-bins">Runtime &gt; TwiML Bins</a> is the place where we can manage our Bins.</p>
 
-<p>Create a new bin called <code class="highlighter-rouge">Forward incoming calls to my phone</code> and paste following code.</p>
+<p>Create a new bin called <code class="language-plaintext highlighter-rouge">Forward incoming calls to my phone</code> and paste following code.</p>
 
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;Response&gt;</span>
@@ -122,11 +120,11 @@
 
 </code></pre></div></div>
 
-<p>The interesting part of this command is <code class="highlighter-rouge">{{#e164}}{{To}}{{/e164}}</code>. When using SIP Interface the <code class="highlighter-rouge">To</code> value that gets passed down is in following form <code class="highlighter-rouge">sip:+15125551212@freelance.sip.us1.twilio.com</code>. Function <code class="highlighter-rouge">e164</code> extracts the phone number from this text. After saving this bin we will copy its <em>URL</em> and use it as <em>Request URL</em> in the SIP Domain we created.</p>
+<p>The interesting part of this command is <code class="language-plaintext highlighter-rouge">{{#e164}}{{To}}{{/e164}}</code>. When using SIP Interface the <code class="language-plaintext highlighter-rouge">To</code> value that gets passed down is in following form <code class="language-plaintext highlighter-rouge">sip:+15125551212@freelance.sip.us1.twilio.com</code>. Function <code class="language-plaintext highlighter-rouge">e164</code> extracts the phone number from this text. After saving this bin we will copy its <em>URL</em> and use it as <em>Request URL</em> in the SIP Domain we created.</p>
 
 <h3 id="zoiper-configuration">Zoiper configuration</h3>
 
-<p>Now that Twilio is setup we can actually make an outgoing call. We will use our SIP credentials we created before. You might have to fill in domain with the region <code class="highlighter-rouge">us1</code> as domain without region or with any <a href="https://www.twilio.com/docs/voice/api/sending-sip#localized-sip-uris">other</a> didn’t work for me.</p>
+<p>Now that Twilio is setup we can actually make an outgoing call. We will use our SIP credentials we created before. You might have to fill in domain with the region <code class="language-plaintext highlighter-rouge">us1</code> as domain without region or with any <a href="https://www.twilio.com/docs/voice/api/sending-sip#localized-sip-uris">other</a> didn’t work for me.</p>
 
 <p class="post__image-center">
   <img src="/public/twilio-zoiper-configuration.jpeg" alt="" class="post__image post__image-full-width" />
@@ -142,6 +140,15 @@
     
       <li>
         <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
             Hi-speed request filtering using Cloudflare Workers
             <small>09 Aug 2020</small>
@@ -154,15 +161,6 @@
           <a href="/2020/07/16/pipenv-is-great/">
             Pipenv is great
             <small>16 Jul 2020</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2020/03/28/my-2019/">
-            My year 2019
-            <small>28 Mar 2020</small>
           </a>
         </h3>
       </li>
