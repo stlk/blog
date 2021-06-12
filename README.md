@@ -9,14 +9,16 @@ Open sourced under the [MIT license](LICENSE.md).
 <3
 
 
-docker run --rm \
-  --volume="$PWD:/srv/jekyll" \
-  -it jekyll/minimal:3.8 \
-  rake site:publish
+### Deploy
 
+```
+docker run --rm --volume="$PWD:/srv/jekyll" -it jekyll/minimal:latest rake site:publish
+cd _site
+git push origin master:refs/heads/gh-pages --force
+```
 
-docker run --rm \
-  --volume="$PWD:/srv/jekyll" \
-  -p 127.0.0.1:4000:4000 \
-  -it jekyll/minimal:3.8 \
-  jekyll serve
+### Development
+
+```
+docker run --rm --volume="$PWD:/srv/jekyll" -p 127.0.0.1:4000:4000 -it jekyll/minimal:latest jekyll serve --draft
+```

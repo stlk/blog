@@ -50,6 +50,8 @@
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+    <script async defer data-domain="blog.rousek.name" src="https://plausible.io/js/plausible.js"></script>
   </head>
   <body>
 
@@ -72,19 +74,5 @@
     <div class="content container">
       {{ content }}
     </div>
-
-
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-485461-11"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-
-      gtag('config', 'UA-485461-11');
-    </script>
-
-
-
   </body>
 </html>
