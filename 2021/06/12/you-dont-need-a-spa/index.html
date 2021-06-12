@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/public/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="http://gmpg.org/xfn/11" rel="profile">
+
+    <title>
+      You don't need a SPA &middot; 
+      Zápisník Josefa Rouska
+    </title>
+
+    <meta content="Zápisník Josefa Rouska" property="og:site_name">
+    
+      <meta content="You don&#39;t need a SPA" property="og:title">
+    
+    
+      <meta content="article" property="og:type">
+      <meta property="article:author" content="https://www.facebook.com/josef.rousek" />
+    
+    
+      <meta name="description" content="I’m building Shopify apps using Django and React. When I first created Candy Rack it was server rendered HTML with single or multiple React components on a page. Since then the web ecosystem evolved. The most important change are the restrictions around 3rd party cookies. To address this problem Shopify came with an alternative authentication method that doesn’t rely on cookies called session tokens. Instead of cookies Shopify provides a Javascript function that returns a token. As a result all authenticated requests must be made from Javascript. While SPA is fine for larger apps and teams, we have some smaller apps and rewriting them to SPA isn’t viable.
+">
+      <meta content="I’m building Shopify apps using Django and React. When I first created Candy Rack it was server rendered HTML with single or multiple React components on a page. Since then the web ecosystem evolved. The most important change are the restrictions around 3rd party cookies. To address this problem Shopify came with an alternative authentication method that doesn’t rely on cookies called session tokens. Instead of cookies Shopify provides a Javascript function that returns a token. As a result all authenticated requests must be made from Javascript. While SPA is fine for larger apps and teams, we have some smaller apps and rewriting them to SPA isn’t viable.
+" property="og:description">
+    
+    
+      <meta content="https://blog.rousek.name/2021/06/12/you-dont-need-a-spa/" property="og:url">
+    
+    
+      <meta content="2021-06-12T00:00:00-05:00" property="article:published_time">
+    
+    
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,400,600,700|Abril+Fatface&subset=latin,latin-ext">
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+    <script async defer data-domain="blog.rousek.name" src="https://plausible.io/js/plausible.js"></script>
+  </head>
+  <body>
+
+    <header class="masthead">
+      <div class="masthead-inner">
+        <h1><a href="/">Zápisník Josefa Rouska</a></h1>
+        <p class="lead">Python a React.js programátor, zaměřený na Shopify integrace</p>
+
+        <div class="colophon">
+          <ul class="colophon-links">
+            <li><a href="https://rousek.name/">about</a></li>
+            <li><a href="https://github.com/stlk">github</a></li>
+            <li><a href="https://twitter.com/josefrousek">twitter</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content container">
+      <div class="post">
+  <h1>You don't need a SPA</h1>
+  <span class="post-date">12 Jun 2021</span>
+  <p>I’m building Shopify apps using Django and React. When I first created <a href="https://apps.shopify.com/candyrack">Candy Rack</a> it was server rendered HTML with single or multiple React components on a page. Since then the web ecosystem evolved. The most important change are the restrictions around 3rd party cookies. To address this problem Shopify came with an alternative authentication method that doesn’t rely on cookies called <a href="https://shopify.dev/tutorials/authenticate-your-app-using-session-tokens">session tokens</a>. Instead of cookies Shopify provides a Javascript function that returns a token. As a result all authenticated requests must be made from Javascript. While SPA is fine for larger apps and teams, we have some smaller apps and rewriting them to SPA isn’t viable.</p>
+
+<p>Thankfully a whole new approach to interactive apps is starting to get a widespread attention.</p>
+
+<p>The one I have some experience with is <a href="https://hotwire.dev/">Hotwire</a>, successor of Turbolinks. I created an <a href="https://github.com/digismoothie/django-session-token-auth-demo">example Shopify app</a> based on Shopify’s tutorial <a href="https://shopify.dev/tutorials/authenticate-server-side-rendered-embedded-apps-using-rails-and-turbolinks">Authenticate server-side rendered embedded apps using Rails and Turbolinks</a>. Hotwire works well, gets the job done. But there are two other tools I would love to try.</p>
+
+<p><a href="https://htmx.org/">htmx</a> is similar to Hotwire and I’m seeing more of it in Python community.</p>
+
+<p><a href="https://inertiajs.com/">Inertia.js</a> is taking slightly different approach. It serves as client-side router for React, Vue and Svelte apps. The most interesting feature is that Inertia uses a <a href="https://inertiajs.com/the-protocol">protocol</a> that defines how are data passed from the server and based on this data it renders a component. If you would like to learn more I recommend Episode <a href="https://www.bikeshed.fm/291">291: All Things Inertia.js with Jonathan Reinink</a> of The Bike Shed podcast.</p>
+
+<p>I’m very excited about the direction these tools are going and will keep writing about my experience with them.</p>
+
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/03/13/websockets-on-django-and-react/">
+            Websockets on Django and React
+            <small>13 Mar 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/08/09/high-speed-request-filtering-using-cloudflare-workers/">
+            Hi-speed request filtering using Cloudflare Workers
+            <small>09 Aug 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2020/07/16/pipenv-is-great/">
+            Pipenv is great
+            <small>16 Jul 2020</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+    </div>
+  </body>
+</html>

@@ -4,13 +4,33 @@
  <title>Zápisník Josefa Rouska</title>
  <link href="https://blog.rousek.name/atom.xml" rel="self"/>
  <link href="https://blog.rousek.name/"/>
- <updated>2021-03-27T16:57:55-05:00</updated>
+ <updated>2021-06-12T08:28:24-05:00</updated>
  <id>https://blog.rousek.name</id>
  <author>
    <name>Josef Rousek</name>
    <email>josef.rousek@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>You don't need a SPA</title>
+   <link href="https://blog.rousek.name/2021/06/12/you-dont-need-a-spa/"/>
+   <updated>2021-06-12T00:00:00-05:00</updated>
+   <id>https://blog.rousek.name/2021/06/12/you-dont-need-a-spa</id>
+   <content type="html">&lt;p&gt;I’m building Shopify apps using Django and React. When I first created &lt;a href=&quot;https://apps.shopify.com/candyrack&quot;&gt;Candy Rack&lt;/a&gt; it was server rendered HTML with single or multiple React components on a page. Since then the web ecosystem evolved. The most important change are the restrictions around 3rd party cookies. To address this problem Shopify came with an alternative authentication method that doesn’t rely on cookies called &lt;a href=&quot;https://shopify.dev/tutorials/authenticate-your-app-using-session-tokens&quot;&gt;session tokens&lt;/a&gt;. Instead of cookies Shopify provides a Javascript function that returns a token. As a result all authenticated requests must be made from Javascript. While SPA is fine for larger apps and teams, we have some smaller apps and rewriting them to SPA isn’t viable.&lt;/p&gt;
+
+&lt;p&gt;Thankfully a whole new approach to interactive apps is starting to get a widespread attention.&lt;/p&gt;
+
+&lt;p&gt;The one I have some experience with is &lt;a href=&quot;https://hotwire.dev/&quot;&gt;Hotwire&lt;/a&gt;, successor of Turbolinks. I created an &lt;a href=&quot;https://github.com/digismoothie/django-session-token-auth-demo&quot;&gt;example Shopify app&lt;/a&gt; based on Shopify’s tutorial &lt;a href=&quot;https://shopify.dev/tutorials/authenticate-server-side-rendered-embedded-apps-using-rails-and-turbolinks&quot;&gt;Authenticate server-side rendered embedded apps using Rails and Turbolinks&lt;/a&gt;. Hotwire works well, gets the job done. But there are two other tools I would love to try.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://htmx.org/&quot;&gt;htmx&lt;/a&gt; is similar to Hotwire and I’m seeing more of it in Python community.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://inertiajs.com/&quot;&gt;Inertia.js&lt;/a&gt; is taking slightly different approach. It serves as client-side router for React, Vue and Svelte apps. The most interesting feature is that Inertia uses a &lt;a href=&quot;https://inertiajs.com/the-protocol&quot;&gt;protocol&lt;/a&gt; that defines how are data passed from the server and based on this data it renders a component. If you would like to learn more I recommend Episode &lt;a href=&quot;https://www.bikeshed.fm/291&quot;&gt;291: All Things Inertia.js with Jonathan Reinink&lt;/a&gt; of The Bike Shed podcast.&lt;/p&gt;
+
+&lt;p&gt;I’m very excited about the direction these tools are going and will keep writing about my experience with them.&lt;/p&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Websockets on Django and React</title>

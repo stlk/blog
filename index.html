@@ -64,6 +64,19 @@
   
   <div class="post">
     <h2>
+      <a href="/2021/06/12/you-dont-need-a-spa/">
+        You don't need a SPA
+      </a>
+    </h2>
+
+    <span class="post-date">12 Jun 2021</span>
+
+    <p>I’m building Shopify apps using Django and React. When I first created <a href="https://apps.shopify.com/candyrack">Candy Rack</a> it was server rendered HTML with single or multiple React components on a page. Since then the web ecosystem evolved. The most important change are the restrictions around 3rd party cookies. To address this problem Shopify came with an alternative authentication method that doesn’t rely on cookies called <a href="https://shopify.dev/tutorials/authenticate-your-app-using-session-tokens">session tokens</a>. Instead of cookies Shopify provides a Javascript function that returns a token. As a result all authenticated requests must be made from Javascript. While SPA is fine for larger apps and teams, we have some smaller apps and rewriting them to SPA isn’t viable.</p>
+
+  </div>
+  
+  <div class="post">
+    <h2>
       <a href="/2021/03/13/websockets-on-django-and-react/">
         Websockets on Django and React
       </a>

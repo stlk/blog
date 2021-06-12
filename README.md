@@ -13,6 +13,7 @@ Open sourced under the [MIT license](LICENSE.md).
 
 ```
 docker run --rm --volume="$PWD:/srv/jekyll" -it jekyll/minimal:latest rake site:publish
+cd _site
 git push origin master:refs/heads/gh-pages --force
 ```
 
